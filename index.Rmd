@@ -1,0 +1,13 @@
+---
+title: "TD MLR1 – Báo cáo phân tích hồi quy đa biến"
+author: "Trần Gia Tuấn"
+output:
+  bookdown::pdf_book:
+    latex_engine: pdflatex
+documentclass: book
+---
+
+# Giới thiệu
+
+Báo cáo này trình bày toàn bộ kết quả phân tích hồi quy đa biến cho 5 bài trong TD MLR1,
+sử dụng dữ liệu **Data MR.xlsx**.

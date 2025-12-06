@@ -1,0 +1,5 @@
+book_filename: "MLR1_Report"
+output_dir: "_report"
+rmd_files:
+  - "index.Rmd"
+  - "01-MLR1.Rmd"
