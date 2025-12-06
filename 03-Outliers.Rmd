@@ -335,14 +335,18 @@ if(nrow(all_outliers) > 0) {
   # Chuẩn bị data
   selected_spectra <- data_nir_complete[c(top_outliers, normal_samples), ]
 
-  # Thêm ID và Type
-  selected_spectra$Sample_ID <- paste0("S", 1:nrow(selected_spectra))
-  selected_spectra$Type <- c(rep("Outlier", length(top_outliers)),
-                              rep("Normal", length(normal_samples)))
+  # Thêm ID và Type TRƯỚC khi pivot
+  sample_metadata <- data.frame(
+    Sample_ID = paste0("Sample_", 1:nrow(selected_spectra)),
+    Type = c(rep("Outlier", length(top_outliers)),
+             rep("Normal", length(normal_samples)))
+  )
 
   # Chuyển sang long format
   spectra_comparison <- selected_spectra %>%
-    pivot_longer(cols = -c(Sample_ID, Type),
+    mutate(Sample_ID = sample_metadata$Sample_ID,
+           Type = sample_metadata$Type) %>%
+    pivot_longer(cols = starts_with("S"),
                  names_to = "Wavelength",
                  values_to = "Absorbance") %>%
     mutate(Wavelength = as.numeric(str_remove(Wavelength, "S")))
