@@ -28,7 +28,7 @@ library(gridExtra)
 
 ```{r load-data}
 # Đọc dữ liệu
-data <- read.csv("coffee_nirs.csv", sep = ";", row.names = 1, stringsAsFactors = FALSE)
+coffee_data <- read.csv("coffee_nirs.csv", sep = ";", row.names = 1, stringsAsFactors = FALSE)
 
 # Chuyển đổi các cột số (xử lý dấu chấm làm dấu phân cách hàng nghìn)
 # Hàm chuyển đổi từ format Châu Âu (dấu chấm = phân cách nghìn, dấu phẩy = thập phân)
@@ -43,23 +43,23 @@ convert_to_numeric <- function(x) {
 }
 
 # Áp dụng cho tất cả các cột trừ Localisation
-for(col in names(data)) {
+for(col in names(coffee_data)) {
   if(col != "Localisation") {
-    data[[col]] <- convert_to_numeric(data[[col]])
+    coffee_data[[col]] <- convert_to_numeric(coffee_data[[col]])
   }
 }
 
 # Xem cấu trúc dữ liệu
-dim(data)
+dim(coffee_data)
 
 # Kiểm tra kiểu dữ liệu đã chuyển đổi thành công
 cat("Kiểm tra kiểu dữ liệu:\n")
-cat("- CGA:", class(data$CGA), "\n")
-cat("- Localisation:", class(data$Localisation), "\n")
-cat("- S1:", class(data$S1), "\n")
+cat("- CGA:", class(coffee_data$CGA), "\n")
+cat("- Localisation:", class(coffee_data$Localisation), "\n")
+cat("- S1:", class(coffee_data$S1), "\n")
 ```
 
-Bộ dữ liệu có **`r nrow(data)`** mẫu và **`r ncol(data)`** biến.
+Bộ dữ liệu có **`r nrow(coffee_data)`** mẫu và **`r ncol(coffee_data)`** biến.
 
 ## Các Nhóm Biến trong Dữ liệu
 
@@ -122,7 +122,7 @@ ggplot(location_summary, aes(x = factor(Localisation), y = `Số lượng mẫu`
 
 ```{r nir-vars}
 # Các biến NIR (S1 đến S1050)
-nir_vars <- grep("^S[0-9]+$", names(data), value = TRUE)
+nir_vars <- grep("^S[0-9]+$", names(coffee_data), value = TRUE)
 
 cat("Số lượng biến NIR:", length(nir_vars), "\n")
 cat("Phạm vi bước sóng:", min(nir_vars), "đến", max(nir_vars), "\n")
@@ -137,10 +137,10 @@ cat("Phạm vi bước sóng:", min(nir_vars), "đến", max(nir_vars), "\n")
 ```{r nir-spectra-plot}
 # Vẽ một số phổ NIR mẫu
 set.seed(123)
-sample_indices <- sample(1:nrow(data), 10)
+sample_indices <- sample(1:nrow(coffee_data), 10)
 
 # Chuyển dữ liệu sang dạng long format để vẽ
-nir_data_long <- data[sample_indices, nir_vars] %>%
+nir_data_long <- coffee_data[sample_indices, nir_vars] %>%
   mutate(sample = row_number()) %>%
   pivot_longer(cols = -sample, names_to = "wavelength", values_to = "absorbance") %>%
   mutate(wavelength = as.numeric(str_remove(wavelength, "S")))
@@ -166,8 +166,8 @@ ggplot(nir_data_long, aes(x = wavelength, y = absorbance, color = factor(sample)
 miss_summary <- miss_var_summary(data)
 
 cat("Tổng số biến có dữ liệu thiếu:", sum(miss_summary$n_miss > 0), "\n")
-cat("Tổng số quan sát thiếu:", sum(is.na(data)), "\n")
-cat("Tỷ lệ dữ liệu thiếu tổng thể:", round(mean(is.na(data)) * 100, 2), "%\n")
+cat("Tổng số quan sát thiếu:", sum(is.na(coffee_data)), "\n")
+cat("Tỷ lệ dữ liệu thiếu tổng thể:", round(mean(is.na(coffee_data)) * 100, 2), "%\n")
 ```
 
 ### Phân tích chi tiết Missing Data
@@ -219,8 +219,8 @@ vis_miss(data, warn_large_data = FALSE) +
 
 ```{r missing-chemical-viz}
 # Missing pattern cho biến hóa lý
-if(sum(is.na(data[, chemical_vars])) > 0) {
-  gg_miss_var(data[, chemical_vars]) +
+if(sum(is.na(coffee_data[, chemical_vars])) > 0) {
+  gg_miss_var(coffee_data[, chemical_vars]) +
     labs(title = "Số lượng missing values theo biến hóa lý")
 }
 ```
@@ -229,8 +229,8 @@ if(sum(is.na(data[, chemical_vars])) > 0) {
 
 ```{r missing-conclusion}
 # Tính toán và hiển thị kết luận
-total_cells <- nrow(data) * ncol(data)
-missing_cells <- sum(is.na(data))
+total_cells <- nrow(coffee_data) * ncol(coffee_data)
+missing_cells <- sum(is.na(coffee_data))
 missing_pct <- (missing_cells / total_cells) * 100
 
 cat("**Kết luận:**\n\n")
@@ -253,7 +253,7 @@ if(missing_pct < 1) {
 
 ```{r outliers-chemical}
 # Chuẩn hóa dữ liệu hóa lý để so sánh
-data_chemical <- data[, chemical_vars]
+data_chemical <- coffee_data[, chemical_vars]
 
 # Chuyển sang long format để vẽ boxplot
 data_chemical_long <- data_chemical %>%
@@ -304,7 +304,7 @@ outlier_summary <- data.frame(
 )
 
 for(var in chemical_vars) {
-  result <- detect_outliers(data[[var]])
+  result <- detect_outliers(coffee_data[[var]])
   outlier_summary <- rbind(outlier_summary, data.frame(
     Variable = var,
     N_Outliers = result$n_outliers,
@@ -327,7 +327,7 @@ set.seed(123)
 sample_nir_vars <- sample(nir_vars, 50)
 
 # Tính outliers cho các biến NIR mẫu
-nir_outlier_counts <- sapply(data[, sample_nir_vars], function(x) {
+nir_outlier_counts <- sapply(coffee_data[, sample_nir_vars], function(x) {
   detect_outliers(x)$n_outliers
 })
 
@@ -337,7 +337,7 @@ cat("Số lượng outliers trung bình trong 50 biến NIR ngẫu nhiên:",
 
 ```{r outliers-nir-plot}
 # Boxplot cho một số biến NIR
-data_nir_sample <- data[, sample_nir_vars[1:9]] %>%
+data_nir_sample <- coffee_data[, sample_nir_vars[1:9]] %>%
   pivot_longer(everything(), names_to = "variable", values_to = "value")
 
 ggplot(data_nir_sample, aes(x = variable, y = value, fill = variable)) +
@@ -356,7 +356,7 @@ ggplot(data_nir_sample, aes(x = variable, y = value, fill = variable)) +
 
 ```{r multivariate-outliers}
 # Sử dụng Mahalanobis distance cho biến hóa lý
-data_chem_complete <- data[complete.cases(data[, chemical_vars]), chemical_vars]
+data_chem_complete <- coffee_data[complete.cases(coffee_data[, chemical_vars]), chemical_vars]
 
 if(nrow(data_chem_complete) > 0) {
   # Tính Mahalanobis distance
@@ -462,8 +462,8 @@ strategy_df %>%
 ```{r conclusion}
 cat("### Tóm tắt chất lượng dữ liệu:\n\n")
 cat("**Cấu trúc dữ liệu:**\n")
-cat("- Số mẫu:", nrow(data), "\n")
-cat("- Số biến tổng:", ncol(data), "\n")
+cat("- Số mẫu:", nrow(coffee_data), "\n")
+cat("- Số biến tổng:", ncol(coffee_data), "\n")
 cat("  + Biến hóa lý:", length(chemical_vars), "\n")
 cat("  + Biến vị trí: 1\n")
 cat("  + Biến NIR:", length(nir_vars), "\n\n")
