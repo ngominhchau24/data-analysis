@@ -29,30 +29,28 @@ library(kableExtra)
 library(gridExtra)
 library(RColorBrewer)
 
-# Đọc lại dữ liệu (nếu chưa có trong environment)
-if(!exists("data")) {
-  data <- read.csv("coffee_nirs.csv", sep = ";", row.names = 1, stringsAsFactors = FALSE)
+# Đọc dữ liệu
+coffee_data <- read.csv("coffee_nirs.csv", sep = ";", row.names = 1, stringsAsFactors = FALSE)
 
-  # Chuyển đổi sang numeric
-  convert_to_numeric <- function(x) {
-    if(is.character(x)) {
-      x <- gsub("\\.", "", x)
-      x <- gsub(",", ".", x)
-      return(as.numeric(x))
-    }
-    return(x)
+# Chuyển đổi sang numeric
+convert_to_numeric <- function(x) {
+  if(is.character(x)) {
+    x <- gsub("\\.", "", x)
+    x <- gsub(",", ".", x)
+    return(as.numeric(x))
   }
+  return(x)
+}
 
-  for(col in names(data)) {
-    if(col != "Localisation") {
-      data[[col]] <- convert_to_numeric(data[[col]])
-    }
+for(col in names(coffee_data)) {
+  if(col != "Localisation") {
+    coffee_data[[col]] <- convert_to_numeric(coffee_data[[col]])
   }
 }
 
 # Định nghĩa các nhóm biến
 chemical_vars <- c("CGA", "Cafeine", "Fat", "Trigonelline", "DM")
-nir_vars <- grep("^S[0-9]+$", names(data), value = TRUE)
+nir_vars <- grep("^S[0-9]+$", names(coffee_data), value = TRUE)
 ```
 
 ## Phân tích PCA (Principal Component Analysis)
@@ -68,11 +66,11 @@ PCA giúp chúng ta:
 
 ```{r pca-nir}
 # Chuẩn bị dữ liệu NIR (loại bỏ missing values)
-data_nir <- data[, nir_vars]
+data_nir <- coffee_data[, nir_vars]
 data_nir_complete <- data_nir[complete.cases(data_nir), ]
 
 # Lưu thông tin Localisation tương ứng
-location_info <- data$Localisation[complete.cases(data_nir)]
+location_info <- coffee_data$Localisation[complete.cases(data_nir)]
 
 # Thực hiện PCA
 pca_nir <- PCA(data_nir_complete, scale.unit = TRUE, graph = FALSE)
@@ -164,9 +162,9 @@ fviz_contrib(pca_nir, choice = "var", axes = 2, top = 20) +
 
 ```{r pca-chemical}
 # PCA cho biến hóa lý
-data_chem <- data[, chemical_vars]
+data_chem <- coffee_data[, chemical_vars]
 data_chem_complete <- data_chem[complete.cases(data_chem), ]
-location_chem <- data$Localisation[complete.cases(data_chem)]
+location_chem <- coffee_data$Localisation[complete.cases(data_chem)]
 
 pca_chem <- PCA(data_chem_complete, scale.unit = TRUE, graph = FALSE)
 
