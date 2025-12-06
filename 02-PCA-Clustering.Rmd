@@ -117,10 +117,8 @@ fviz_pca_ind(pca_nir,
   theme_minimal()
 ```
 
-```{r pca-score-3d}
-# Score plot 3D cho PC1, PC2, PC3
-library(plotly)
-
+```{r pca-score-multiplot}
+# Tạo data frame với 3 PC đầu tiên
 scores_df <- data.frame(
   PC1 = pca_nir$ind$coord[, 1],
   PC2 = pca_nir$ind$coord[, 2],
@@ -128,20 +126,31 @@ scores_df <- data.frame(
   Location = factor(location_info)
 )
 
-plot_ly(scores_df, x = ~PC1, y = ~PC2, z = ~PC3,
-        color = ~Location,
-        colors = "Set1",
-        type = "scatter3d",
-        mode = "markers",
-        marker = list(size = 3)) %>%
-  layout(
-    title = "PCA 3D Score Plot",
-    scene = list(
-      xaxis = list(title = paste0("PC1 (", round(pca_nir$eig[1, 2], 2), "%)")),
-      yaxis = list(title = paste0("PC2 (", round(pca_nir$eig[2, 2], 2), "%)")),
-      zaxis = list(title = paste0("PC3 (", round(pca_nir$eig[3, 2], 2), "%)"))
-    )
-  )
+# Plot PC1 vs PC3
+p1 <- ggplot(scores_df, aes(x = PC1, y = PC3, color = Location)) +
+  geom_point(size = 2, alpha = 0.7) +
+  stat_ellipse(level = 0.95) +
+  labs(
+    x = paste0("PC1 (", round(pca_nir$eig[1, 2], 2), "%)"),
+    y = paste0("PC3 (", round(pca_nir$eig[3, 2], 2), "%)")
+  ) +
+  theme_minimal() +
+  scale_color_brewer(palette = "Set1")
+
+# Plot PC2 vs PC3
+p2 <- ggplot(scores_df, aes(x = PC2, y = PC3, color = Location)) +
+  geom_point(size = 2, alpha = 0.7) +
+  stat_ellipse(level = 0.95) +
+  labs(
+    x = paste0("PC2 (", round(pca_nir$eig[2, 2], 2), "%)"),
+    y = paste0("PC3 (", round(pca_nir$eig[3, 2], 2), "%)")
+  ) +
+  theme_minimal() +
+  scale_color_brewer(palette = "Set1")
+
+# Kết hợp 2 plots
+grid.arrange(p1, p2, ncol = 2,
+             top = "PCA Score Plots - Các góc nhìn khác nhau")
 ```
 
 ### Phân tích Contribution - Biến quan trọng
