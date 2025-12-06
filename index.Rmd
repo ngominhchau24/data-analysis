@@ -1,13 +1,18 @@
 ---
-title: "TD MLR1 – Báo cáo phân tích hồi quy đa biến"
-author: "Trần Gia Tuấn"
+title: "Coffee NIR Data Analysis Report"
+author: "Data Analysis Team"
+date: "`r Sys.Date()`"
 output:
   bookdown::pdf_book:
-    latex_engine: pdflatex
+    latex_engine: xelatex
 documentclass: book
 ---
 
-# Giới thiệu
+# Giới thiệu {-}
 
-Báo cáo này trình bày toàn bộ kết quả phân tích hồi quy đa biến cho 5 bài trong TD MLR1,
-sử dụng dữ liệu **Data MR.xlsx**.
+Báo cáo này trình bày toàn bộ kết quả phân tích dữ liệu Coffee NIR, bao gồm:
+
+- Phần 1: Giới thiệu dữ liệu và kiểm tra chất lượng
+- Các phần tiếp theo sẽ bao gồm phân tích thống kê, mô hình hóa và dự đoán
+
+Dữ liệu sử dụng: **coffee_nirs.csv**
