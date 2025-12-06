@@ -40,10 +40,35 @@ library(gridExtra)
 
 ```{r load-data}
 # Đọc dữ liệu
-data <- read.csv("../coffee_nirs.csv", sep = ";", row.names = 1)
+data <- read.csv("../coffee_nirs.csv", sep = ";", row.names = 1, stringsAsFactors = FALSE)
+
+# Chuyển đổi các cột số (xử lý dấu chấm làm dấu phân cách hàng nghìn)
+# Hàm chuyển đổi từ format Châu Âu (dấu chấm = phân cách nghìn, dấu phẩy = thập phân)
+convert_to_numeric <- function(x) {
+  if(is.character(x)) {
+    # Loại bỏ dấu chấm (phân cách hàng nghìn) và thay dấu phẩy thành dấu chấm (thập phân)
+    x <- gsub("\\.", "", x)  # Loại bỏ dấu chấm
+    x <- gsub(",", ".", x)   # Thay dấu phẩy thành dấu chấm
+    return(as.numeric(x))
+  }
+  return(x)
+}
+
+# Áp dụng cho tất cả các cột trừ Localisation
+for(col in names(data)) {
+  if(col != "Localisation") {
+    data[[col]] <- convert_to_numeric(data[[col]])
+  }
+}
 
 # Xem cấu trúc dữ liệu
 dim(data)
+
+# Kiểm tra kiểu dữ liệu đã chuyển đổi thành công
+cat("Kiểm tra kiểu dữ liệu:\n")
+cat("- CGA:", class(data$CGA), "\n")
+cat("- Localisation:", class(data$Localisation), "\n")
+cat("- S1:", class(data$S1), "\n")
 ```
 
 Bộ dữ liệu có **`r nrow(data)`** mẫu và **`r ncol(data)`** biến.
