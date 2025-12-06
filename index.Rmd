@@ -17,10 +17,16 @@ Báo cáo này trình bày toàn bộ kết quả phân tích dữ liệu Coffee
   - Kiểm tra dữ liệu thiếu (Missing Data)
   - Phát hiện giá trị lạ (Outliers Detection)
 
-- **Phần 2**: Phân tích sự khác biệt - PCA và Clustering
+- **Phần 2.1**: Phân tích sự khác biệt - PCA và Clustering
   - Principal Component Analysis (PCA) trên dữ liệu NIR và Hóa lý
   - Hierarchical Clustering và K-means
   - So sánh sự khác biệt giữa các vị trí địa lý
   - Xác định đặc điểm phân biệt giữa các nhóm
+
+- **Phần 2.2**: Phát hiện Outliers nâng cao
+  - Hotelling T² statistic và Q residuals (SPE)
+  - Combined T² vs Q plot
+  - Influence analysis
+  - Phân loại và quyết định xử lý outliers
 
 Dữ liệu sử dụng: **coffee_nirs.csv**

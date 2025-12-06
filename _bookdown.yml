@@ -4,3 +4,4 @@ rmd_files:
   - "index.Rmd"
   - "01-BTL.Rmd"
   - "02-PCA-Clustering.Rmd"
+  - "03-Outliers.Rmd"
