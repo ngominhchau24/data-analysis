@@ -168,17 +168,28 @@ location_chem <- coffee_data$Localisation[complete.cases(data_chem)]
 
 pca_chem <- PCA(data_chem_complete, scale.unit = TRUE, graph = FALSE)
 
-# Biplot - hiển thị cả samples và variables
-fviz_pca_biplot(pca_chem,
-                geom.ind = "point",
-                col.ind = factor(location_chem),
-                palette = "jco",
-                addEllipses = TRUE,
-                col.var = "contrib",
-                gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
-                legend.title = list(fill = "Location", color = "Contrib")) +
+# Score plot cho individuals
+fviz_pca_ind(pca_chem,
+             geom.ind = "point",
+             col.ind = factor(location_chem),
+             palette = "jco",
+             addEllipses = TRUE,
+             ellipse.level = 0.95,
+             legend.title = "Location") +
   labs(
-    title = "PCA Biplot - Biến Hóa lý",
+    title = "PCA Score Plot - Biến Hóa lý theo Location",
+    x = paste0("PC1 (", round(pca_chem$eig[1, 2], 2), "%)"),
+    y = paste0("PC2 (", round(pca_chem$eig[2, 2], 2), "%)")
+  ) +
+  theme_minimal()
+
+# Variable plot - contribution
+fviz_pca_var(pca_chem,
+             col.var = "contrib",
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+             repel = TRUE) +
+  labs(
+    title = "PCA Variable Plot - Đóng góp của các biến Hóa lý",
     x = paste0("PC1 (", round(pca_chem$eig[1, 2], 2), "%)"),
     y = paste0("PC2 (", round(pca_chem$eig[2, 2], 2), "%)")
   ) +
