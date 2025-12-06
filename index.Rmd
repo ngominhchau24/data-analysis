@@ -29,4 +29,11 @@ Báo cáo này trình bày toàn bộ kết quả phân tích dữ liệu Coffee
   - Influence analysis
   - Phân loại và quyết định xử lý outliers
 
+- **Phần 2.3**: Phân tích Tương quan và Heatmap
+  - Ma trận tương quan giữa các biến hóa lý
+  - Tương quan giữa NIR wavelengths và biến hóa lý
+  - Correlation profile và wavelengths quan trọng
+  - Tương quan trong không gian PCA
+  - So sánh pattern tương quan giữa các Location
+
 Dữ liệu sử dụng: **coffee_nirs.csv**
