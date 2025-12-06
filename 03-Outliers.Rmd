@@ -332,19 +332,24 @@ if(nrow(all_outliers) > 0) {
     sample_n(min(5, sum(!combined_df$T2_outlier & !combined_df$Q_outlier))) %>%
     pull(Sample)
 
+  # Chuẩn bị data
+  selected_spectra <- data_nir_complete[c(top_outliers, normal_samples), ]
+
+  # Thêm ID và Type
+  selected_spectra$Sample_ID <- paste0("S", 1:nrow(selected_spectra))
+  selected_spectra$Type <- c(rep("Outlier", length(top_outliers)),
+                              rep("Normal", length(normal_samples)))
+
   # Chuyển sang long format
-  spectra_comparison <- data_nir_complete[c(top_outliers, normal_samples), ] %>%
-    mutate(
-      Sample = row_number(),
-      Type = c(rep("Outlier", length(top_outliers)),
-               rep("Normal", length(normal_samples)))
-    ) %>%
-    pivot_longer(cols = starts_with("S"), names_to = "Wavelength", values_to = "Absorbance") %>%
+  spectra_comparison <- selected_spectra %>%
+    pivot_longer(cols = -c(Sample_ID, Type),
+                 names_to = "Wavelength",
+                 values_to = "Absorbance") %>%
     mutate(Wavelength = as.numeric(str_remove(Wavelength, "S")))
 
   # Plot
   ggplot(spectra_comparison, aes(x = Wavelength, y = Absorbance,
-                                   group = Sample, color = Type)) +
+                                   group = Sample_ID, color = Type)) +
     geom_line(alpha = 0.7, linewidth = 0.8) +
     scale_color_manual(values = c("Outlier" = "red", "Normal" = "blue")) +
     labs(
