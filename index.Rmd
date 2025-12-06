@@ -12,7 +12,15 @@ documentclass: book
 
 Báo cáo này trình bày toàn bộ kết quả phân tích dữ liệu Coffee NIR, bao gồm:
 
-- Phần 1: Giới thiệu dữ liệu và kiểm tra chất lượng
-- Các phần tiếp theo sẽ bao gồm phân tích thống kê, mô hình hóa và dự đoán
+- **Phần 1**: Giới thiệu dữ liệu và kiểm tra chất lượng
+  - Mô tả các nhóm biến: Hóa lý, Location, NIR
+  - Kiểm tra dữ liệu thiếu (Missing Data)
+  - Phát hiện giá trị lạ (Outliers Detection)
+
+- **Phần 2**: Phân tích sự khác biệt - PCA và Clustering
+  - Principal Component Analysis (PCA) trên dữ liệu NIR và Hóa lý
+  - Hierarchical Clustering và K-means
+  - So sánh sự khác biệt giữa các vị trí địa lý
+  - Xác định đặc điểm phân biệt giữa các nhóm
 
 Dữ liệu sử dụng: **coffee_nirs.csv**

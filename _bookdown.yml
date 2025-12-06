@@ -1,5 +1,6 @@
-book_filename: "MLR1_Report"
+book_filename: "Coffee_NIR_BTL_Report"
 output_dir: "_report"
 rmd_files:
   - "index.Rmd"
-  - "01-MLR1.Rmd"
+  - "01-BTL.Rmd"
+  - "02-PCA-Clustering.Rmd"
