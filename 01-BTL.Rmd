@@ -73,7 +73,7 @@ Dữ liệu Coffee NIR được chia thành 3 nhóm biến chính:
 chemical_vars <- c("CGA", "Cafeine", "Fat", "Trigonelline", "DM")
 
 # Hiển thị thống kê mô tả
-data %>%
+coffee_data %>%
   select(all_of(chemical_vars)) %>%
   summary() %>%
   kable(caption = "Thống kê mô tả các biến hóa lý") %>%
@@ -94,7 +94,7 @@ data %>%
 
 ```{r location-var}
 # Kiểm tra biến Localisation
-location_summary <- data %>%
+location_summary <- coffee_data %>%
   count(Localisation, name = "Số lượng mẫu") %>%
   arrange(desc(`Số lượng mẫu`))
 
@@ -163,7 +163,7 @@ ggplot(nir_data_long, aes(x = wavelength, y = absorbance, color = factor(sample)
 
 ```{r missing-overview}
 # Tổng quan về missing data
-miss_summary <- miss_var_summary(data)
+miss_summary <- miss_var_summary(coffee_data)
 
 cat("Tổng số biến có dữ liệu thiếu:", sum(miss_summary$n_miss > 0), "\n")
 cat("Tổng số quan sát thiếu:", sum(is.na(coffee_data)), "\n")
@@ -174,7 +174,7 @@ cat("Tỷ lệ dữ liệu thiếu tổng thể:", round(mean(is.na(coffee_data)
 
 ```{r missing-by-group}
 # Missing trong các biến hóa lý
-miss_chemical <- data %>%
+miss_chemical <- coffee_data %>%
   select(all_of(chemical_vars)) %>%
   miss_var_summary()
 
@@ -184,7 +184,7 @@ miss_chemical %>%
   kable_styling(bootstrap_options = c("striped", "hover"))
 
 # Missing trong biến Location
-miss_location <- data %>%
+miss_location <- coffee_data %>%
   select(Localisation) %>%
   miss_var_summary()
 
@@ -194,7 +194,7 @@ miss_location %>%
   kable_styling(bootstrap_options = c("striped", "hover"))
 
 # Missing trong các biến NIR
-miss_nir <- data %>%
+miss_nir <- coffee_data %>%
   select(all_of(nir_vars)) %>%
   miss_var_summary() %>%
   filter(n_miss > 0)
@@ -213,7 +213,7 @@ if(nrow(miss_nir) > 0) {
 
 ```{r missing-viz, fig.height=8}
 # Visualize missing data pattern
-vis_miss(data, warn_large_data = FALSE) +
+vis_miss(coffee_data, warn_large_data = FALSE) +
   labs(title = "Mẫu dữ liệu thiếu trong toàn bộ dataset")
 ```
 
