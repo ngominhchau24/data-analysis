@@ -245,8 +245,11 @@ Phân nhóm (clustering) giúp chúng ta:
 
 ```{r hclust-nir}
 # Lấy mẫu để clustering (sử dụng PC scores thay vì toàn bộ NIR)
-# Sử dụng 10 PC đầu tiên
-pca_scores <- pca_nir$ind$coord[, 1:10]
+# Sử dụng các PC đầu tiên (tối đa 10 hoặc số PC có sẵn)
+n_pcs <- min(10, ncol(pca_nir$ind$coord))
+pca_scores <- pca_nir$ind$coord[, 1:n_pcs]
+
+cat("Sử dụng", n_pcs, "PC đầu tiên cho clustering\n")
 
 # Tính khoảng cách Euclidean
 dist_matrix <- dist(pca_scores, method = "euclidean")
