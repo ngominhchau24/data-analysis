@@ -57,7 +57,7 @@ cor_matrix %>%
 
 ```{r heatmap-chemical, fig.height=6, fig.width=6}
 # Heatmap với corrplot
-corrplot(cor_matrix,
+corrplot::corrplot(cor_matrix,
          method = "color",
          type = "upper",
          order = "hclust",
@@ -309,7 +309,7 @@ for(loc in unique_locations) {
     data_chem_loc <- data_chem_full[loc_idx, ]
     cor_loc <- cor(data_chem_loc, method = "pearson")
 
-    corrplot(cor_loc,
+    corrplot::corrplot(cor_loc,
              method = "color",
              type = "upper",
              addCoef.col = "black",
