@@ -86,19 +86,20 @@ for(i in 1:length(chemical_vars)) {
   model <- pls_models[[var]]
   ncomp <- optimal_ncomp[var]
 
-  # RMSECV và R² từ cross-validation
+  # RMSECV from cross-validation
   rmsep_obj <- RMSEP(model, estimate = "CV")
   pls_performance$RMSECV[i] <- rmsep_obj$val[1, 1, ncomp + 1]
 
-  r2_obj <- R2(model, estimate = "CV")
+  # R² from cross-validation (using R2 function without estimate parameter)
+  r2_obj <- R2(model)
   pls_performance$R2_CV[i] <- r2_obj$val[1, 1, ncomp + 1]
 
-  # RMSEP và R² từ training
+  # RMSEP from training
   rmsep_train <- RMSEP(model, estimate = "train")
   pls_performance$RMSEP[i] <- rmsep_train$val[1, 1, ncomp + 1]
 
-  r2_train <- R2(model, estimate = "train")
-  pls_performance$R2[i] <- r2_train$val[1, 1, ncomp + 1]
+  # R² from training (same approach)
+  pls_performance$R2[i] <- r2_obj$val[2, 1, ncomp + 1]
 }
 
 knitr::kable(pls_performance,
@@ -237,7 +238,8 @@ for(i in 1:length(chemical_vars)) {
   rmsep_obj <- RMSEP(model, estimate = "CV")
   pcr_performance$RMSECV[i] <- rmsep_obj$val[1, 1, ncomp + 1]
 
-  r2_obj <- R2(model, estimate = "CV")
+  # R² without estimate parameter for compatibility
+  r2_obj <- R2(model)
   pcr_performance$R2_CV[i] <- r2_obj$val[1, 1, ncomp + 1]
 }
 
