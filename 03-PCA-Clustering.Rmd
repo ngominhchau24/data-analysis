@@ -29,28 +29,11 @@ library(kableExtra)
 library(gridExtra)
 library(RColorBrewer)
 
-# Đọc dữ liệu
-coffee_data <- read.csv("coffee_nirs.csv", sep = ";", row.names = 1, stringsAsFactors = FALSE)
-
-# Chuyển đổi sang numeric
-convert_to_numeric <- function(x) {
-  if(is.character(x)) {
-    x <- gsub("\\.", "", x)
-    x <- gsub(",", ".", x)
-    return(as.numeric(x))
-  }
-  return(x)
+# Data and variable groups already loaded in index.Rmd global-setup
+# Verify data is available
+if(!exists("coffee_data")) {
+  stop("Data not loaded. Please render from index.Rmd")
 }
-
-for(col in names(coffee_data)) {
-  if(col != "Localisation") {
-    coffee_data[[col]] <- convert_to_numeric(coffee_data[[col]])
-  }
-}
-
-# Định nghĩa các nhóm biến
-chemical_vars <- c("CGA", "Cafeine", "Fat", "Trigonelline", "DM")
-nir_vars <- grep("^S[0-9]+$", names(coffee_data), value = TRUE)
 ```
 
 ## Phân tích PCA (Principal Component Analysis)

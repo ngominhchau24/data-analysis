@@ -27,26 +27,10 @@ library(gridExtra)
 ```
 
 ```{r load-data}
-# Đọc dữ liệu
-coffee_data <- read.csv("coffee_nirs.csv", sep = ";", row.names = 1, stringsAsFactors = FALSE)
-
-# Chuyển đổi các cột số (xử lý dấu chấm làm dấu phân cách hàng nghìn)
-# Hàm chuyển đổi từ format Châu Âu (dấu chấm = phân cách nghìn, dấu phẩy = thập phân)
-convert_to_numeric <- function(x) {
-  if(is.character(x)) {
-    # Loại bỏ dấu chấm (phân cách hàng nghìn) và thay dấu phẩy thành dấu chấm (thập phân)
-    x <- gsub("\\.", "", x)  # Loại bỏ dấu chấm
-    x <- gsub(",", ".", x)   # Thay dấu phẩy thành dấu chấm
-    return(as.numeric(x))
-  }
-  return(x)
-}
-
-# Áp dụng cho tất cả các cột trừ Localisation
-for(col in names(coffee_data)) {
-  if(col != "Localisation") {
-    coffee_data[[col]] <- convert_to_numeric(coffee_data[[col]])
-  }
+# Data already loaded in index.Rmd global-setup chunk
+# Just verify it's available
+if(!exists("coffee_data")) {
+  stop("Data not loaded. Please render from index.Rmd")
 }
 
 # Xem cấu trúc dữ liệu
@@ -70,7 +54,8 @@ Dữ liệu Coffee NIR được chia thành 3 nhóm biến chính:
 Đây là các thông số hóa học được đo bằng phương pháp phân tích hóa học truyền thống trong phòng thí nghiệm:
 
 ```{r chemical-vars}
-chemical_vars <- c("CGA", "Cafeine", "Fat", "Trigonelline", "DM")
+# Variable groups already defined in index.Rmd global-setup
+# chemical_vars <- c("CGA", "Cafeine", "Fat", "Trigonelline", "DM")
 
 # Hiển thị thống kê mô tả
 coffee_data %>%

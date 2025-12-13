@@ -8,6 +8,44 @@ output:
 documentclass: book
 ---
 
+```{r global-setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+
+# Load required libraries
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+
+# Read data once for all chapters
+coffee_data <- read.csv("coffee_nirs.csv", sep = ";", row.names = 1, stringsAsFactors = FALSE)
+
+# Convert European number format
+convert_to_numeric <- function(x) {
+  if(is.character(x)) {
+    x <- gsub("\\.", "", x)      # Remove dots (thousands separator)
+    x <- gsub(",", ".", x)       # Replace comma with dot (decimal)
+    return(as.numeric(x))
+  }
+  return(x)
+}
+
+# Apply conversion to all columns except Localisation
+for(col in names(coffee_data)) {
+  if(col != "Localisation") {
+    coffee_data[[col]] <- convert_to_numeric(coffee_data[[col]])
+  }
+}
+
+# Define variable groups
+chemical_vars <- c("CGA", "Cafeine", "Fat", "Trigonelline", "DM")
+nir_vars <- grep("^S[0-9]+$", names(coffee_data), value = TRUE)
+
+cat("Data loaded successfully!\n")
+cat("Samples:", nrow(coffee_data), "\n")
+cat("Chemical variables:", length(chemical_vars), "\n")
+cat("NIR wavelengths:", length(nir_vars), "\n")
+```
+
 # Giới thiệu {-}
 
 Báo cáo này trình bày toàn bộ kết quả phân tích dữ liệu Coffee NIR, bao gồm:
