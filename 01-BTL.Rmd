@@ -80,7 +80,7 @@ coffee_data %>%
 ```{r location-var}
 # Kiểm tra biến Localisation
 location_summary <- coffee_data %>%
-  count(Localisation) %>%
+  dplyr::count(Localisation) %>%
   rename(`Số lượng mẫu` = n) %>%
   arrange(desc(`Số lượng mẫu`))
 

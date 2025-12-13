@@ -200,7 +200,7 @@ ggplot(combined_df, aes(x = T2, y = Q, color = Outlier_Type)) +
 
 # Thống kê outliers
 outlier_summary <- combined_df %>%
-  count(Outlier_Type) %>%
+  dplyr::count(Outlier_Type) %>%
   mutate(Percentage = round(n / nrow(combined_df) * 100, 2))
 
 outlier_summary %>%
