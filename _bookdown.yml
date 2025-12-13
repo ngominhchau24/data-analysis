@@ -6,3 +6,4 @@ rmd_files:
   - "02-PCA-Clustering.Rmd"
   - "03-Outliers.Rmd"
   - "04-Correlation-Heatmap.Rmd"
+  - "05-Prediction-Models.Rmd"
