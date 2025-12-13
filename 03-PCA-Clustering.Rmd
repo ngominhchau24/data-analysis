@@ -199,7 +199,8 @@ scores_summary <- scores_df %>%
     SD_PC1 = sd(PC1),
     Mean_PC2 = mean(PC2),
     SD_PC2 = sd(PC2),
-    N = n()
+    N = n(),
+    .groups = "drop"
   ) %>%
   arrange(desc(Mean_PC1))
 
@@ -359,7 +360,8 @@ chem_summary <- chem_analysis %>%
   group_by(Location) %>%
   summarise(
     across(all_of(chemical_vars), list(mean = mean, sd = sd), .names = "{col}_{fn}"),
-    N = n()
+    N = n(),
+    .groups = "drop"
   )
 
 chem_summary %>%
@@ -398,7 +400,7 @@ ggplot(chem_long, aes(x = Location, y = Value, fill = Location)) +
 nir_mean_by_location <- data_nir_complete %>%
   mutate(Location = location_info) %>%
   group_by(Location) %>%
-  summarise(across(everything(), mean))
+  summarise(across(everything(), mean), .groups = "drop")
 
 # Chuyển sang dạng long format
 nir_mean_long <- nir_mean_by_location %>%

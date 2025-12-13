@@ -220,7 +220,8 @@ outlier_location <- combined_df %>%
     N_Outliers = sum(Is_Outlier),
     Pct_Outliers = round(N_Outliers / Total_Samples * 100, 2),
     Mean_T2 = round(mean(T2), 2),
-    Mean_Q = round(mean(Q), 2)
+    Mean_Q = round(mean(Q), 2),
+    .groups = "drop"
   ) %>%
   arrange(desc(Pct_Outliers))
 
