@@ -9,7 +9,13 @@ documentclass: book
 ---
 
 ```{r global-setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  dev = "cairo_pdf",  # Use Cairo device for UTF-8 support in plots
+  fig.align = "center"
+)
 
 # Load required libraries
 library(tidyverse)
