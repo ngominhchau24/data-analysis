@@ -459,7 +459,7 @@ strategy_df %>%
 
 ## Kết luận
 
-```{r conclusion}
+```{r btl-conclusion}
 cat("### Tóm tắt chất lượng dữ liệu:\n\n")
 cat("**Cấu trúc dữ liệu:**\n")
 cat("- Số mẫu:", nrow(coffee_data), "\n")

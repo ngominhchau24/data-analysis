@@ -388,7 +388,7 @@ for(var in chemical_vars) {
 
 ## 2.4.5. Kết Luận
 
-```{r conclusion}
+```{r prediction-conclusion}
 cat("\n=== TỔNG KẾT MÔ HÌNH Dự ĐOÁN ===\n\n")
 
 cat("1. Mô hình tốt nhất cho từng chỉ tiêu:\n")
