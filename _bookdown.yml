@@ -3,7 +3,7 @@ output_dir: "_report"
 rmd_files:
   - "index.Rmd"
   - "02-Algorithm-Explanation.Rmd"
-  - "01-BTL.Rmd"
+  # - "01-BTL.Rmd"  # Temporarily disabled for testing
   - "03-PCA-Clustering.Rmd"
   - "04-Outliers.Rmd"
   - "05-Correlation-Heatmap.Rmd"
