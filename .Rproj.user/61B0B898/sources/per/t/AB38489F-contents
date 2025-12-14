@@ -1,0 +1,396 @@
+# Phân tích Tương quan và Heatmap
+
+```{r setup-corr, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  fig.width = 10,
+  fig.height = 8
+)
+```
+
+Phân tích tương quan giúp chúng ta hiểu mối quan hệ giữa các biến trong dữ liệu:
+
+1. **Tương quan giữa các biến hóa lý**: Xác định biến nào có quan hệ chặt chẽ
+2. **Tương quan giữa NIR và biến hóa lý**: Tìm vùng wavelength quan trọng
+3. **Tương quan trong không gian PCA**: Phân tích trên principal components
+
+## Chuẩn bị dữ liệu
+
+```{r load-corr-libs}
+library(tidyverse)
+library(corrplot)
+library(pheatmap)
+library(RColorBrewer)
+library(knitr)
+library(kableExtra)
+library(reshape2)
+
+# Đọc dữ liệu
+coffee_data <- read.csv("coffee_nirs.csv", sep = ";", row.names = 1, stringsAsFactors = FALSE)
+
+# Chuyển đổi sang numeric
+convert_to_numeric <- function(x) {
+  if(is.character(x)) {
+    x <- gsub("\\.", "", x)
+    x <- gsub(",", ".", x)
+    return(as.numeric(x))
+  }
+  return(x)
+}
+
+for(col in names(coffee_data)) {
+  if(col != "Localisation") {
+    coffee_data[[col]] <- convert_to_numeric(coffee_data[[col]])
+  }
+}
+
+# Định nghĩa các nhóm biến
+chemical_vars <- c("CGA", "Cafeine", "Fat", "Trigonelline", "DM")
+nir_vars <- grep("^S[0-9]+$", names(coffee_data), value = TRUE)
+```
+
+## Tương quan giữa các biến Hóa lý
+
+### Ma trận tương quan
+
+```{r corr-chemical}
+# Lấy dữ liệu hóa lý hoàn chỉnh
+data_chem <- coffee_data[, chemical_vars]
+data_chem_complete <- data_chem[complete.cases(data_chem), ]
+
+# Tính ma trận tương quan
+cor_matrix <- cor(data_chem_complete, method = "pearson")
+
+# Hiển thị bảng
+cor_matrix %>%
+  round(3) %>%
+  kable(caption = "Ma trận tương quan Pearson - Biến Hóa lý") %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+```
+
+### Heatmap tương quan - Biến Hóa lý
+
+```{r heatmap-chemical, fig.height=6, fig.width=6}
+# Heatmap với corrplot
+corrplot(cor_matrix,
+         method = "color",
+         type = "upper",
+         order = "hclust",
+         addCoef.col = "black",
+         tl.col = "black",
+         tl.srt = 45,
+         number.cex = 0.8,
+         col = colorRampPalette(c("#6D9EC1", "white", "#E46726"))(200),
+         title = "Correlation Heatmap - Chemical Variables",
+         mar = c(0, 0, 2, 0))
+```
+
+### Phân tích ý nghĩa
+
+```{r corr-analysis}
+# Tìm các cặp biến có tương quan cao (|r| > 0.5)
+cor_df <- as.data.frame(as.table(cor_matrix))
+names(cor_df) <- c("Var1", "Var2", "Correlation")
+
+high_corr <- cor_df %>%
+  filter(Var1 != Var2) %>%
+  filter(abs(Correlation) > 0.5) %>%
+  arrange(desc(abs(Correlation))) %>%
+  distinct(Correlation, .keep_all = TRUE)
+
+if(nrow(high_corr) > 0) {
+  cat("Các cặp biến có tương quan mạnh (|r| > 0.5):\n\n")
+  high_corr %>%
+    mutate(Correlation = round(Correlation, 3)) %>%
+    kable() %>%
+    kable_styling(bootstrap_options = c("striped", "hover"))
+} else {
+  cat("Không có cặp biến nào có tương quan mạnh (|r| > 0.5)\n")
+}
+```
+
+## Tương quan giữa NIR và Biến Hóa lý
+
+### Tính toán tương quan
+
+```{r corr-nir-chemical}
+# Lấy dữ liệu đầy đủ
+data_nir <- coffee_data[, nir_vars]
+complete_rows <- complete.cases(cbind(data_chem, data_nir))
+
+data_chem_full <- data_chem[complete_rows, ]
+data_nir_full <- data_nir[complete_rows, ]
+
+# Tính tương quan giữa từng biến hóa lý và tất cả NIR wavelengths
+cor_nir_chem <- cor(data_nir_full, data_chem_full, method = "pearson")
+
+cat("Kích thước ma trận tương quan NIR-Chemical:", dim(cor_nir_chem), "\n")
+cat("Số wavelengths:", nrow(cor_nir_chem), "\n")
+cat("Số biến hóa lý:", ncol(cor_nir_chem), "\n")
+```
+
+### Heatmap tổng quan NIR-Chemical
+
+```{r heatmap-nir-chemical-full, fig.height=10, fig.width=8}
+# Heatmap cho toàn bộ correlation
+pheatmap(cor_nir_chem,
+         cluster_rows = FALSE,
+         cluster_cols = TRUE,
+         show_rownames = FALSE,
+         main = "Correlation: NIR Wavelengths vs Chemical Properties",
+         color = colorRampPalette(c("blue", "white", "red"))(100),
+         breaks = seq(-1, 1, length.out = 101),
+         fontsize = 10,
+         angle_col = 45)
+```
+
+### Biểu đồ Line Plot - Correlation profile
+
+```{r corr-profile, fig.height=8}
+# Chuyển sang long format để vẽ
+cor_long <- as.data.frame(cor_nir_chem) %>%
+  mutate(Wavelength = 1:nrow(cor_nir_chem)) %>%
+  pivot_longer(cols = -Wavelength, names_to = "Chemical", values_to = "Correlation")
+
+# Line plot cho từng biến hóa lý
+ggplot(cor_long, aes(x = Wavelength, y = Correlation, color = Chemical)) +
+  geom_line(linewidth = 1) +
+  geom_hline(yintercept = c(-0.5, 0.5), linetype = "dashed", color = "gray") +
+  facet_wrap(~Chemical, ncol = 1, scales = "free_y") +
+  scale_color_brewer(palette = "Set1") +
+  labs(
+    title = "Correlation Profile: NIR Wavelengths vs Chemical Properties",
+    x = "Wavelength Index (S1-S1050)",
+    y = "Pearson Correlation",
+    color = "Chemical Variable"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+### Xác định wavelengths quan trọng
+
+```{r important-wavelengths}
+# Tìm wavelengths có tương quan cao với mỗi biến hóa lý
+important_wavelengths <- list()
+
+for(chem_var in chemical_vars) {
+  # Lấy tương quan tuyệt đối
+  abs_corr <- abs(cor_nir_chem[, chem_var])
+
+  # Tìm top 10 wavelengths
+  top_idx <- order(abs_corr, decreasing = TRUE)[1:10]
+
+  important_wavelengths[[chem_var]] <- data.frame(
+    Chemical = chem_var,
+    Wavelength = nir_vars[top_idx],
+    Wavelength_Index = top_idx,
+    Correlation = cor_nir_chem[top_idx, chem_var],
+    Abs_Correlation = abs_corr[top_idx]
+  )
+}
+
+# Kết hợp tất cả
+all_important <- do.call(rbind, important_wavelengths)
+
+cat("Top 10 wavelengths có tương quan mạnh nhất với từng biến hóa lý:\n\n")
+for(chem_var in chemical_vars) {
+  cat("\n**", chem_var, ":**\n")
+  all_important %>%
+    filter(Chemical == chem_var) %>%
+    select(Wavelength, Wavelength_Index, Correlation) %>%
+    mutate(Correlation = round(Correlation, 3)) %>%
+    head(5) %>%
+    kable() %>%
+    kable_styling(bootstrap_options = c("striped", "hover")) %>%
+    print()
+}
+```
+
+### Heatmap cho wavelengths quan trọng nhất
+
+```{r heatmap-top-wavelengths, fig.height=8, fig.width=6}
+# Lấy top 50 wavelengths có tương quan cao nhất (cho bất kỳ biến nào)
+max_abs_corr <- apply(abs(cor_nir_chem), 1, max)
+top_50_idx <- order(max_abs_corr, decreasing = TRUE)[1:50]
+
+# Heatmap cho top wavelengths
+pheatmap(cor_nir_chem[top_50_idx, ],
+         cluster_rows = TRUE,
+         cluster_cols = TRUE,
+         show_rownames = TRUE,
+         labels_row = paste0("S", top_50_idx),
+         main = "Top 50 Most Correlated Wavelengths",
+         color = colorRampPalette(c("blue", "white", "red"))(100),
+         breaks = seq(-1, 1, length.out = 101),
+         fontsize = 8,
+         angle_col = 45)
+```
+
+## Tương quan trong không gian PCA
+
+```{r pca-correlation}
+# Thực hiện PCA trên NIR
+library(FactoMineR)
+pca_nir <- PCA(data_nir_full, scale.unit = TRUE, graph = FALSE)
+
+# Lấy PC scores (10 PC đầu tiên)
+n_pcs <- min(10, ncol(pca_nir$ind$coord))
+pc_scores <- pca_nir$ind$coord[, 1:n_pcs]
+
+# Tính tương quan giữa PC scores và biến hóa lý
+cor_pc_chem <- cor(pc_scores, data_chem_full, method = "pearson")
+
+cat("Ma trận tương quan PC-Chemical:\n")
+cor_pc_chem %>%
+  round(3) %>%
+  kable(caption = "Correlation: PC Scores vs Chemical Properties") %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+```
+
+### Heatmap PC-Chemical
+
+```{r heatmap-pc-chemical, fig.height=6, fig.width=6}
+# Heatmap
+pheatmap(cor_pc_chem,
+         cluster_rows = FALSE,
+         cluster_cols = TRUE,
+         display_numbers = TRUE,
+         number_format = "%.2f",
+         main = "Correlation: PC Scores vs Chemical Properties",
+         color = colorRampPalette(c("blue", "white", "red"))(100),
+         breaks = seq(-1, 1, length.out = 101),
+         fontsize = 10,
+         angle_col = 45)
+```
+
+### Phân tích ý nghĩa
+
+```{r pc-corr-analysis}
+# Tìm PC có tương quan mạnh nhất với mỗi biến hóa lý
+for(chem_var in chemical_vars) {
+  pc_corrs <- cor_pc_chem[, chem_var]
+  max_pc <- which.max(abs(pc_corrs))
+  max_corr <- pc_corrs[max_pc]
+
+  cat(sprintf("**%s**: Tương quan mạnh nhất với PC%d (r = %.3f)\n",
+              chem_var, max_pc, max_corr))
+}
+
+cat("\n**Ý nghĩa:**\n")
+cat("- PC có tương quan cao với biến hóa lý cho thấy thành phần chính đó\n")
+cat("  chứa thông tin quan trọng để dự đoán biến đó\n")
+cat("- Có thể sử dụng PC scores làm biến độc lập trong mô hình hồi quy\n")
+```
+
+## Tương quan theo Location
+
+```{r corr-by-location}
+# Tính tương quan riêng cho từng location
+location_info <- coffee_data$Localisation[complete_rows]
+unique_locations <- unique(location_info)
+
+cat("Phân tích tương quan theo từng Location:\n\n")
+
+for(loc in unique_locations) {
+  loc_idx <- which(location_info == loc)
+
+  if(length(loc_idx) > 5) {  # Chỉ phân tích nếu có đủ mẫu
+    data_chem_loc <- data_chem_full[loc_idx, ]
+    cor_loc <- cor(data_chem_loc, method = "pearson")
+
+    cat(sprintf("\n### Location %s (n = %d samples):\n", loc, length(loc_idx)))
+
+    # Hiển thị ma trận
+    cor_loc %>%
+      round(3) %>%
+      kable() %>%
+      kable_styling(bootstrap_options = c("striped", "hover")) %>%
+      print()
+  }
+}
+```
+
+### So sánh pattern tương quan giữa các Location
+
+```{r compare-corr-locations, fig.height=10, fig.width=12}
+# Tạo heatmap cho mỗi location
+par(mfrow = c(2, ceiling(length(unique_locations) / 2)))
+
+for(loc in unique_locations) {
+  loc_idx <- which(location_info == loc)
+
+  if(length(loc_idx) > 5) {
+    data_chem_loc <- data_chem_full[loc_idx, ]
+    cor_loc <- cor(data_chem_loc, method = "pearson")
+
+    corrplot(cor_loc,
+             method = "color",
+             type = "upper",
+             addCoef.col = "black",
+             tl.col = "black",
+             tl.srt = 45,
+             number.cex = 0.6,
+             col = colorRampPalette(c("#6D9EC1", "white", "#E46726"))(200),
+             title = paste("Location", loc, "-", length(loc_idx), "samples"),
+             mar = c(0, 0, 2, 0))
+  }
+}
+
+par(mfrow = c(1, 1))
+```
+
+## Hierarchical Clustering dựa trên Correlation
+
+```{r hclust-corr}
+# Clustering các biến hóa lý dựa trên correlation
+dist_chem <- as.dist(1 - abs(cor_matrix))
+hc_chem <- hclust(dist_chem, method = "ward.D2")
+
+# Dendrogram
+plot(hc_chem,
+     main = "Hierarchical Clustering - Chemical Variables\n(based on correlation)",
+     xlab = "Chemical Variables",
+     ylab = "Distance (1 - |correlation|)",
+     sub = "")
+```
+
+## Tổng hợp và Kết luận
+
+```{r correlation-summary}
+cat("### Tóm tắt phân tích tương quan:\n\n")
+
+cat("**1. Tương quan giữa biến hóa lý:**\n")
+# Tìm tương quan cao nhất
+max_corr_idx <- which(abs(cor_matrix) == max(abs(cor_matrix[upper.tri(cor_matrix)])), arr.ind = TRUE)[1,]
+cat(sprintf("- Tương quan mạnh nhất: %s vs %s (r = %.3f)\n",
+            rownames(cor_matrix)[max_corr_idx[1]],
+            colnames(cor_matrix)[max_corr_idx[2]],
+            cor_matrix[max_corr_idx[1], max_corr_idx[2]]))
+
+cat("\n**2. NIR wavelengths quan trọng:**\n")
+for(chem_var in chemical_vars) {
+  top_wave <- all_important %>%
+    filter(Chemical == chem_var) %>%
+    slice_max(Abs_Correlation, n = 1)
+
+  cat(sprintf("- %s: Wavelength %s (r = %.3f)\n",
+              chem_var, top_wave$Wavelength, top_wave$Correlation))
+}
+
+cat("\n**3. PC scores hiệu quả:**\n")
+for(chem_var in chemical_vars) {
+  pc_corrs <- cor_pc_chem[, chem_var]
+  max_pc <- which.max(abs(pc_corrs))
+  cat(sprintf("- %s: PC%d (r = %.3f)\n",
+              chem_var, max_pc, pc_corrs[max_pc]))
+}
+
+cat("\n**4. Khuyến nghị:**\n")
+cat("- Sử dụng wavelengths có tương quan cao để xây dựng mô hình đơn giản\n")
+cat("- Cân nhắc sử dụng PC scores thay vì toàn bộ NIR để giảm chiều dữ liệu\n")
+cat("- Lưu ý sự khác biệt tương quan giữa các Location khi xây dựng mô hình\n")
+cat("- Các biến hóa lý có tương quan cao với nhau có thể gây multicollinearity\n")
+```

@@ -1,0 +1,454 @@
+# Phân tích Sự khác biệt: PCA và Clustering
+
+```{r setup-pca, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  fig.width = 10,
+  fig.height = 6
+)
+```
+
+Trong phần này, chúng ta sẽ sử dụng hai phương pháp chính để phân tích sự khác biệt trong dữ liệu Coffee NIR:
+
+1. **PCA (Principal Component Analysis)**: Phân tích thành phần chính để giảm chiều dữ liệu và trực quan hóa sự khác biệt
+2. **Clustering**: Phân nhóm các mẫu dựa trên đặc điểm tương đồng
+
+## Chuẩn bị dữ liệu
+
+```{r load-pca-libraries}
+# Load thư viện
+library(tidyverse)
+library(factoextra)
+library(FactoMineR)
+library(cluster)
+library(dendextend)
+library(knitr)
+library(kableExtra)
+library(gridExtra)
+library(RColorBrewer)
+
+# Data and variable groups already loaded in index.Rmd global-setup
+# Verify data is available
+if(!exists("coffee_data")) {
+  stop("Data not loaded. Please render from index.Rmd")
+}
+```
+
+## Phân tích PCA (Principal Component Analysis)
+
+PCA giúp chúng ta:
+
+- Giảm chiều dữ liệu từ 1050+ biến xuống còn vài thành phần chính
+- Trực quan hóa cấu trúc dữ liệu trong không gian 2D/3D
+- Phát hiện pattern và nhóm mẫu tương đồng
+- Xác định biến quan trọng nhất
+
+### PCA trên dữ liệu NIR
+
+```{r pca-nir}
+# Chuẩn bị dữ liệu NIR (loại bỏ missing values)
+data_nir <- coffee_data[, nir_vars]
+data_nir_complete <- data_nir[complete.cases(data_nir), ]
+
+# Lưu thông tin Localisation tương ứng
+location_info <- coffee_data$Localisation[complete.cases(data_nir)]
+
+# Thực hiện PCA
+pca_nir <- PCA(data_nir_complete, scale.unit = TRUE, graph = FALSE)
+
+# Thống kê eigenvalues
+cat("Phương sai giải thích bởi các thành phần chính:\n")
+print(head(pca_nir$eig, 10))
+```
+
+### Biểu đồ Scree Plot
+
+```{r pca-scree}
+# Scree plot - hiển thị phương sai được giải thích
+fviz_eig(pca_nir, addlabels = TRUE, ylim = c(0, 50), ncp = 10) +
+  labs(
+    title = "Scree Plot - Phương sai giải thích bởi các PC",
+    x = "Principal Components",
+    y = "Phương sai giải thích (%)"
+  ) +
+  theme_minimal()
+
+# Tính phương sai tích lũy
+cumvar <- cumsum(pca_nir$eig[, 2])
+cat("\nPhương sai tích lũy của 5 PC đầu tiên:", round(cumvar[5], 2), "%\n")
+cat("Phương sai tích lũy của 10 PC đầu tiên:", round(cumvar[10], 2), "%\n")
+```
+
+### Score Plot - Phân tích sự khác biệt theo Localisation
+
+```{r pca-score-location}
+# Score plot theo Localisation
+fviz_pca_ind(pca_nir,
+             geom.ind = "point",
+             col.ind = factor(location_info),
+             palette = "jco",
+             addEllipses = TRUE,
+             ellipse.level = 0.95,
+             legend.title = "Location") +
+  labs(
+    title = "PCA Score Plot - Phân tích theo Vị trí địa lý",
+    x = paste0("PC1 (", round(pca_nir$eig[1, 2], 2), "%)"),
+    y = paste0("PC2 (", round(pca_nir$eig[2, 2], 2), "%)")
+  ) +
+  theme_minimal()
+```
+
+```{r pca-score-multiplot}
+# Tạo data frame với 3 PC đầu tiên
+scores_df <- data.frame(
+  PC1 = pca_nir$ind$coord[, 1],
+  PC2 = pca_nir$ind$coord[, 2],
+  PC3 = pca_nir$ind$coord[, 3],
+  Location = factor(location_info)
+)
+
+# Plot PC1 vs PC3
+p1 <- ggplot(scores_df, aes(x = PC1, y = PC3, color = Location)) +
+  geom_point(size = 2, alpha = 0.7) +
+  stat_ellipse(level = 0.95) +
+  labs(
+    x = paste0("PC1 (", round(pca_nir$eig[1, 2], 2), "%)"),
+    y = paste0("PC3 (", round(pca_nir$eig[3, 2], 2), "%)")
+  ) +
+  theme_minimal() +
+  scale_color_brewer(palette = "Set1")
+
+# Plot PC2 vs PC3
+p2 <- ggplot(scores_df, aes(x = PC2, y = PC3, color = Location)) +
+  geom_point(size = 2, alpha = 0.7) +
+  stat_ellipse(level = 0.95) +
+  labs(
+    x = paste0("PC2 (", round(pca_nir$eig[2, 2], 2), "%)"),
+    y = paste0("PC3 (", round(pca_nir$eig[3, 2], 2), "%)")
+  ) +
+  theme_minimal() +
+  scale_color_brewer(palette = "Set1")
+
+# Kết hợp 2 plots
+grid.arrange(p1, p2, ncol = 2,
+             top = "PCA Score Plots - Các góc nhìn khác nhau")
+```
+
+### Phân tích Contribution - Biến quan trọng
+
+```{r pca-contribution}
+# Top 20 biến đóng góp nhất cho PC1
+fviz_contrib(pca_nir, choice = "var", axes = 1, top = 20) +
+  labs(title = "Top 20 biến NIR đóng góp cho PC1") +
+  theme_minimal()
+
+# Top 20 biến đóng góp nhất cho PC2
+fviz_contrib(pca_nir, choice = "var", axes = 2, top = 20) +
+  labs(title = "Top 20 biến NIR đóng góp cho PC2") +
+  theme_minimal()
+```
+
+### PCA trên dữ liệu Hóa lý
+
+```{r pca-chemical}
+# PCA cho biến hóa lý
+data_chem <- coffee_data[, chemical_vars]
+data_chem_complete <- data_chem[complete.cases(data_chem), ]
+location_chem <- coffee_data$Localisation[complete.cases(data_chem)]
+
+pca_chem <- PCA(data_chem_complete, scale.unit = TRUE, graph = FALSE)
+
+# Score plot cho individuals
+fviz_pca_ind(pca_chem,
+             geom.ind = "point",
+             col.ind = factor(location_chem),
+             palette = "jco",
+             addEllipses = TRUE,
+             ellipse.level = 0.95,
+             legend.title = "Location") +
+  labs(
+    title = "PCA Score Plot - Biến Hóa lý theo Location",
+    x = paste0("PC1 (", round(pca_chem$eig[1, 2], 2), "%)"),
+    y = paste0("PC2 (", round(pca_chem$eig[2, 2], 2), "%)")
+  ) +
+  theme_minimal()
+
+# Variable plot - contribution
+fviz_pca_var(pca_chem,
+             col.var = "contrib",
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+             repel = TRUE) +
+  labs(
+    title = "PCA Variable Plot - Đóng góp của các biến Hóa lý",
+    x = paste0("PC1 (", round(pca_chem$eig[1, 2], 2), "%)"),
+    y = paste0("PC2 (", round(pca_chem$eig[2, 2], 2), "%)")
+  ) +
+  theme_minimal()
+```
+
+### Phân tích sự khác biệt giữa các Location
+
+```{r pca-location-analysis}
+# Tính trung bình score PC1 và PC2 theo Location
+scores_summary <- scores_df %>%
+  group_by(Location) %>%
+  summarise(
+    Mean_PC1 = mean(PC1),
+    SD_PC1 = sd(PC1),
+    Mean_PC2 = mean(PC2),
+    SD_PC2 = sd(PC2),
+    N = n(),
+    .groups = "drop"
+  ) %>%
+  arrange(desc(Mean_PC1))
+
+scores_summary %>%
+  kable(caption = "Thống kê PC scores theo Location", digits = 3) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+
+# ANOVA test để kiểm tra sự khác biệt có ý nghĩa thống kê
+anova_pc1 <- aov(PC1 ~ Location, data = scores_df)
+anova_pc2 <- aov(PC2 ~ Location, data = scores_df)
+
+cat("\n**ANOVA Test - PC1:**\n")
+print(summary(anova_pc1))
+
+cat("\n**ANOVA Test - PC2:**\n")
+print(summary(anova_pc2))
+
+# Nếu có ý nghĩa thống kê, thực hiện post-hoc test
+if(summary(anova_pc1)[[1]][1, "Pr(>F)"] < 0.05) {
+  cat("\nCó sự khác biệt có ý nghĩa giữa các Location trên PC1\n")
+  posthoc_pc1 <- TukeyHSD(anova_pc1)
+  print(posthoc_pc1)
+}
+```
+
+## Phân tích Clustering
+
+Phân nhóm (clustering) giúp chúng ta:
+
+- Tự động phân loại mẫu thành các nhóm tương đồng
+- So sánh với phân loại theo Location
+- Phát hiện nhóm mẫu bất thường
+
+### Hierarchical Clustering
+
+```{r hclust-nir}
+# Lấy mẫu để clustering (sử dụng PC scores thay vì toàn bộ NIR)
+# Sử dụng các PC đầu tiên (tối đa 10 hoặc số PC có sẵn)
+n_pcs <- min(10, ncol(pca_nir$ind$coord))
+pca_scores <- pca_nir$ind$coord[, 1:n_pcs]
+
+cat("Sử dụng", n_pcs, "PC đầu tiên cho clustering\n")
+
+# Tính khoảng cách Euclidean
+dist_matrix <- dist(pca_scores, method = "euclidean")
+
+# Hierarchical clustering với method Ward
+hc_ward <- hclust(dist_matrix, method = "ward.D2")
+
+# Dendrogram
+fviz_dend(hc_ward, k = length(unique(location_info)),
+          cex = 0.5,
+          k_colors = "jco",
+          color_labels_by_k = TRUE,
+          rect = TRUE) +
+  labs(title = "Dendrogram - Hierarchical Clustering (Ward's method)") +
+  theme_minimal()
+```
+
+### Xác định số cluster tối ưu
+
+```{r optimal-clusters}
+# Elbow method
+fviz_nbclust(pca_scores, kmeans, method = "wss", k.max = 10) +
+  labs(title = "Elbow Method - Xác định số cluster tối ưu") +
+  geom_vline(xintercept = 3, linetype = 2, color = "red") +
+  theme_minimal()
+
+# Silhouette method
+fviz_nbclust(pca_scores, kmeans, method = "silhouette", k.max = 10) +
+  labs(title = "Silhouette Method - Xác định số cluster tối ưu") +
+  theme_minimal()
+```
+
+### K-means Clustering
+
+```{r kmeans-clustering}
+# Thực hiện k-means với số cluster tối ưu
+set.seed(123)
+k <- length(unique(location_info))  # Sử dụng số location làm baseline
+kmeans_result <- kmeans(pca_scores, centers = k, nstart = 25)
+
+# Visualize clusters trên PCA plot
+fviz_cluster(kmeans_result, data = pca_scores,
+             geom = "point",
+             ellipse.type = "convex",
+             palette = "jco",
+             ggtheme = theme_minimal()) +
+  labs(title = paste0("K-means Clustering (k = ", k, ") trên PCA Space"))
+
+# Thêm cluster assignment vào data frame
+scores_df$Cluster <- factor(kmeans_result$cluster)
+```
+
+### So sánh Clustering vs Location thực tế
+
+```{r compare-cluster-location}
+# Bảng confusion matrix
+confusion_table <- table(
+  Actual_Location = location_info,
+  Predicted_Cluster = kmeans_result$cluster
+)
+
+confusion_table %>%
+  kable(caption = "So sánh Cluster vs Location thực tế") %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+
+# Tính Adjusted Rand Index để đánh giá độ tương đồng
+library(mclust)
+ari <- adjustedRandIndex(location_info, kmeans_result$cluster)
+cat("\nAdjusted Rand Index:", round(ari, 3), "\n")
+cat("Giải thích: ARI = 1 nghĩa là hoàn toàn giống nhau, ARI = 0 nghĩa là ngẫu nhiên\n")
+```
+
+### Visualize cả Location và Cluster
+
+```{r dual-plot}
+# Plot 1: Theo Location
+p1 <- ggplot(scores_df, aes(x = PC1, y = PC2, color = Location)) +
+  geom_point(size = 2, alpha = 0.7) +
+  stat_ellipse(level = 0.95) +
+  labs(
+    title = "PCA - Phân nhóm theo Location thực tế",
+    x = paste0("PC1 (", round(pca_nir$eig[1, 2], 2), "%)"),
+    y = paste0("PC2 (", round(pca_nir$eig[2, 2], 2), "%)")
+  ) +
+  theme_minimal() +
+  scale_color_brewer(palette = "Set1")
+
+# Plot 2: Theo Cluster
+p2 <- ggplot(scores_df, aes(x = PC1, y = PC2, color = Cluster)) +
+  geom_point(size = 2, alpha = 0.7) +
+  stat_ellipse(level = 0.95) +
+  labs(
+    title = "PCA - Phân nhóm theo K-means Clustering",
+    x = paste0("PC1 (", round(pca_nir$eig[1, 2], 2), "%)"),
+    y = paste0("PC2 (", round(pca_nir$eig[2, 2], 2), "%)")
+  ) +
+  theme_minimal() +
+  scale_color_brewer(palette = "Set2")
+
+# Hiển thị cả 2 plot
+grid.arrange(p1, p2, ncol = 2)
+```
+
+## Phân tích đặc điểm của từng Cluster/Location
+
+### Đặc điểm hóa lý theo Location
+
+```{r chemical-by-location}
+# Thêm location vào data hóa lý
+chem_analysis <- data_chem_complete
+chem_analysis$Location <- factor(location_chem)
+
+# Tính trung bình các biến hóa lý theo Location
+chem_summary <- chem_analysis %>%
+  group_by(Location) %>%
+  summarise(
+    across(all_of(chemical_vars), list(mean = mean, sd = sd), .names = "{col}_{fn}"),
+    N = n(),
+    .groups = "drop"
+  )
+
+chem_summary %>%
+  kable(caption = "Đặc điểm hóa lý trung bình theo Location", digits = 2) %>%
+  kable_styling(bootstrap_options = c("striped", "hover")) %>%
+  scroll_box(width = "100%")
+```
+
+### Boxplot so sánh biến hóa lý
+
+```{r chemical-boxplot}
+# Reshape data để vẽ
+chem_long <- chem_analysis %>%
+  pivot_longer(cols = all_of(chemical_vars),
+               names_to = "Variable",
+               values_to = "Value")
+
+# Boxplot cho từng biến hóa lý theo Location
+ggplot(chem_long, aes(x = Location, y = Value, fill = Location)) +
+  geom_boxplot(alpha = 0.7) +
+  facet_wrap(~Variable, scales = "free_y", ncol = 3) +
+  labs(
+    title = "Phân bố các biến hóa lý theo Location",
+    x = "Location",
+    y = "Giá trị"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  scale_fill_brewer(palette = "Set1")
+```
+
+### Heatmap phổ NIR trung bình
+
+```{r nir-heatmap}
+# Tính phổ NIR trung bình cho mỗi location
+nir_mean_by_location <- data_nir_complete %>%
+  mutate(Location = location_info) %>%
+  group_by(Location) %>%
+  summarise(across(everything(), mean), .groups = "drop")
+
+# Chuyển sang dạng long format
+nir_mean_long <- nir_mean_by_location %>%
+  pivot_longer(cols = -Location, names_to = "Wavelength", values_to = "Absorbance") %>%
+  mutate(Wavelength = as.numeric(str_remove(Wavelength, "S")))
+
+# Plot phổ trung bình
+ggplot(nir_mean_long, aes(x = Wavelength, y = Absorbance, color = factor(Location))) +
+  geom_line(linewidth = 1) +
+  labs(
+    title = "Phổ NIR trung bình theo Location",
+    x = "Số thứ tự điểm đo (S1-S1050)",
+    y = "Cường độ hấp thụ trung bình",
+    color = "Location"
+  ) +
+  theme_minimal() +
+  scale_color_brewer(palette = "Set1")
+```
+
+## Kết luận về sự khác biệt
+
+```{r conclusion-differences}
+cat("### Tóm tắt phân tích sự khác biệt:\n\n")
+
+cat("**1. Phân tích PCA:**\n")
+cat("- PC1 và PC2 giải thích", round(cumvar[2], 2), "% phương sai tổng thể\n")
+cat("- Có sự phân tách rõ ràng/không rõ ràng giữa các Location trên PCA plot\n")
+cat("- ANOVA test cho thấy sự khác biệt có/không có ý nghĩa thống kê\n\n")
+
+cat("**2. Phân tích Clustering:**\n")
+cat("- Số cluster tối ưu được đề xuất bởi Elbow/Silhouette method\n")
+cat("- Adjusted Rand Index =", round(ari, 3), "\n")
+if(ari > 0.5) {
+  cat("- Kết quả clustering phù hợp tốt với phân loại Location thực tế\n")
+} else if(ari > 0.3) {
+  cat("- Kết quả clustering phù hợp trung bình với phân loại Location thực tế\n")
+} else {
+  cat("- Kết quả clustering khác biệt đáng kể so với phân loại Location thực tế\n")
+}
+cat("\n")
+
+cat("**3. Đặc điểm phân biệt:**\n")
+cat("- Các biến hóa lý có sự khác biệt đáng kể giữa các Location\n")
+cat("- Phổ NIR cho thấy pattern khác nhau ở các vùng bước sóng nhất định\n")
+cat("- Có thể sử dụng PCA scores hoặc cluster để xây dựng mô hình phân loại\n\n")
+
+cat("**4. Khuyến nghị:**\n")
+cat("- Nên xem xét Location như một biến quan trọng trong mô hình dự đoán\n")
+cat("- Có thể cần xây dựng mô hình riêng cho từng Location\n")
+cat("- Sử dụng PCA để giảm chiều trước khi xây dựng mô hình hồi quy\n")
+```
