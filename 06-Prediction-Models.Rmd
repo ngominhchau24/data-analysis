@@ -1,0 +1,447 @@
+# Mô Hình Dự Đoán Chỉ Tiêu Hóa Lý
+
+Trong phần này, chúng ta sẽ xây dựng các mô hình dự đoán để ước lượng các chỉ tiêu hóa lý từ dữ liệu phổ NIR. Hai phương pháp chính được sử dụng là:
+
+- **PLS (Partial Least Squares Regression)**: Phương pháp tối ưu cho dữ liệu có nhiều biến tương quan cao
+- **PCR (Principal Component Regression)**: Sử dụng các thành phần chính từ PCA
+
+```{r setup-prediction, include=FALSE}
+library(tidyverse)
+library(pls)
+library(caret)
+library(gridExtra)
+```
+
+## 2.4.1. Chuẩn Bị Dữ Liệu
+
+```{r prepare-prediction-data}
+# Data and variable groups already loaded in index.Rmd global-setup
+# Verify data is available
+if(!exists("coffee_data")) {
+  stop("Data not loaded. Please render from index.Rmd")
+}
+
+# Tách dữ liệu thành matrices
+X <- as.matrix(coffee_data[, nir_vars])
+Y <- as.matrix(coffee_data[, chemical_vars])
+
+cat("Kích thước dữ liệu NIR:", dim(X), "\n")
+cat("Kích thước dữ liệu hóa lý:", dim(Y), "\n")
+cat("Số lượng mẫu:", nrow(X), "\n")
+```
+
+## 2.4.2. Mô Hình PLS Regression
+
+### Xác Định Số Thành Phần Tối Ưu
+
+```{r pls-ncomp, fig.width=10, fig.height=6, warning=FALSE}
+# Xây dựng mô hình PLS cho từng biến hóa lý
+set.seed(123)
+pls_models <- list()
+optimal_ncomp <- c()
+pls_train_data <- list()  # Store training data for each model
+pls_complete_idx <- list()  # Store complete case indices for each model
+
+for(var in chemical_vars) {
+  # Tạo data frame cho pls
+  pls_data <- data.frame(Y = coffee_data[[var]], X)
+
+  # Find complete cases and store the indices
+  complete_idx <- complete.cases(pls_data)
+  pls_complete_idx[[var]] <- complete_idx
+
+  # Remove NA rows
+  pls_data_clean <- pls_data[complete_idx, ]
+  pls_train_data[[var]] <- pls_data_clean
+
+  # Cross-validation - train on CLEANED data
+  pls_cv <- plsr(Y ~ ., data = pls_data_clean, validation = "CV",
+                 segments = 10, ncomp = 20)
+
+  pls_models[[var]] <- pls_cv
+
+  # Tìm số thành phần tối ưu (RMSEP thấp nhất)
+  rmsep_vals <- RMSEP(pls_cv, estimate = "CV")$val[1,,]
+  optimal_ncomp[var] <- which.min(rmsep_vals[-1]) # Bỏ intercept
+}
+
+# Vẽ biểu đồ RMSEP
+par(mfrow = c(2, 3), mar = c(4, 4, 2, 1))
+for(var in chemical_vars) {
+  validationplot(pls_models[[var]], val.type = "RMSEP",
+                 main = paste("RMSEP -", var),
+                 legendpos = "topright")
+  abline(v = optimal_ncomp[var], col = "red", lty = 2)
+}
+
+cat("\nSố thành phần tối ưu cho mỗi biến:\n")
+print(optimal_ncomp)
+```
+
+### Hiệu Suất Mô Hình PLS
+
+```{r pls-performance}
+# Tính toán các chỉ số đánh giá
+pls_performance <- data.frame(
+  Variable = chemical_vars,
+  N_Components = optimal_ncomp,
+  RMSECV = numeric(length(chemical_vars)),
+  R2_CV = numeric(length(chemical_vars)),
+  RMSEP = numeric(length(chemical_vars)),
+  R2 = numeric(length(chemical_vars))
+)
+
+for(i in 1:length(chemical_vars)) {
+  var <- chemical_vars[i]
+  model <- pls_models[[var]]
+  ncomp <- optimal_ncomp[var]
+
+  # RMSECV from cross-validation
+  rmsep_obj <- RMSEP(model, estimate = "CV")
+  pls_performance$RMSECV[i] <- rmsep_obj$val[1, 1, ncomp + 1]
+
+  # R² from cross-validation
+  r2_obj <- R2(model)
+  pls_performance$R2_CV[i] <- r2_obj$val[1, 1, ncomp + 1]
+
+  # RMSEP from training
+  rmsep_train <- RMSEP(model, estimate = "train")
+  pls_performance$RMSEP[i] <- rmsep_train$val[1, 1, ncomp + 1]
+
+  # R² from training - use predict on training data
+  # Get training data (rows without NA)
+  train_data <- pls_train_data[[var]]
+  X_train <- as.matrix(train_data[, -1])  # All columns except Y
+  Y_train <- train_data$Y
+
+  # Predict using the model
+  Y_pred <- as.vector(predict(model, ncomp = ncomp, newdata = X_train))
+
+  # Calculate R²
+  ss_res <- sum((Y_train - Y_pred)^2)
+  ss_tot <- sum((Y_train - mean(Y_train))^2)
+  pls_performance$R2[i] <- 1 - (ss_res / ss_tot)
+}
+
+knitr::kable(pls_performance,
+             caption = "Hiệu suất mô hình PLS cho các chỉ tiêu hóa lý",
+             digits = 4)
+```
+
+### Biểu Đồ Predicted vs Actual
+
+```{r pls-predictions, fig.width=12, fig.height=8, warning=FALSE}
+plot_list <- list()
+
+for(i in 1:length(chemical_vars)) {
+  var <- chemical_vars[i]
+  model <- pls_models[[var]]
+  ncomp <- optimal_ncomp[var]
+
+  # Get complete case indices for this variable
+  complete_idx <- pls_complete_idx[[var]]
+
+  # Use only complete cases for prediction (matching training data)
+  X_clean <- X[complete_idx, ]
+
+  # Lấy giá trị dự đoán using cleaned data
+  predictions <- predict(model, ncomp = ncomp, newdata = X_clean)
+  actual <- coffee_data[[var]][complete_idx]
+  location <- coffee_data$Localisation[complete_idx]
+
+  # Tạo data frame
+  pred_df <- data.frame(
+    Actual = actual,
+    Predicted = as.vector(predictions),
+    Location = location
+  )
+
+  # Vẽ biểu đồ
+  p <- ggplot(pred_df, aes(x = Actual, y = Predicted, color = Location)) +
+    geom_point(size = 2, alpha = 0.7) +
+    geom_abline(intercept = 0, slope = 1, linetype = "dashed", color = "red") +
+    labs(title = paste("PLS:", var),
+         subtitle = paste("R² =", round(pls_performance$R2_CV[i], 3),
+                         "| RMSECV =", round(pls_performance$RMSECV[i], 3)),
+         x = "Giá trị thực tế",
+         y = "Giá trị dự đoán") +
+    theme_minimal() +
+    theme(legend.position = "bottom")
+
+  plot_list[[i]] <- p
+}
+
+do.call(grid.arrange, c(plot_list, ncol = 2))
+```
+
+### Biểu Đồ Residuals
+
+```{r pls-residuals, fig.width=12, fig.height=8}
+plot_list_res <- list()
+
+for(i in 1:length(chemical_vars)) {
+  var <- chemical_vars[i]
+  model <- pls_models[[var]]
+  ncomp <- optimal_ncomp[var]
+
+  # Get complete case indices for this variable
+  complete_idx <- pls_complete_idx[[var]]
+
+  # Use only complete cases for prediction (matching training data)
+  X_clean <- X[complete_idx, ]
+
+  # Tính residuals using cleaned data
+  predictions <- predict(model, ncomp = ncomp, newdata = X_clean)
+  actual <- coffee_data[[var]][complete_idx]
+  residuals <- actual - as.vector(predictions)
+  location <- coffee_data$Localisation[complete_idx]
+
+  # Tạo data frame
+  res_df <- data.frame(
+    Predicted = as.vector(predictions),
+    Residuals = residuals,
+    Location = location
+  )
+
+  # Vẽ biểu đồ
+  p <- ggplot(res_df, aes(x = Predicted, y = Residuals, color = Location)) +
+    geom_point(size = 2, alpha = 0.7) +
+    geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+    labs(title = paste("Residuals:", var),
+         x = "Giá trị dự đoán",
+         y = "Residuals") +
+    theme_minimal() +
+    theme(legend.position = "bottom")
+
+  plot_list_res[[i]] <- p
+}
+
+do.call(grid.arrange, c(plot_list_res, ncol = 2))
+```
+
+## 2.4.3. Mô Hình PCR (Principal Component Regression)
+
+```{r pcr-models, fig.width=10, fig.height=6, warning=FALSE}
+# Xây dựng mô hình PCR
+pcr_models <- list()
+pcr_optimal_ncomp <- c()
+pcr_train_data <- list()  # Store training data for each model
+pcr_complete_idx <- list()  # Store complete case indices for each model
+
+for(var in chemical_vars) {
+  # Tạo data frame cho pcr
+  pcr_data <- data.frame(Y = coffee_data[[var]], X)
+
+  # Find complete cases and store the indices
+  complete_idx <- complete.cases(pcr_data)
+  pcr_complete_idx[[var]] <- complete_idx
+
+  # Remove NA rows - FIX: Added na.omit like PLS
+  pcr_data_clean <- pcr_data[complete_idx, ]
+  pcr_train_data[[var]] <- pcr_data_clean
+
+  # Cross-validation on CLEANED data
+  pcr_cv <- pcr(Y ~ ., data = pcr_data_clean, validation = "CV",
+                segments = 10, ncomp = 20)
+
+  pcr_models[[var]] <- pcr_cv
+
+  # Tìm số thành phần tối ưu
+  rmsep_vals <- RMSEP(pcr_cv, estimate = "CV")$val[1,,]
+  pcr_optimal_ncomp[var] <- which.min(rmsep_vals[-1])
+}
+
+# Vẽ biểu đồ RMSEP cho PCR
+par(mfrow = c(2, 3), mar = c(4, 4, 2, 1))
+for(var in chemical_vars) {
+  validationplot(pcr_models[[var]], val.type = "RMSEP",
+                 main = paste("PCR RMSEP -", var),
+                 legendpos = "topright")
+  abline(v = pcr_optimal_ncomp[var], col = "blue", lty = 2)
+}
+
+cat("\nSố thành phần tối ưu cho PCR:\n")
+print(pcr_optimal_ncomp)
+```
+
+### So Sánh PLS vs PCR
+
+```{r compare-pls-pcr}
+# Tính hiệu suất PCR
+pcr_performance <- data.frame(
+  Variable = chemical_vars,
+  N_Components = pcr_optimal_ncomp,
+  RMSECV = numeric(length(chemical_vars)),
+  R2_CV = numeric(length(chemical_vars))
+)
+
+for(i in 1:length(chemical_vars)) {
+  var <- chemical_vars[i]
+  model <- pcr_models[[var]]
+  ncomp <- pcr_optimal_ncomp[var]
+
+  rmsep_obj <- RMSEP(model, estimate = "CV")
+  pcr_performance$RMSECV[i] <- rmsep_obj$val[1, 1, ncomp + 1]
+
+  # R² without estimate parameter for compatibility
+  r2_obj <- R2(model)
+  pcr_performance$R2_CV[i] <- r2_obj$val[1, 1, ncomp + 1]
+}
+
+# So sánh
+comparison <- data.frame(
+  Variable = chemical_vars,
+  PLS_RMSECV = pls_performance$RMSECV,
+  PCR_RMSECV = pcr_performance$RMSECV,
+  PLS_R2 = pls_performance$R2_CV,
+  PCR_R2 = pcr_performance$R2_CV,
+  PLS_ncomp = pls_performance$N_Components,
+  PCR_ncomp = pcr_performance$N_Components
+)
+
+comparison$Better_Model <- ifelse(comparison$PLS_RMSECV < comparison$PCR_RMSECV,
+                                  "PLS", "PCR")
+
+knitr::kable(comparison,
+             caption = "So sánh hiệu suất PLS vs PCR",
+             digits = 4)
+```
+
+```{r comparison-plot, fig.width=10, fig.height=6}
+# Vẽ biểu đồ so sánh
+comp_long <- comparison %>%
+  select(Variable, PLS_R2, PCR_R2) %>%
+  pivot_longer(cols = c(PLS_R2, PCR_R2),
+               names_to = "Model",
+               values_to = "R2") %>%
+  mutate(Model = gsub("_R2", "", Model))
+
+p1 <- ggplot(comp_long, aes(x = Variable, y = R2, fill = Model)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "So sánh R² giữa PLS và PCR",
+       x = "Chỉ tiêu hóa lý",
+       y = "R² (Cross-validation)") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+comp_long2 <- comparison %>%
+  select(Variable, PLS_RMSECV, PCR_RMSECV) %>%
+  pivot_longer(cols = c(PLS_RMSECV, PCR_RMSECV),
+               names_to = "Model",
+               values_to = "RMSECV") %>%
+  mutate(Model = gsub("_RMSECV", "", Model))
+
+p2 <- ggplot(comp_long2, aes(x = Variable, y = RMSECV, fill = Model)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "So sánh RMSECV giữa PLS và PCR",
+       x = "Chỉ tiêu hóa lý",
+       y = "RMSECV") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+grid.arrange(p1, p2, ncol = 2)
+```
+
+## 2.4.4. Variable Importance (VIP)
+
+Variable Importance in Projection (VIP) cho biết mức độ quan trọng của từng bước sóng trong việc dự đoán các chỉ tiêu hóa lý.
+
+```{r vip-analysis, fig.width=12, fig.height=10}
+# Hàm tính VIP
+calculate_vip <- function(pls_model, ncomp) {
+  # Lấy loading weights
+  W <- pls_model$loading.weights[, 1:ncomp, drop = FALSE]
+
+  # Lấy tỷ lệ phương sai giải thích
+  SS <- colSums(pls_model$scores[, 1:ncomp, drop = FALSE]^2) *
+        colSums(pls_model$Yloadings[, 1:ncomp, drop = FALSE]^2)
+
+  # Tính VIP
+  p <- nrow(W)
+  vip_scores <- sqrt(p * rowSums((W^2) %*% diag(SS, nrow = ncomp)) / sum(SS))
+
+  return(vip_scores)
+}
+
+# Tính VIP cho mỗi biến
+vip_results <- list()
+
+for(var in chemical_vars) {
+  model <- pls_models[[var]]
+  ncomp <- optimal_ncomp[var]
+
+  vip_scores <- calculate_vip(model, ncomp)
+
+  vip_df <- data.frame(
+    Wavelength = nir_vars,
+    VIP = vip_scores
+  ) %>%
+    mutate(Wavelength_num = as.numeric(gsub("S", "", Wavelength)))
+
+  vip_results[[var]] <- vip_df
+}
+
+# Vẽ VIP scores
+par(mfrow = c(3, 2), mar = c(4, 4, 2, 1))
+for(var in chemical_vars) {
+  vip_df <- vip_results[[var]]
+
+  plot(vip_df$Wavelength_num, vip_df$VIP, type = "l",
+       main = paste("VIP Scores -", var),
+       xlab = "Wavelength Index",
+       ylab = "VIP Score",
+       col = "darkblue", lwd = 1.5)
+  abline(h = 1, col = "red", lty = 2)  # VIP > 1 considered important
+  grid()
+
+  # Highlight important wavelengths
+  important <- vip_df$VIP > 1
+  points(vip_df$Wavelength_num[important], vip_df$VIP[important],
+         col = "red", pch = 20, cex = 0.5)
+}
+```
+
+### Top Wavelengths Quan Trọng
+
+```{r top-wavelengths}
+for(var in chemical_vars) {
+  vip_df <- vip_results[[var]]
+
+  top_wavelengths <- vip_df %>%
+    arrange(desc(VIP)) %>%
+    head(10)
+
+  cat("\n", var, "- Top 10 bước sóng quan trọng nhất:\n")
+  print(top_wavelengths %>% select(Wavelength, VIP))
+}
+```
+
+## 2.4.5. Kết Luận
+
+```{r prediction-conclusion}
+cat("\n=== TỔNG KẾT MÔ HÌNH Dự ĐOÁN ===\n\n")
+
+cat("1. Mô hình tốt nhất cho từng chỉ tiêu:\n")
+for(i in 1:nrow(comparison)) {
+  cat(sprintf("   - %s: %s (R² = %.3f, RMSECV = %.3f)\n",
+              comparison$Variable[i],
+              comparison$Better_Model[i],
+              ifelse(comparison$Better_Model[i] == "PLS",
+                     comparison$PLS_R2[i], comparison$PCR_R2[i]),
+              ifelse(comparison$Better_Model[i] == "PLS",
+                     comparison$PLS_RMSECV[i], comparison$PCR_RMSECV[i])))
+}
+
+cat("\n2. Nhận xét:\n")
+cat("   - PLS thường cho kết quả tốt hơn PCR với dữ liệu NIR\n")
+cat("   - Số thành phần tối ưu thay đổi tùy theo từng chỉ tiêu hóa lý\n")
+cat("   - VIP scores giúp xác định các bước sóng quan trọng\n")
+cat("   - Mô hình có thể dùng để dự đoán chất lượng cà phê từ phổ NIR\n")
+```
+
+**Ý nghĩa thực tiễn:**
+
+- Các mô hình PLS/PCR cho phép dự đoán nhanh các chỉ tiêu hóa lý từ phổ NIR
+- Không cần phân tích hóa học tốn kém và mất thời gian
+- Phân tích VIP giúp hiểu được các vùng phổ quan trọng liên quan đến từng chất
+- Có thể áp dụng trong kiểm soát chất lượng và phân loại cà phê

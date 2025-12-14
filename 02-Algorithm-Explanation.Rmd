@@ -1,0 +1,361 @@
+# Giải Thích Các Thuật Toán
+
+Phần này giải thích các phương pháp phân tích dữ liệu được sử dụng trong báo cáo một cách đơn giản, dễ hiểu.
+
+## Phân Tích Thành Phần Chính (PCA)
+
+**PCA là gì?**
+
+Tưởng tượng bạn có 1050 bước sóng NIR - quá nhiều thông tin để hiển thị trên một biểu đồ 2D hoặc 3D. PCA giúp "nén" 1050 chiều này thành một số chiều nhỏ hơn (ví dụ: 2-3 chiều) mà vẫn giữ được phần lớn thông tin quan trọng.
+
+**Cách hoạt động:**
+
+1. **Tìm hướng có sự biến thiên lớn nhất**: PCA tìm hướng trong dữ liệu mà các mẫu phân tán nhiều nhất
+2. **Tạo trục mới**: Các hướng này trở thành "thành phần chính" (PC1, PC2, PC3,...)
+3. **Giảm chiều**: Chỉ giữ lại một số thành phần đầu tiên (thường là 2-10) vì chúng chứa hầu hết thông tin
+
+**Ví dụ thực tế:**
+
+- PC1 có thể đại diện cho ~60% sự khác biệt giữa các mẫu cà phê
+- PC2 đại diện cho ~20% sự khác biệt tiếp theo
+- Với 2 thành phần này, ta đã có 80% thông tin nhưng chỉ cần vẽ biểu đồ 2D
+
+**Ứng dụng:**
+
+- Trực quan hóa dữ liệu nhiều chiều
+- Phát hiện các nhóm mẫu tương tự nhau
+- Giảm nhiễu trong dữ liệu
+
+```{r pca-illustration, echo=FALSE, fig.width=10, fig.height=4, fig.cap="Minh họa PCA: Từ nhiều chiều xuống 2 chiều"}
+par(mfrow = c(1, 2))
+
+# Trước PCA: nhiều biến
+set.seed(42)
+n <- 50
+vars <- paste0("Var", 1:10)
+plot(1:10, rnorm(10, 5, 2), type = "n", ylim = c(0, 10),
+     xlab = "Biến số", ylab = "Giá trị",
+     main = "Trước PCA: 1050 bước sóng")
+for(i in 1:5) {
+  lines(1:10, rnorm(10, 5, 1.5), col = rainbow(5)[i], lwd = 2)
+}
+text(5, 9, "Quá nhiều thông tin!", cex = 1.2, font = 2)
+
+# Sau PCA: 2 chiều
+x <- rnorm(n, 0, 2)
+y <- rnorm(n, 0, 1)
+plot(x, y, pch = 19, col = rainbow(5)[rep(1:5, each = 10)],
+     xlab = "PC1 (60% phương sai)", ylab = "PC2 (20% phương sai)",
+     main = "Sau PCA: 2 thành phần chính")
+abline(h = 0, v = 0, lty = 2, col = "gray")
+text(2, 2, "Dễ trực quan hóa!", cex = 1.2, font = 2)
+```
+
+## Phân Cụm (Clustering)
+
+**Clustering là gì?**
+
+Clustering giúp nhóm các mẫu tương tự nhau lại với nhau, giống như việc sắp xếp trái cây vào các rổ dựa trên màu sắc và kích thước.
+
+### Phân Cụm Phân Cấp (Hierarchical Clustering)
+
+**Cách hoạt động:**
+
+1. **Bắt đầu**: Mỗi mẫu là một cụm riêng
+2. **Ghép nối**: Tìm 2 cụm gần nhau nhất và ghép chúng lại
+3. **Lặp lại**: Tiếp tục ghép cho đến khi tất cả mẫu nằm trong một cụm lớn
+4. **Kết quả**: Một "cây phả hệ" (dendrogram) cho biết mẫu nào giống mẫu nào
+
+**Phương pháp Ward:**
+
+- Ghép các cụm sao cho sự phân tán bên trong cụm tăng ít nhất
+- Tạo ra các cụm cân bằng và rõ ràng
+
+### K-Means Clustering
+
+**Cách hoạt động:**
+
+1. **Chọn số cụm k**: Ví dụ k=3 (3 nhóm cà phê)
+2. **Đặt tâm ngẫu nhiên**: Chọn 3 điểm làm tâm cụm ban đầu
+3. **Gán mẫu**: Mỗi mẫu được gán vào cụm có tâm gần nhất
+4. **Cập nhật tâm**: Tính lại tâm của mỗi cụm
+5. **Lặp lại**: Bước 3-4 cho đến khi cụm không đổi
+
+**Ưu điểm:**
+
+- Nhanh và hiệu quả
+- Dễ hiểu và giải thích
+
+**Lưu ý:**
+
+- Cần biết trước số cụm k
+- Kết quả có thể khác nhau tùy tâm ban đầu
+
+```{r clustering-illustration, echo=FALSE, fig.width=10, fig.height=4, fig.cap="Minh họa Clustering"}
+par(mfrow = c(1, 2))
+
+# K-means
+set.seed(123)
+x1 <- c(rnorm(20, 0, 0.5), rnorm(20, 3, 0.5), rnorm(20, 1.5, 0.5))
+y1 <- c(rnorm(20, 0, 0.5), rnorm(20, 1, 0.5), rnorm(20, 3, 0.5))
+clusters <- rep(1:3, each = 20)
+
+plot(x1, y1, col = rainbow(3)[clusters], pch = 19, cex = 1.5,
+     main = "K-Means: 3 cụm rõ ràng",
+     xlab = "PC1", ylab = "PC2")
+points(c(0, 3, 1.5), c(0, 1, 3), pch = 4, cex = 3, lwd = 3, col = "black")
+legend("topright", legend = c("Cụm 1", "Cụm 2", "Cụm 3", "Tâm cụm"),
+       col = c(rainbow(3), "black"), pch = c(19, 19, 19, 4), bty = "n")
+
+# Dendrogram
+d <- dist(cbind(x1, y1))
+hc <- hclust(d, method = "ward.D2")
+plot(hc, labels = FALSE, main = "Hierarchical: Cây phân cụm",
+     xlab = "Mẫu", ylab = "Khoảng cách")
+rect.hclust(hc, k = 3, border = rainbow(3))
+```
+
+## Phát Hiện Giá Trị Lạ (Outlier Detection)
+
+**Outlier là gì?**
+
+Outlier là mẫu "khác thường" - rất khác so với phần lớn các mẫu khác. Giống như một quả táo màu xanh lá trong rổ táo đỏ.
+
+### Khoảng Tứ Phân Vị (IQR Method)
+
+**Cách hoạt động:**
+
+1. **Tính tứ phân vị**: Q1 (25%), Q3 (75%)
+2. **Tính IQR**: IQR = Q3 - Q1
+3. **Xác định ngưỡng**:
+   - Ngưỡng dưới = Q1 - 1.5×IQR
+   - Ngưỡng trên = Q3 + 1.5×IQR
+4. **Phát hiện outlier**: Giá trị ngoài ngưỡng là outlier
+
+**Ưu điểm:** Đơn giản, ổn định với dữ liệu lệch
+
+### Khoảng Cách Mahalanobis
+
+**Khác với khoảng cách thông thường:**
+
+- Khoảng cách Euclid: Đường chim bay giữa 2 điểm
+- Khoảng cách Mahalanobis: Tính đến sự tương quan giữa các biến
+
+**Ứng dụng:**
+
+- Phát hiện outlier trong dữ liệu nhiều chiều
+- Tính đến cấu trúc phân tán của dữ liệu
+
+### Hotelling T² và Q Residuals
+
+**Hotelling T²:**
+
+- Đo lường mức độ "cực đoan" của mẫu trong không gian PC
+- Giống như hỏi: "Mẫu này có nằm xa trung tâm không?"
+
+**Q Residuals (SPE):**
+
+- Đo lường phần thông tin không được giải thích bởi PCA
+- Giống như hỏi: "Có điều gì đặc biệt mà PCA không nắm bắt được không?"
+
+**Kết hợp T² và Q:**
+
+- **T² cao, Q thấp**: Mẫu bình thường nhưng "cực đoan" (ví dụ: nồng độ rất cao)
+- **T² thấp, Q cao**: Mẫu có pattern khác thường
+- **T² cao, Q cao**: Outlier thực sự - rất khác biệt!
+
+```{r outlier-illustration, echo=FALSE, fig.width=10, fig.height=4, fig.cap="Minh họa Outlier Detection"}
+par(mfrow = c(1, 2))
+
+# IQR method
+set.seed(42)
+data_normal <- rnorm(100, 50, 10)
+data_with_outliers <- c(data_normal, 10, 15, 90, 95)
+
+boxplot(data_with_outliers, main = "IQR Method",
+        ylab = "Giá trị", col = "lightblue")
+points(rep(1, 4), c(10, 15, 90, 95), col = "red", pch = 19, cex = 2)
+text(1.3, 95, "Outliers", col = "red", font = 2)
+
+# T² vs Q
+set.seed(42)
+t2 <- rchisq(100, df = 2)
+q <- rchisq(100, df = 2)
+t2 <- c(t2, 15, 16, 8)
+q <- c(q, 15, 8, 16)
+
+plot(t2, q, pch = 19, col = "gray",
+     main = "Hotelling T² vs Q Residuals",
+     xlab = "Hotelling T²", ylab = "Q Residuals")
+abline(h = qchisq(0.95, 2), v = qchisq(0.95, 2), lty = 2, col = "blue")
+points(tail(t2, 3), tail(q, 3), col = "red", pch = 19, cex = 2)
+text(15, 17, "Outliers", col = "red", font = 2)
+legend("topright", legend = c("Bình thường", "Ngưỡng 95%", "Outlier"),
+       col = c("gray", "blue", "red"), pch = c(19, NA, 19),
+       lty = c(NA, 2, NA), bty = "n")
+```
+
+## Phân Tích Tương Quan
+
+**Tương quan là gì?**
+
+Tương quan đo lường mối quan hệ tuyến tính giữa hai biến:
+
+- **r = +1**: Tương quan dương hoàn hảo (khi A tăng, B tăng)
+- **r = 0**: Không có tương quan
+- **r = -1**: Tương quan âm hoàn hảo (khi A tăng, B giảm)
+
+**Hệ số Pearson:**
+
+- Đo lường sức mạnh và hướng của mối quan hệ tuyến tính
+- Giá trị từ -1 đến +1
+
+**Heatmap tương quan:**
+
+- Biểu đồ màu sắc cho thấy tương quan giữa nhiều cặp biến
+- Màu nóng (đỏ): Tương quan dương mạnh
+- Màu lạnh (xanh): Tương quan âm mạnh
+- Màu trung tính (trắng): Không tương quan
+
+```{r correlation-illustration, echo=FALSE, fig.width=10, fig.height=4, fig.cap="Minh họa Correlation"}
+par(mfrow = c(1, 3))
+
+# Positive correlation
+set.seed(42)
+x <- rnorm(50)
+y_pos <- x + rnorm(50, 0, 0.3)
+plot(x, y_pos, pch = 19, col = "darkred",
+     main = "Tương quan dương (r ≈ 0.95)",
+     xlab = "Biến A", ylab = "Biến B")
+abline(lm(y_pos ~ x), col = "red", lwd = 2)
+
+# No correlation
+y_no <- rnorm(50)
+plot(x, y_no, pch = 19, col = "gray",
+     main = "Không tương quan (r ≈ 0)",
+     xlab = "Biến A", ylab = "Biến B")
+abline(lm(y_no ~ x), col = "blue", lwd = 2)
+
+# Negative correlation
+y_neg <- -x + rnorm(50, 0, 0.3)
+plot(x, y_neg, pch = 19, col = "darkblue",
+     main = "Tương quan âm (r ≈ -0.95)",
+     xlab = "Biến A", ylab = "Biến B")
+abline(lm(y_neg ~ x), col = "blue", lwd = 2)
+```
+
+## Mô Hình Dự Đoán
+
+### PLS (Partial Least Squares)
+
+**PLS là gì?**
+
+PLS giống như PCA nhưng "thông minh" hơn - nó tìm các thành phần không chỉ giải thích dữ liệu X (NIR) mà còn dự đoán tốt Y (chỉ tiêu hóa lý).
+
+**Cách hoạt động:**
+
+1. **Tìm hướng tối ưu**: Tìm hướng trong X có tương quan mạnh với Y
+2. **Tạo thành phần**: Tạo thành phần PLS từ hướng này
+3. **Lặp lại**: Tìm thêm các thành phần khác
+4. **Xây dựng mô hình**: Dùng các thành phần để dự đoán Y
+
+**Ưu điểm:**
+
+- Xử lý tốt dữ liệu có nhiều biến tương quan (như NIR)
+- Không bị overfitting như hồi quy thông thường
+- Cho kết quả dự đoán tốt với ít thành phần
+
+### PCR (Principal Component Regression)
+
+**PCR là gì?**
+
+PCR là sự kết hợp của PCA và hồi quy:
+
+1. **Bước 1**: Dùng PCA để giảm chiều X
+2. **Bước 2**: Dùng các PC để dự đoán Y bằng hồi quy
+
+**Khác biệt với PLS:**
+
+- PCR tìm PC không quan tâm đến Y
+- PLS tìm thành phần có tính đến cả X và Y
+- PLS thường cho kết quả tốt hơn với ít thành phần hơn
+
+### Cross-Validation
+
+**CV là gì?**
+
+Cross-validation giúp đánh giá mô hình một cách khách quan:
+
+1. **Chia dữ liệu**: Ví dụ 10 phần
+2. **Huấn luyện**: Dùng 9 phần để xây dựng mô hình
+3. **Kiểm tra**: Dùng 1 phần còn lại để kiểm tra
+4. **Lặp lại**: Thực hiện 10 lần, mỗi lần dùng phần khác nhau để kiểm tra
+5. **Tính trung bình**: Lấy trung bình kết quả
+
+**Chỉ số đánh giá:**
+
+- **RMSECV** (Root Mean Square Error of CV): Sai số trung bình (càng nhỏ càng tốt)
+- **R²**: Tỷ lệ phương sai được giải thích (càng gần 1 càng tốt)
+
+### VIP (Variable Importance in Projection)
+
+**VIP là gì?**
+
+VIP cho biết bước sóng nào quan trọng nhất trong việc dự đoán:
+
+- **VIP > 1**: Bước sóng quan trọng
+- **VIP < 1**: Bước sóng ít quan trọng
+- **VIP >> 1**: Bước sóng rất quan trọng
+
+**Ứng dụng:**
+
+- Giúp hiểu được vùng phổ nào chứa thông tin về chỉ tiêu hóa lý
+- Có thể giảm số bước sóng cần đo để tiết kiệm chi phí
+
+```{r prediction-illustration, echo=FALSE, fig.width=10, fig.height=4, fig.cap="Minh họa Prediction Models"}
+par(mfrow = c(1, 2))
+
+# PLS prediction
+set.seed(42)
+actual <- rnorm(50, 50, 10)
+predicted <- actual + rnorm(50, 0, 3)
+
+plot(actual, predicted, pch = 19, col = "darkgreen",
+     main = "Mô hình dự đoán tốt",
+     xlab = "Giá trị thực tế", ylab = "Giá trị dự đoán",
+     xlim = c(20, 80), ylim = c(20, 80))
+abline(0, 1, col = "red", lwd = 2, lty = 2)
+text(30, 75, sprintf("R² = 0.95\nRMSECV = 3.0"), font = 2)
+
+# VIP scores
+wavelengths <- 1:100
+vip <- abs(rnorm(100, 0.8, 0.4))
+vip[c(20:30, 60:70)] <- vip[c(20:30, 60:70)] + 0.8
+
+plot(wavelengths, vip, type = "l", col = "darkblue", lwd = 2,
+     main = "VIP Scores",
+     xlab = "Bước sóng", ylab = "VIP Score")
+abline(h = 1, col = "red", lty = 2, lwd = 2)
+polygon(c(wavelengths[vip > 1], rev(wavelengths[vip > 1])),
+        c(vip[vip > 1], rep(1, sum(vip > 1))),
+        col = rgb(1, 0, 0, 0.3), border = NA)
+text(80, 2, "Vùng quan trọng\n(VIP > 1)", col = "red", font = 2)
+```
+
+## Tóm Tắt
+
+| Thuật toán | Mục đích | Khi nào dùng |
+|-----------|---------|-------------|
+| **PCA** | Giảm chiều, trực quan hóa | Có quá nhiều biến, cần vẽ biểu đồ |
+| **Clustering** | Phân nhóm mẫu | Tìm nhóm mẫu tương tự nhau |
+| **Outlier Detection** | Tìm mẫu bất thường | Kiểm tra chất lượng dữ liệu |
+| **Correlation** | Tìm mối quan hệ | Hiểu mối liên hệ giữa các biến |
+| **PLS/PCR** | Dự đoán | Xây dựng mô hình dự đoán từ NIR |
+| **VIP** | Chọn biến quan trọng | Hiểu bước sóng nào quan trọng |
+
+**Lưu ý quan trọng:**
+
+- Không có thuật toán nào là "tốt nhất" cho mọi trường hợp
+- Nên thử nhiều phương pháp và so sánh kết quả
+- Luôn kiểm tra giả định của thuật toán trước khi áp dụng
+- Kết quả cần được giải thích trong bối cảnh thực tế

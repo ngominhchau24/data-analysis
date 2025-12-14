@@ -1,0 +1,163 @@
+# Mô Hình Dự Đoán Chỉ Tiêu Hóa Lý
+
+Trong phần này, chúng ta sẽ xây dựng các mô hình dự đoán để ước lượng các chỉ tiêu hóa lý từ dữ liệu phổ NIR. Hai phương pháp chính được sử dụng là:
+
+- **PLS (Partial Least Squares Regression)**: Phương pháp tối ưu cho dữ liệu có nhiều biến tương quan cao
+- **PCR (Principal Component Regression)**: Sử dụng các thành phần chính từ PCA
+
+```{r setup-prediction, include=FALSE}
+library(tidyverse)
+library(pls)
+library(caret)
+library(gridExtra)
+```
+
+## Chuẩn Bị Dữ Liệu
+
+```{r prepare-prediction-data}
+# Data and variable groups already loaded in index.Rmd global-setup
+# Verify data is available
+if(!exists("coffee_data")) {
+  stop("Data not loaded. Please render from index.Rmd")
+}
+
+# Tách dữ liệu thành matrices
+X <- as.matrix(coffee_data[, nir_vars])
+Y <- as.matrix(coffee_data[, chemical_vars])
+
+cat("Kích thước dữ liệu NIR:", dim(X), "\n")
+cat("Kích thước dữ liệu hóa lý:", dim(Y), "\n")
+cat("Số lượng mẫu:", nrow(X), "\n")
+```
+
+## Mô Hình PCR (Principal Component Regression)
+
+```{r pcr-models, fig.width=10, fig.height=6, warning=FALSE}
+# Xây dựng mô hình PCR
+pcr_models <- list()
+pcr_optimal_ncomp <- c()
+pcr_train_data <- list()  # Store training data for each model
+pcr_complete_idx <- list()  # Store complete case indices for each model
+
+for(var in chemical_vars) {
+  # Tạo data frame cho pcr
+  pcr_data <- data.frame(Y = coffee_data[[var]], X)
+
+  # Find complete cases and store the indices
+  complete_idx <- complete.cases(pcr_data)
+  pcr_complete_idx[[var]] <- complete_idx
+
+  # Remove NA rows - FIX: Added na.omit like PLS
+  pcr_data_clean <- pcr_data[complete_idx, ]
+  pcr_train_data[[var]] <- pcr_data_clean
+
+  # Cross-validation on CLEANED data
+  pcr_cv <- pcr(Y ~ ., data = pcr_data_clean, validation = "CV",
+                segments = 10, ncomp = 20)
+
+  pcr_models[[var]] <- pcr_cv
+
+  # Tìm số thành phần tối ưu
+  rmsep_vals <- RMSEP(pcr_cv, estimate = "CV")$val[1,,]
+  pcr_optimal_ncomp[var] <- which.min(rmsep_vals[-1])
+}
+
+# Vẽ biểu đồ RMSEP cho PCR
+par(mfrow = c(2, 3), mar = c(4, 4, 2, 1))
+for(var in chemical_vars) {
+  validationplot(pcr_models[[var]], val.type = "RMSEP",
+                 main = paste("PCR RMSEP -", var),
+                 legendpos = "topright")
+  abline(v = pcr_optimal_ncomp[var], col = "blue", lty = 2)
+}
+
+cat("\nSố thành phần tối ưu cho PCR:\n")
+print(pcr_optimal_ncomp)
+```
+
+## Variable Importance (VIP)
+
+Variable Importance in Projection (VIP) cho biết mức độ quan trọng của từng bước sóng trong việc dự đoán các chỉ tiêu hóa lý.
+
+```{r vip-analysis, fig.width=12, fig.height=10}
+# Hàm tính VIP
+calculate_vip <- function(pls_model, ncomp) {
+  # Lấy loading weights
+  W <- pls_model$loading.weights[, 1:ncomp, drop = FALSE]
+
+  # Lấy tỷ lệ phương sai giải thích
+  SS <- colSums(pls_model$scores[, 1:ncomp, drop = FALSE]^2) *
+        colSums(pls_model$Yloadings[, 1:ncomp, drop = FALSE]^2)
+
+  # Tính VIP
+  p <- nrow(W)
+  vip_scores <- sqrt(p * rowSums((W^2) %*% diag(SS, nrow = ncomp)) / sum(SS))
+
+  return(vip_scores)
+}
+
+# Tính VIP cho mỗi biến
+vip_results <- list()
+
+for(var in chemical_vars) {
+  model <- pls_models[[var]]
+  ncomp <- optimal_ncomp[var]
+
+  vip_scores <- calculate_vip(model, ncomp)
+
+  vip_df <- data.frame(
+    Wavelength = nir_vars,
+    VIP = vip_scores
+  ) %>%
+    mutate(Wavelength_num = as.numeric(gsub("S", "", Wavelength)))
+
+  vip_results[[var]] <- vip_df
+}
+
+# Vẽ VIP scores
+par(mfrow = c(3, 2), mar = c(4, 4, 2, 1))
+for(var in chemical_vars) {
+  vip_df <- vip_results[[var]]
+
+  plot(vip_df$Wavelength_num, vip_df$VIP, type = "l",
+       main = paste("VIP Scores -", var),
+       xlab = "Wavelength Index",
+       ylab = "VIP Score",
+       col = "darkblue", lwd = 1.5)
+  abline(h = 1, col = "red", lty = 2)  # VIP > 1 considered important
+  grid()
+
+  # Highlight important wavelengths
+  important <- vip_df$VIP > 1
+  points(vip_df$Wavelength_num[important], vip_df$VIP[important],
+         col = "red", pch = 20, cex = 0.5)
+}
+```
+
+### Top Wavelengths Quan Trọng
+
+```{r top-wavelengths}
+for(var in chemical_vars) {
+  vip_df <- vip_results[[var]]
+
+  top_wavelengths <- vip_df %>%
+    arrange(desc(VIP)) %>%
+    head(10)
+
+  cat("\n", var, "- Top 10 bước sóng quan trọng nhất:\n")
+  print(top_wavelengths %>% select(Wavelength, VIP))
+}
+```
+
+## Kết Luận
+
+
+**Ý nghĩa thực tiễn:**
+
+- Các mô hình PCR cho phép dự đoán nhanh các chỉ tiêu hóa lý từ phổ NIR
+- Không cần phân tích hóa học tốn kém và mất thời gian
+- Phân tích VIP giúp hiểu được các vùng phổ quan trọng liên quan đến từng chất
+- Có thể áp dụng trong kiểm soát chất lượng và phân loại cà phê
+
+<!--chapter:end:06-Prediction-Models.Rmd-->
+
