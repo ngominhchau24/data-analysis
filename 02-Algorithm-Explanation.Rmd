@@ -26,8 +26,8 @@ Tưởng tượng bạn có 1050 bước sóng NIR - quá nhiều thông tin đ�
 - Phát hiện các nhóm mẫu tương tự nhau
 - Giảm nhiễu trong dữ liệu
 
-```{r pca-illustration, echo=FALSE, fig.width=10, fig.height=4, fig.cap="Minh họa PCA: Từ nhiều chiều xuống 2 chiều"}
-par(mfrow = c(1, 2))
+```{r pca-illustration, echo=FALSE, fig.width=10, fig.height=10, fig.cap="Minh họa PCA: Từ nhiều chiều xuống 2 chiều"}
+par(mfrow = c(2, 1))
 
 # Trước PCA: nhiều biến
 set.seed(42)
@@ -91,8 +91,8 @@ Clustering giúp nhóm các mẫu tương tự nhau lại với nhau, giống nh
 - Cần biết trước số cụm k
 - Kết quả có thể khác nhau tùy tâm ban đầu
 
-```{r clustering-illustration, echo=FALSE, fig.width=10, fig.height=4, fig.cap="Minh họa Clustering"}
-par(mfrow = c(1, 2))
+```{r clustering-illustration, echo=FALSE, fig.width=10, fig.height=10, fig.cap="Minh họa Clustering"}
+par(mfrow = c(2, 1))
 
 # K-means
 set.seed(123)
@@ -164,8 +164,8 @@ Outlier là mẫu "khác thường" - rất khác so với phần lớn các m�
 - **T² thấp, Q cao**: Mẫu có pattern khác thường
 - **T² cao, Q cao**: Outlier thực sự - rất khác biệt!
 
-```{r outlier-illustration, echo=FALSE, fig.width=10, fig.height=4, fig.cap="Minh họa Outlier Detection"}
-par(mfrow = c(1, 2))
+```{r outlier-illustration, echo=FALSE, fig.width=10, fig.height=10, fig.cap="Minh họa Outlier Detection"}
+par(mfrow = c(2, 1))
 
 # IQR method
 set.seed(42)
@@ -217,7 +217,7 @@ Tương quan đo lường mối quan hệ tuyến tính giữa hai biến:
 - Màu lạnh (xanh): Tương quan âm mạnh
 - Màu trung tính (trắng): Không tương quan
 
-```{r correlation-illustration, echo=FALSE, fig.width=10, fig.height=4, fig.cap="Minh họa Correlation"}
+```{r correlation-illustration, echo=FALSE, fig.width=6, fig.height=4, fig.cap="Minh họa Correlation"}
 par(mfrow = c(1, 3))
 
 # Positive correlation
@@ -312,7 +312,7 @@ VIP cho biết bước sóng nào quan trọng nhất trong việc dự đoán:
 - Giúp hiểu được vùng phổ nào chứa thông tin về chỉ tiêu hóa lý
 - Có thể giảm số bước sóng cần đo để tiết kiệm chi phí
 
-```{r prediction-illustration, echo=FALSE, fig.width=10, fig.height=4, fig.cap="Minh họa Prediction Models"}
+```{r prediction-illustration, echo=FALSE, fig.width=6, fig.height=4, fig.cap="Minh họa Prediction Models"}
 par(mfrow = c(1, 2))
 
 # PLS prediction

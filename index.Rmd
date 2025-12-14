@@ -1,11 +1,60 @@
 ---
 title: "Coffee NIR Data Analysis Report"
-author: "Group 19"
+author: |
+  | **Group 19**
+  |
+  | *Nguyen Van A - ID: 2012345*  
+  | *Tran Thi B - ID: 2012346 * 
+  | *Le Van C - ID: 2012347  *
+  | *Pham Thi D - ID: 2012348  *
+  |
+  |
+  |
 date: "`r Sys.Date()`"
 output:
   bookdown::pdf_book:
     latex_engine: xelatex
+    keep_tex: true
+    toc: true
+    toc_depth: 3
+    number_sections: true
+    fig_caption: true
 documentclass: book
+classoption: [a4paper, openany]
+geometry:
+  - paper=a4paper
+  - top=2.5cm
+  - bottom=2.5cm
+  - left=3cm
+  - right=2cm
+  - headheight=17pt
+fontsize: 12pt
+linestretch: 1.5
+header-includes:
+  - \usepackage{setspace}
+  - \usepackage{indentfirst}
+  - \setlength{\parindent}{1.5em}
+  - \setlength{\parskip}{6pt}
+  - \usepackage{fancyhdr}
+  - \pagestyle{fancy}
+  - \fancyhf{}
+  - \fancyhead[R]{\thepage}
+  - \fancyhead[L]{\nouppercase{\leftmark}}
+  - \renewcommand{\headrulewidth}{0.4pt}
+  - \usepackage{caption}
+  - \captionsetup[figure]{labelfont=bf, textfont=it}
+  - \captionsetup[table]{labelfont=bf, textfont=it}
+  - \usepackage{listings}
+  - \lstset{breaklines=true, breakatwhitespace=true}
+  - \usepackage{fvextra}
+  - \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,breakanywhere,commandchars=\\\{\}}
+  - \usepackage{titling}
+  - \pretitle{\begin{center}\huge\bfseries}
+  - \posttitle{\end{center}}
+  - \preauthor{\begin{flushleft}\large}
+  - \postauthor{\end{flushleft}}
+  - \predate{\begin{center}\large}
+  - \postdate{\end{center}}
 ---
 
 ```{r global-setup, include=FALSE}
@@ -14,7 +63,9 @@ knitr::opts_chunk$set(
   warning = FALSE,
   message = FALSE,
   dev = "cairo_pdf",  # Use Cairo device for UTF-8 support in plots
-  fig.align = "center"
+  fig.align = "center",
+  out.width = "85%",
+  size = "small"
 )
 
 # Load required libraries
@@ -53,7 +104,6 @@ cat("NIR wavelengths:", length(nir_vars), "\n")
 ```
 
 # Giới thiệu {-}
-
 Báo cáo này trình bày toàn bộ kết quả phân tích dữ liệu Coffee NIR, bao gồm:
 
 - **Phần 1**: Giới thiệu dữ liệu và kiểm tra chất lượng
