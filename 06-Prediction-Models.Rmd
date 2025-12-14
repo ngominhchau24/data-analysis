@@ -81,10 +81,10 @@ print(optimal_ncomp)
 ### Hiệu Suất Mô Hình PLS
 
 ```{r pls-performance}
-# Tính toán các chỉ số đánh giá
+# Tính toán các chỉ số đánh giá - REWRITTEN with safer approach
 pls_performance <- data.frame(
   Variable = chemical_vars,
-  N_Components = optimal_ncomp,
+  N_Components = integer(length(chemical_vars)),
   RMSECV = numeric(length(chemical_vars)),
   R2_CV = numeric(length(chemical_vars)),
   RMSEP = numeric(length(chemical_vars)),
@@ -94,33 +94,33 @@ pls_performance <- data.frame(
 for(i in 1:length(chemical_vars)) {
   var <- chemical_vars[i]
   model <- pls_models[[var]]
-  # Convert to integer to avoid named vector issues
-  ncomp <- as.integer(optimal_ncomp[var])
+
+  # Get optimal ncomp as plain integer
+  ncomp <- unname(optimal_ncomp[var])
+  pls_performance$N_Components[i] <- ncomp
 
   # RMSECV from cross-validation
-  rmsep_obj <- RMSEP(model, estimate = "CV")
-  pls_performance$RMSECV[i] <- rmsep_obj$val[1, 1, ncomp + 1]
+  rmsep_cv <- RMSEP(model, estimate = "CV")
+  pls_performance$RMSECV[i] <- rmsep_cv$val[1, 1, ncomp + 1]
 
   # R² from cross-validation
-  r2_obj <- R2(model)
-  pls_performance$R2_CV[i] <- r2_obj$val[1, 1, ncomp + 1]
+  r2_cv <- R2(model, estimate = "CV")
+  pls_performance$R2_CV[i] <- r2_cv$val[1, 1, ncomp + 1]
 
   # RMSEP from training
   rmsep_train <- RMSEP(model, estimate = "train")
   pls_performance$RMSEP[i] <- rmsep_train$val[1, 1, ncomp + 1]
 
-  # R² from training - use predict on training data
-  # Get training data (rows without NA)
+  # R² from training - Use fitted values instead of predict
+  # This is safer and avoids array extraction issues
   train_data <- pls_train_data[[var]]
   Y_train <- train_data$Y
 
-  # Predict using the model with the full training data frame
-  # predict.mvr returns 3D array [samples, 1, ncomp], need to extract correctly
-  pred_result <- predict(model, ncomp = ncomp, newdata = train_data)
-  Y_pred <- as.vector(pred_result[, 1, ncomp])
+  # Get fitted values for the optimal number of components
+  Y_fitted <- fitted(model)[, , ncomp]
 
-  # Calculate R²
-  ss_res <- sum((Y_train - Y_pred)^2)
+  # Calculate R² manually
+  ss_res <- sum((Y_train - Y_fitted)^2)
   ss_tot <- sum((Y_train - mean(Y_train))^2)
   pls_performance$R2[i] <- 1 - (ss_res / ss_tot)
 }
@@ -138,28 +138,24 @@ plot_list <- list()
 for(i in 1:length(chemical_vars)) {
   var <- chemical_vars[i]
   model <- pls_models[[var]]
-  # Convert to integer to avoid named vector issues
-  ncomp <- as.integer(optimal_ncomp[var])
+
+  # Get optimal ncomp as plain integer
+  ncomp <- unname(optimal_ncomp[var])
 
   # Get complete case indices for this variable
   complete_idx <- pls_complete_idx[[var]]
 
-  # Use only complete cases for prediction (matching training data)
-  X_clean <- X[complete_idx, ]
+  # Use fitted values from the model (already on training data)
+  # This is safer than predict()
+  fitted_vals <- fitted(model)[, , ncomp]
 
-  # Lấy giá trị dự đoán using cleaned data
-  # Convert matrix to data frame for predict() function
-  newdata <- as.data.frame(X_clean)
-  # predict.mvr returns 3D array [samples, 1, ncomp], extract correctly
-  pred_result <- predict(model, ncomp = ncomp, newdata = newdata)
-  predictions <- as.vector(pred_result[, 1, ncomp])
   actual <- coffee_data[[var]][complete_idx]
   location <- coffee_data$Localisation[complete_idx]
 
   # Tạo data frame
   pred_df <- data.frame(
     Actual = actual,
-    Predicted = predictions,
+    Predicted = fitted_vals,
     Location = location
   )
 
@@ -189,28 +185,23 @@ plot_list_res <- list()
 for(i in 1:length(chemical_vars)) {
   var <- chemical_vars[i]
   model <- pls_models[[var]]
-  # Convert to integer to avoid named vector issues
-  ncomp <- as.integer(optimal_ncomp[var])
+
+  # Get optimal ncomp as plain integer
+  ncomp <- unname(optimal_ncomp[var])
 
   # Get complete case indices for this variable
   complete_idx <- pls_complete_idx[[var]]
 
-  # Use only complete cases for prediction (matching training data)
-  X_clean <- X[complete_idx, ]
+  # Use fitted values from the model
+  fitted_vals <- fitted(model)[, , ncomp]
 
-  # Tính residuals using cleaned data
-  # Convert matrix to data frame for predict() function
-  newdata <- as.data.frame(X_clean)
-  # predict.mvr returns 3D array [samples, 1, ncomp], extract correctly
-  pred_result <- predict(model, ncomp = ncomp, newdata = newdata)
-  predictions <- as.vector(pred_result[, 1, ncomp])
   actual <- coffee_data[[var]][complete_idx]
-  residuals <- actual - predictions
+  residuals <- actual - fitted_vals
   location <- coffee_data$Localisation[complete_idx]
 
   # Tạo data frame
   res_df <- data.frame(
-    Predicted = predictions,
+    Predicted = fitted_vals,
     Residuals = residuals,
     Location = location
   )
