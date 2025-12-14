@@ -99,25 +99,25 @@ for(i in 1:length(chemical_vars)) {
   ncomp <- unname(optimal_ncomp[var])
   pls_performance$N_Components[i] <- ncomp
 
+  # Get training data
+  train_data <- pls_train_data[[var]]
+  Y_train <- train_data$Y
+
   # RMSECV from cross-validation
   rmsep_cv <- RMSEP(model, estimate = "CV")
   pls_performance$RMSECV[i] <- rmsep_cv$val[1, 1, ncomp + 1]
 
-  # R² from cross-validation
-  # R2() does not have 'estimate' parameter, it returns all estimates
-  r2_cv <- R2(model)
-  pls_performance$R2_CV[i] <- r2_cv$val[1, 1, ncomp + 1]
+  # R² from cross-validation - Calculate manually from RMSECV
+  # R²_CV = 1 - (RMSECV² / Var(Y))
+  rmsecv_value <- rmsep_cv$val[1, 1, ncomp + 1]
+  var_y <- var(Y_train)
+  pls_performance$R2_CV[i] <- 1 - (rmsecv_value^2 / var_y)
 
   # RMSEP from training
   rmsep_train <- RMSEP(model, estimate = "train")
   pls_performance$RMSEP[i] <- rmsep_train$val[1, 1, ncomp + 1]
 
-  # R² from training - Use fitted values instead of predict
-  # This is safer and avoids array extraction issues
-  train_data <- pls_train_data[[var]]
-  Y_train <- train_data$Y
-
-  # Get fitted values for the optimal number of components
+  # R² from training - Use fitted values
   Y_fitted <- fitted(model)[, , ncomp]
 
   # Calculate R² manually
