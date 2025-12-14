@@ -2,7 +2,7 @@
 
 Phần này giải thích các phương pháp phân tích dữ liệu được sử dụng trong báo cáo một cách đơn giản, dễ hiểu.
 
-## 2.1. Phân Tích Thành Phần Chính (PCA)
+## Phân Tích Thành Phần Chính (PCA)
 
 **PCA là gì?**
 
@@ -51,13 +51,13 @@ abline(h = 0, v = 0, lty = 2, col = "gray")
 text(2, 2, "Dễ trực quan hóa!", cex = 1.2, font = 2)
 ```
 
-## 2.2. Phân Cụm (Clustering)
+## Phân Cụm (Clustering)
 
 **Clustering là gì?**
 
 Clustering giúp nhóm các mẫu tương tự nhau lại với nhau, giống như việc sắp xếp trái cây vào các rổ dựa trên màu sắc và kích thước.
 
-### 2.2.1. Phân Cụm Phân Cấp (Hierarchical Clustering)
+### Phân Cụm Phân Cấp (Hierarchical Clustering)
 
 **Cách hoạt động:**
 
@@ -71,7 +71,7 @@ Clustering giúp nhóm các mẫu tương tự nhau lại với nhau, giống nh
 - Ghép các cụm sao cho sự phân tán bên trong cụm tăng ít nhất
 - Tạo ra các cụm cân bằng và rõ ràng
 
-### 2.2.2. K-Means Clustering
+### K-Means Clustering
 
 **Cách hoạt động:**
 
@@ -115,13 +115,13 @@ plot(hc, labels = FALSE, main = "Hierarchical: Cây phân cụm",
 rect.hclust(hc, k = 3, border = rainbow(3))
 ```
 
-## 2.3. Phát Hiện Giá Trị Lạ (Outlier Detection)
+## Phát Hiện Giá Trị Lạ (Outlier Detection)
 
 **Outlier là gì?**
 
 Outlier là mẫu "khác thường" - rất khác so với phần lớn các mẫu khác. Giống như một quả táo màu xanh lá trong rổ táo đỏ.
 
-### 2.3.1. Khoảng Tứ Phân Vị (IQR Method)
+### Khoảng Tứ Phân Vị (IQR Method)
 
 **Cách hoạt động:**
 
@@ -134,7 +134,7 @@ Outlier là mẫu "khác thường" - rất khác so với phần lớn các m�
 
 **Ưu điểm:** Đơn giản, ổn định với dữ liệu lệch
 
-### 2.3.2. Khoảng Cách Mahalanobis
+### Khoảng Cách Mahalanobis
 
 **Khác với khoảng cách thông thường:**
 
@@ -146,7 +146,7 @@ Outlier là mẫu "khác thường" - rất khác so với phần lớn các m�
 - Phát hiện outlier trong dữ liệu nhiều chiều
 - Tính đến cấu trúc phân tán của dữ liệu
 
-### 2.3.3. Hotelling T² và Q Residuals
+### Hotelling T² và Q Residuals
 
 **Hotelling T²:**
 
@@ -195,7 +195,7 @@ legend("topright", legend = c("Bình thường", "Ngưỡng 95%", "Outlier"),
        lty = c(NA, 2, NA), bty = "n")
 ```
 
-## 2.4. Phân Tích Tương Quan
+## Phân Tích Tương Quan
 
 **Tương quan là gì?**
 
@@ -244,9 +244,9 @@ plot(x, y_neg, pch = 19, col = "darkblue",
 abline(lm(y_neg ~ x), col = "blue", lwd = 2)
 ```
 
-## 2.5. Mô Hình Dự Đoán
+## Mô Hình Dự Đoán
 
-### 2.5.1. PLS (Partial Least Squares)
+### PLS (Partial Least Squares)
 
 **PLS là gì?**
 
@@ -265,7 +265,7 @@ PLS giống như PCA nhưng "thông minh" hơn - nó tìm các thành phần kh�
 - Không bị overfitting như hồi quy thông thường
 - Cho kết quả dự đoán tốt với ít thành phần
 
-### 2.5.2. PCR (Principal Component Regression)
+### PCR (Principal Component Regression)
 
 **PCR là gì?**
 
@@ -280,7 +280,7 @@ PCR là sự kết hợp của PCA và hồi quy:
 - PLS tìm thành phần có tính đến cả X và Y
 - PLS thường cho kết quả tốt hơn với ít thành phần hơn
 
-### 2.5.3. Cross-Validation
+### Cross-Validation
 
 **CV là gì?**
 
@@ -297,7 +297,7 @@ Cross-validation giúp đánh giá mô hình một cách khách quan:
 - **RMSECV** (Root Mean Square Error of CV): Sai số trung bình (càng nhỏ càng tốt)
 - **R²**: Tỷ lệ phương sai được giải thích (càng gần 1 càng tốt)
 
-### 2.5.4. VIP (Variable Importance in Projection)
+### VIP (Variable Importance in Projection)
 
 **VIP là gì?**
 

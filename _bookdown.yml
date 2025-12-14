@@ -1,5 +1,6 @@
 book_filename: "Coffee_NIR_BTL_Report"
 output_dir: "_report"
+delete_merged_file: true
 rmd_files:
   - "index.Rmd"
   - "02-Algorithm-Explanation.Rmd"
@@ -7,4 +8,4 @@ rmd_files:
   - "03-PCA-Clustering.Rmd"
   - "04-Outliers.Rmd"
   - "05-Correlation-Heatmap.Rmd"
-  - "06-Prediction-Models.Rmd"
+  - "06a-Prediction-Models-PCR.Rmd"
