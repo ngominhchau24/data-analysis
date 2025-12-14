@@ -45,12 +45,12 @@ for(var in chemical_vars) {
   # Tạo data frame cho pls
   pls_data <- data.frame(Y = coffee_data[[var]], X)
 
-  # Remove NA rows (this is what plsr does internally)
+  # Remove NA rows
   pls_data_clean <- na.omit(pls_data)
   pls_train_data[[var]] <- pls_data_clean
 
-  # Cross-validation để tìm số thành phần tối ưu
-  pls_cv <- plsr(Y ~ ., data = pls_data, validation = "CV",
+  # Cross-validation - train on CLEANED data
+  pls_cv <- plsr(Y ~ ., data = pls_data_clean, validation = "CV",
                  segments = 10, ncomp = 20)
 
   pls_models[[var]] <- pls_cv
