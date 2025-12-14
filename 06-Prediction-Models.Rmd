@@ -103,13 +103,18 @@ for(i in 1:length(chemical_vars)) {
   rmsep_train <- RMSEP(model, estimate = "train")
   pls_performance$RMSEP[i] <- rmsep_train$val[1, 1, ncomp + 1]
 
-  # R² from training - calculate manually
-  # Get actual Y values from training data (with NAs removed)
-  fitted_vals <- as.vector(fitted(model)[, , ncomp])
-  actual_vals <- pls_train_data[[var]]$Y  # Y from cleaned training data
+  # R² from training - use predict on training data
+  # Get training data (rows without NA)
+  train_data <- pls_train_data[[var]]
+  X_train <- as.matrix(train_data[, -1])  # All columns except Y
+  Y_train <- train_data$Y
 
-  ss_res <- sum((actual_vals - fitted_vals)^2)
-  ss_tot <- sum((actual_vals - mean(actual_vals))^2)
+  # Predict using the model
+  Y_pred <- as.vector(predict(model, ncomp = ncomp, newdata = X_train))
+
+  # Calculate R²
+  ss_res <- sum((Y_train - Y_pred)^2)
+  ss_tot <- sum((Y_train - mean(Y_train))^2)
   pls_performance$R2[i] <- 1 - (ss_res / ss_tot)
 }
 
