@@ -39,10 +39,15 @@ cat("Số lượng mẫu:", nrow(X), "\n")
 set.seed(123)
 pls_models <- list()
 optimal_ncomp <- c()
+pls_train_data <- list()  # Store training data for each model
 
 for(var in chemical_vars) {
   # Tạo data frame cho pls
   pls_data <- data.frame(Y = coffee_data[[var]], X)
+
+  # Remove NA rows (this is what plsr does internally)
+  pls_data_clean <- na.omit(pls_data)
+  pls_train_data[[var]] <- pls_data_clean
 
   # Cross-validation để tìm số thành phần tối ưu
   pls_cv <- plsr(Y ~ ., data = pls_data, validation = "CV",
@@ -99,9 +104,9 @@ for(i in 1:length(chemical_vars)) {
   pls_performance$RMSEP[i] <- rmsep_train$val[1, 1, ncomp + 1]
 
   # R² from training - calculate manually
-  # Get actual Y values from model (these are the ones used in training, excluding NAs)
+  # Get actual Y values from training data (with NAs removed)
   fitted_vals <- as.vector(fitted(model)[, , ncomp])
-  actual_vals <- model$model$Y  # Y values actually used in the model
+  actual_vals <- pls_train_data[[var]]$Y  # Y from cleaned training data
 
   ss_res <- sum((actual_vals - fitted_vals)^2)
   ss_tot <- sum((actual_vals - mean(actual_vals))^2)
