@@ -104,7 +104,8 @@ for(i in 1:length(chemical_vars)) {
   pls_performance$RMSECV[i] <- rmsep_cv$val[1, 1, ncomp + 1]
 
   # R² from cross-validation
-  r2_cv <- R2(model, estimate = "CV")
+  # R2() does not have 'estimate' parameter, it returns all estimates
+  r2_cv <- R2(model)
   pls_performance$R2_CV[i] <- r2_cv$val[1, 1, ncomp + 1]
 
   # RMSEP from training
