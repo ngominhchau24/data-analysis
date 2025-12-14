@@ -111,11 +111,10 @@ for(i in 1:length(chemical_vars)) {
   # R² from training - use predict on training data
   # Get training data (rows without NA)
   train_data <- pls_train_data[[var]]
-  X_train <- as.matrix(train_data[, -1])  # All columns except Y
   Y_train <- train_data$Y
 
-  # Predict using the model
-  Y_pred <- as.vector(predict(model, ncomp = ncomp, newdata = X_train))
+  # Predict using the model with the full training data frame
+  Y_pred <- as.vector(predict(model, ncomp = ncomp, newdata = train_data))
 
   # Calculate R²
   ss_res <- sum((Y_train - Y_pred)^2)

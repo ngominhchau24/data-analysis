@@ -100,8 +100,8 @@ calculate_vip <- function(pls_model, ncomp) {
 vip_results <- list()
 
 for(var in chemical_vars) {
-  model <- pls_models[[var]]
-  ncomp <- optimal_ncomp[var]
+  model <- pcr_models[[var]]
+  ncomp <- pcr_optimal_ncomp[var]
 
   vip_scores <- calculate_vip(model, ncomp)
 
