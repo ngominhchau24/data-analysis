@@ -274,7 +274,7 @@ print(pcr_optimal_ncomp)
 # Tính hiệu suất PCR
 pcr_performance <- data.frame(
   Variable = chemical_vars,
-  N_Components = pcr_optimal_ncomp,
+  N_Components = integer(length(chemical_vars)),
   RMSECV = numeric(length(chemical_vars)),
   R2_CV = numeric(length(chemical_vars))
 )
@@ -282,14 +282,23 @@ pcr_performance <- data.frame(
 for(i in 1:length(chemical_vars)) {
   var <- chemical_vars[i]
   model <- pcr_models[[var]]
-  ncomp <- pcr_optimal_ncomp[var]
 
+  # Get optimal ncomp as plain integer
+  ncomp <- unname(pcr_optimal_ncomp[var])
+  pcr_performance$N_Components[i] <- ncomp
+
+  # Get training data
+  train_data <- pcr_train_data[[var]]
+  Y_train <- train_data$Y
+
+  # RMSECV from cross-validation
   rmsep_obj <- RMSEP(model, estimate = "CV")
   pcr_performance$RMSECV[i] <- rmsep_obj$val[1, 1, ncomp + 1]
 
-  # R² without estimate parameter for compatibility
-  r2_obj <- R2(model)
-  pcr_performance$R2_CV[i] <- r2_obj$val[1, 1, ncomp + 1]
+  # R²_CV - Calculate manually from RMSECV (same approach as PLS)
+  rmsecv_value <- rmsep_obj$val[1, 1, ncomp + 1]
+  var_y <- var(Y_train)
+  pcr_performance$R2_CV[i] <- 1 - (rmsecv_value^2 / var_y)
 }
 
 # So sánh
