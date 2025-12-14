@@ -99,14 +99,12 @@ for(i in 1:length(chemical_vars)) {
   pls_performance$RMSEP[i] <- rmsep_train$val[1, 1, ncomp + 1]
 
   # R² from training - calculate manually
+  # Get actual Y values from model (these are the ones used in training, excluding NAs)
   fitted_vals <- as.vector(fitted(model)[, , ncomp])
-  actual_vals <- coffee_data[[var]]
-  # Remove NA values if any
-  valid_idx <- complete.cases(actual_vals, fitted_vals)
-  actual_clean <- actual_vals[valid_idx]
-  fitted_clean <- fitted_vals[valid_idx]
-  ss_res <- sum((actual_clean - fitted_clean)^2)
-  ss_tot <- sum((actual_clean - mean(actual_clean))^2)
+  actual_vals <- model$model$Y  # Y values actually used in the model
+
+  ss_res <- sum((actual_vals - fitted_vals)^2)
+  ss_tot <- sum((actual_vals - mean(actual_vals))^2)
   pls_performance$R2[i] <- 1 - (ss_res / ss_tot)
 }
 
