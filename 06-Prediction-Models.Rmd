@@ -94,7 +94,8 @@ pls_performance <- data.frame(
 for(i in 1:length(chemical_vars)) {
   var <- chemical_vars[i]
   model <- pls_models[[var]]
-  ncomp <- optimal_ncomp[var]
+  # Convert to integer to avoid named vector issues
+  ncomp <- as.integer(optimal_ncomp[var])
 
   # RMSECV from cross-validation
   rmsep_obj <- RMSEP(model, estimate = "CV")
@@ -137,7 +138,8 @@ plot_list <- list()
 for(i in 1:length(chemical_vars)) {
   var <- chemical_vars[i]
   model <- pls_models[[var]]
-  ncomp <- optimal_ncomp[var]
+  # Convert to integer to avoid named vector issues
+  ncomp <- as.integer(optimal_ncomp[var])
 
   # Get complete case indices for this variable
   complete_idx <- pls_complete_idx[[var]]
@@ -187,7 +189,8 @@ plot_list_res <- list()
 for(i in 1:length(chemical_vars)) {
   var <- chemical_vars[i]
   model <- pls_models[[var]]
-  ncomp <- optimal_ncomp[var]
+  # Convert to integer to avoid named vector issues
+  ncomp <- as.integer(optimal_ncomp[var])
 
   # Get complete case indices for this variable
   complete_idx <- pls_complete_idx[[var]]
