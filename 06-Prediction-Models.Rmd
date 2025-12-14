@@ -144,7 +144,9 @@ for(i in 1:length(chemical_vars)) {
   X_clean <- X[complete_idx, ]
 
   # Lấy giá trị dự đoán using cleaned data
-  predictions <- predict(model, ncomp = ncomp, newdata = X_clean)
+  # Convert matrix to data frame for predict() function
+  newdata <- as.data.frame(X_clean)
+  predictions <- predict(model, ncomp = ncomp, newdata = newdata)
   actual <- coffee_data[[var]][complete_idx]
   location <- coffee_data$Localisation[complete_idx]
 
@@ -190,7 +192,9 @@ for(i in 1:length(chemical_vars)) {
   X_clean <- X[complete_idx, ]
 
   # Tính residuals using cleaned data
-  predictions <- predict(model, ncomp = ncomp, newdata = X_clean)
+  # Convert matrix to data frame for predict() function
+  newdata <- as.data.frame(X_clean)
+  predictions <- predict(model, ncomp = ncomp, newdata = newdata)
   actual <- coffee_data[[var]][complete_idx]
   residuals <- actual - as.vector(predictions)
   location <- coffee_data$Localisation[complete_idx]
