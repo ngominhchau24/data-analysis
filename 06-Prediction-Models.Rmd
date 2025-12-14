@@ -114,7 +114,9 @@ for(i in 1:length(chemical_vars)) {
   Y_train <- train_data$Y
 
   # Predict using the model with the full training data frame
-  Y_pred <- as.vector(predict(model, ncomp = ncomp, newdata = train_data))
+  # predict.mvr returns 3D array [samples, 1, ncomp], need to extract correctly
+  pred_result <- predict(model, ncomp = ncomp, newdata = train_data)
+  Y_pred <- as.vector(pred_result[, 1, ncomp])
 
   # Calculate R²
   ss_res <- sum((Y_train - Y_pred)^2)
@@ -146,14 +148,16 @@ for(i in 1:length(chemical_vars)) {
   # Lấy giá trị dự đoán using cleaned data
   # Convert matrix to data frame for predict() function
   newdata <- as.data.frame(X_clean)
-  predictions <- predict(model, ncomp = ncomp, newdata = newdata)
+  # predict.mvr returns 3D array [samples, 1, ncomp], extract correctly
+  pred_result <- predict(model, ncomp = ncomp, newdata = newdata)
+  predictions <- as.vector(pred_result[, 1, ncomp])
   actual <- coffee_data[[var]][complete_idx]
   location <- coffee_data$Localisation[complete_idx]
 
   # Tạo data frame
   pred_df <- data.frame(
     Actual = actual,
-    Predicted = as.vector(predictions),
+    Predicted = predictions,
     Location = location
   )
 
@@ -194,14 +198,16 @@ for(i in 1:length(chemical_vars)) {
   # Tính residuals using cleaned data
   # Convert matrix to data frame for predict() function
   newdata <- as.data.frame(X_clean)
-  predictions <- predict(model, ncomp = ncomp, newdata = newdata)
+  # predict.mvr returns 3D array [samples, 1, ncomp], extract correctly
+  pred_result <- predict(model, ncomp = ncomp, newdata = newdata)
+  predictions <- as.vector(pred_result[, 1, ncomp])
   actual <- coffee_data[[var]][complete_idx]
-  residuals <- actual - as.vector(predictions)
+  residuals <- actual - predictions
   location <- coffee_data$Localisation[complete_idx]
 
   # Tạo data frame
   res_df <- data.frame(
-    Predicted = as.vector(predictions),
+    Predicted = predictions,
     Residuals = residuals,
     Location = location
   )
