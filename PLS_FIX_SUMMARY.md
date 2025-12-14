@@ -24,7 +24,7 @@ Lỗi: `Error in complete.cases(pred) : not all arguments have the same length`
 
 ## ✅ Giải pháp cuối cùng: Viết lại hoàn toàn
 
-### Commit: 7a439b7
+### Commit chính: 7a439b7, cdb0e02, 985771d
 
 **Thay đổi chính:**
 1. **Dùng `fitted()` thay vì `predict()`**
@@ -35,6 +35,11 @@ Lỗi: `Error in complete.cases(pred) : not all arguments have the same length`
 2. **Dùng `unname()` thay vì `as.integer()`**
    - Loại bỏ name attribute từ vector
    - Giữ nguyên kiểu numeric
+
+3. **Loại bỏ `R2()` function - Tính R² manually**
+   - `R2()` gọi `complete.cases()` internally gây lỗi
+   - Tính R²_CV từ RMSECV: `R²_CV = 1 - (RMSECV² / Var(Y))`
+   - Áp dụng cho cả PLS và PCR
 
 ### Code mới
 
@@ -82,11 +87,29 @@ rmarkdown::render("06-Prediction-Models.Rmd")
 bookdown::render_book("index.Rmd", "bookdown::pdf_book")
 ```
 
+## Timeline các commits
+
+1. **58be338** - Fix PLS and PCR model prediction algorithms
+2. **530565d** - Fix all PLS model prediction calls to use data frames
+3. **4b2ec30** - Fix PLS predict() 3D array extraction issue
+4. **f0d7a63** - Fix named vector indexing issue in PLS predictions
+5. **7a439b7** - ⭐ Complete rewrite of PLS prediction sections - use fitted() approach
+6. **e4885df** - Add documentation and test for fitted() approach
+7. **f9998f8** - Fix R2() function call - remove unused estimate parameter
+8. **cdb0e02** - ⭐ Remove R2() function - calculate R²_CV manually from RMSECV
+9. **985771d** - ⭐ Apply same R²_CV fix to PCR performance calculation
+
 ## Kết luận
 
 - ✅ Code đơn giản hơn nhiều
 - ✅ Không còn vấn đề với array extraction
 - ✅ Sử dụng approach chuẩn của PLS
+- ✅ Loại bỏ hoàn toàn R2() function issues
+- ✅ Tính toán manual, transparent và reliable
+- ✅ Áp dụng nhất quán cho cả PLS và PCR
 - ✅ Dễ maintain và debug
 
-**Khuyến nghị:** Luôn dùng `fitted()` cho training data, chỉ dùng `predict()` khi cần dự đoán trên new data.
+**Khuyến nghị:**
+1. Luôn dùng `fitted()` cho training data, chỉ dùng `predict()` khi cần dự đoán trên new data
+2. Tính R² manually từ RMSECV thay vì dùng R2() function
+3. Dùng `unname()` để loại bỏ names từ vectors trước khi indexing
