@@ -1,6 +1,6 @@
 ---
 title: "Coffee NIR Data Analysis Report"
-author: "Data Analysis Team"
+author: "Group 19"
 date: "`r Sys.Date()`"
 output:
   bookdown::pdf_book:

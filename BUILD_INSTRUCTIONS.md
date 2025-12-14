@@ -2,7 +2,7 @@
 
 ## Các bước thực hiện:
 
-### 1. Kiểm tra các packages cần thiết
+### Kiểm tra các packages cần thiết
 
 ```r
 # Install các packages nếu chưa có
@@ -16,15 +16,15 @@ packages <- c(
 install.packages(setdiff(packages, rownames(installed.packages())))
 ```
 
-### 2. Build PDF từ R Console
-
+### Build PDF từ R Console
+Thay path /home/user/data-analysis bằng path của bạn (folder chứa file csv)
 ```r
 # Trong R console, chạy:
 setwd("/home/user/data-analysis")
 bookdown::render_book("index.Rmd", "bookdown::pdf_book")
 ```
 
-### 3. Build từ Terminal/Command Line
+### Build từ Terminal/Command Line
 
 ```bash
 cd /home/user/data-analysis
