@@ -445,15 +445,31 @@ for(i in 1:nrow(comparison)) {
 }
 ```
 ### Nhận xét
-- PLS thường cho kết quả tốt hơn PCR với dữ liệu NI
-- Số thành phần tối ưu thay đổi tùy theo từng chỉ tiêu hóa lý
-- VIP scores giúp xác định các bước sóng quan trọn
-- Mô hình có thể dùng để dự đoán chất lượng cà phê từ phổ NIR
 
+**Hiệu suất mô hình:**
+- **PCR cho kết quả tốt hơn PLS** trong tất cả các chỉ tiêu hóa lý
+- R² của PLS đều âm (-0.12 đến -0.43), cho thấy model không fit tốt với dữ liệu này
+- R² của PCR tốt hơn (gần 0 hoặc dương nhỏ), nhưng vẫn ở mức thấp
+- Cả hai mô hình đều cho hiệu suất dự đoán khá hạn chế với bộ dữ liệu này
+
+**Nguyên nhân có thể:**
+- Dữ liệu có nhiều biến động (variation) lớn giữa các mẫu
+- Mối quan hệ giữa phổ NIR và các chỉ tiêu hóa lý có thể không tuyến tính
+- Cần xem xét thêm các phương pháp tiền xử lý khác hoặc loại bỏ outliers
+- Số lượng mẫu có thể chưa đủ lớn để training model phức tạp
+
+**VIP Analysis:**
+- VIP scores giúp xác định các bước sóng quan trọng trong dự đoán
+- Có thể sử dụng để feature selection hoặc hiểu mối quan hệ hóa học
 
 **Ý nghĩa thực tiễn:**
 
-- Các mô hình PLS/PCR cho phép dự đoán nhanh các chỉ tiêu hóa lý từ phổ NIR
-- Không cần phân tích hóa học tốn kém và mất thời gian
-- Phân tích VIP giúp hiểu được các vùng phổ quan trọng liên quan đến từng chất
-- Có thể áp dụng trong kiểm soát chất lượng và phân loại cà phê
+- Phương pháp NIR spectroscopy kết hợp PLS/PCR có tiềm năng cho dự đoán nhanh
+- Tuy nhiên, với bộ dữ liệu hiện tại, độ chính xác còn hạn chế
+- **Khuyến nghị:**
+  - Cần thu thập thêm dữ liệu để cải thiện model
+  - Xem xét các phương pháp tiền xử lý phổ NIR (smoothing, derivatives, SNV)
+  - Thử nghiệm các thuật toán khác (Random Forest, Neural Networks)
+  - Loại bỏ outliers đã phát hiện ở phần trước và train lại model
+- Trong trạng thái hiện tại, model chưa đủ tin cậy để ứng dụng thực tế
+

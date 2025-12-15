@@ -278,7 +278,8 @@ PCR là sự kết hợp của PCA và hồi quy:
 
 - PCR tìm PC không quan tâm đến Y
 - PLS tìm thành phần có tính đến cả X và Y
-- PLS thường cho kết quả tốt hơn với ít thành phần hơn
+- **Lý thuyết**: PLS thường cho kết quả tốt hơn với ít thành phần hơn
+- **Thực tế**: Tùy thuộc vào đặc điểm dữ liệu, đôi khi PCR có thể tốt hơn PLS
 
 ### Cross-Validation
 
