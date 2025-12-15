@@ -1,0 +1,4021 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+  12pt,
+  a4paper,
+  openany]{book}
+\usepackage{xcolor}
+\usepackage[paper=a4paper,top=2.5cm,bottom=2.5cm,left=3cm,right=2cm,headheight=17pt]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{5}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage{setspace}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{setspace}
+\usepackage{indentfirst}
+\setlength{\parindent}{1.5em}
+\setlength{\parskip}{6pt}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\thepage}
+\fancyhead[L]{\nouppercase{\leftmark}}
+\renewcommand{\headrulewidth}{0.4pt}
+\usepackage{caption}
+\captionsetup[figure]{labelfont=bf, textfont=it}
+\captionsetup[table]{labelfont=bf, textfont=it}
+\usepackage{listings}
+\lstset{breaklines=true, breakatwhitespace=true}
+\usepackage{fvextra}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,breakanywhere,commandchars=\\\{\}}
+\usepackage{titling}
+\pretitle{\begin{center}\huge\bfseries}
+\posttitle{\end{center}}
+\preauthor{\begin{flushleft}\large}
+\postauthor{\end{flushleft}}
+\predate{\begin{center}\large}
+\postdate{\end{center}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Coffee NIR Data Analysis Report},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Coffee NIR Data Analysis Report}
+\author{\textbf{Group 19}\\
+\strut \\
+\emph{Nguyen Van A - ID: 2012345}\\
+\emph{Tran Thi B - ID: 2012346 }\\
+\emph{Le Van C - ID: 2012347 }\\
+\emph{Pham Thi D - ID: 2012348 }\\
+\strut \\
+\strut \\}
+\date{2025-12-15}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{2}
+\tableofcontents
+}
+\setstretch{1.5}
+\chapter*{Giới thiệu}\label{giux1edbi-thiux1ec7u}
+\addcontentsline{toc}{chapter}{Giới thiệu}
+
+Báo cáo này trình bày toàn bộ kết quả phân tích dữ liệu Coffee NIR, bao gồm:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Phần 1}: Giới thiệu dữ liệu và kiểm tra chất lượng
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Mô tả các nhóm biến: Hóa lý, Location, NIR
+  \item
+    Kiểm tra dữ liệu thiếu (Missing Data)
+  \item
+    Phát hiện giá trị lạ (Outliers Detection)
+  \end{itemize}
+\item
+  \textbf{Phần 2.1}: Phân tích sự khác biệt - PCA và Clustering
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Principal Component Analysis (PCA) trên dữ liệu NIR và Hóa lý
+  \item
+    Hierarchical Clustering và K-means
+  \item
+    So sánh sự khác biệt giữa các vị trí địa lý
+  \item
+    Xác định đặc điểm phân biệt giữa các nhóm
+  \end{itemize}
+\item
+  \textbf{Phần 2.2}: Phát hiện Outliers nâng cao
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Hotelling T² statistic và Q residuals (SPE)
+  \item
+    Combined T² vs Q plot
+  \item
+    Influence analysis
+  \item
+    Phân loại và quyết định xử lý outliers
+  \end{itemize}
+\item
+  \textbf{Phần 2.3}: Phân tích Tương quan và Heatmap
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Ma trận tương quan giữa các biến hóa lý
+  \item
+    Tương quan giữa NIR wavelengths và biến hóa lý
+  \item
+    Correlation profile và wavelengths quan trọng
+  \item
+    Tương quan trong không gian PCA
+  \item
+    So sánh pattern tương quan giữa các Location
+  \end{itemize}
+\end{itemize}
+
+Dữ liệu sử dụng: \textbf{coffee\_nirs.csv}
+
+\chapter{Giải Thích Các Thuật Toán}\label{giux1ea3i-thuxedch-cuxe1c-thuux1eadt-touxe1n}
+
+Phần này giải thích các phương pháp phân tích dữ liệu được sử dụng trong báo cáo một cách đơn giản, dễ hiểu.
+
+\section{Phân Tích Thành Phần Chính (PCA)}\label{phuxe2n-tuxedch-thuxe0nh-phux1ea7n-chuxednh-pca}
+
+\textbf{PCA là gì?}
+
+Tưởng tượng bạn có 1050 bước sóng NIR - quá nhiều thông tin để hiển thị trên một biểu đồ 2D hoặc 3D. PCA giúp ``nén'' 1050 chiều này thành một số chiều nhỏ hơn (ví dụ: 2-3 chiều) mà vẫn giữ được phần lớn thông tin quan trọng.
+
+\textbf{Cách hoạt động:}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Tìm hướng có sự biến thiên lớn nhất}: PCA tìm hướng trong dữ liệu mà các mẫu phân tán nhiều nhất
+\item
+  \textbf{Tạo trục mới}: Các hướng này trở thành ``thành phần chính'' (PC1, PC2, PC3,\ldots)
+\item
+  \textbf{Giảm chiều}: Chỉ giữ lại một số thành phần đầu tiên (thường là 2-10) vì chúng chứa hầu hết thông tin
+\end{enumerate}
+
+\textbf{Ví dụ thực tế:}
+
+\begin{itemize}
+\tightlist
+\item
+  PC1 có thể đại diện cho \textasciitilde60\% sự khác biệt giữa các mẫu cà phê
+\item
+  PC2 đại diện cho \textasciitilde20\% sự khác biệt tiếp theo
+\item
+  Với 2 thành phần này, ta đã có 80\% thông tin nhưng chỉ cần vẽ biểu đồ 2D
+\end{itemize}
+
+\textbf{Ứng dụng:}
+
+\begin{itemize}
+\tightlist
+\item
+  Trực quan hóa dữ liệu nhiều chiều
+\item
+  Phát hiện các nhóm mẫu tương tự nhau
+\item
+  Giảm nhiễu trong dữ liệu
+\end{itemize}
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.85\linewidth]{Coffee_NIR_BTL_Report_files/figure-latex/pca-illustration-1} 
+
+}
+
+\caption{Minh họa PCA: Từ nhiều chiều xuống 2 chiều}\label{fig:pca-illustration}
+\end{figure}
+
+\section{Phân Cụm (Clustering)}\label{phuxe2n-cux1ee5m-clustering}
+
+\textbf{Clustering là gì?}
+
+Clustering giúp nhóm các mẫu tương tự nhau lại với nhau, giống như việc sắp xếp trái cây vào các rổ dựa trên màu sắc và kích thước.
+
+\subsection{Phân Cụm Phân Cấp (Hierarchical Clustering)}\label{phuxe2n-cux1ee5m-phuxe2n-cux1ea5p-hierarchical-clustering}
+
+\textbf{Cách hoạt động:}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Bắt đầu}: Mỗi mẫu là một cụm riêng
+\item
+  \textbf{Ghép nối}: Tìm 2 cụm gần nhau nhất và ghép chúng lại
+\item
+  \textbf{Lặp lại}: Tiếp tục ghép cho đến khi tất cả mẫu nằm trong một cụm lớn
+\item
+  \textbf{Kết quả}: Một ``cây phả hệ'' (dendrogram) cho biết mẫu nào giống mẫu nào
+\end{enumerate}
+
+\textbf{Phương pháp Ward:}
+
+\begin{itemize}
+\tightlist
+\item
+  Ghép các cụm sao cho sự phân tán bên trong cụm tăng ít nhất
+\item
+  Tạo ra các cụm cân bằng và rõ ràng
+\end{itemize}
+
+\subsection{K-Means Clustering}\label{k-means-clustering}
+
+\textbf{Cách hoạt động:}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Chọn số cụm k}: Ví dụ k=3 (3 nhóm cà phê)
+\item
+  \textbf{Đặt tâm ngẫu nhiên}: Chọn 3 điểm làm tâm cụm ban đầu
+\item
+  \textbf{Gán mẫu}: Mỗi mẫu được gán vào cụm có tâm gần nhất
+\item
+  \textbf{Cập nhật tâm}: Tính lại tâm của mỗi cụm
+\item
+  \textbf{Lặp lại}: Bước 3-4 cho đến khi cụm không đổi
+\end{enumerate}
+
+\textbf{Ưu điểm:}
+
+\begin{itemize}
+\tightlist
+\item
+  Nhanh và hiệu quả
+\item
+  Dễ hiểu và giải thích
+\end{itemize}
+
+\textbf{Lưu ý:}
+
+\begin{itemize}
+\tightlist
+\item
+  Cần biết trước số cụm k
+\item
+  Kết quả có thể khác nhau tùy tâm ban đầu
+\end{itemize}
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.85\linewidth]{Coffee_NIR_BTL_Report_files/figure-latex/clustering-illustration-1} 
+
+}
+
+\caption{Minh họa Clustering}\label{fig:clustering-illustration}
+\end{figure}
+
+\section{Phát Hiện Giá Trị Lạ (Outlier Detection)}\label{phuxe1t-hiux1ec7n-giuxe1-trux1ecb-lux1ea1-outlier-detection}
+
+\textbf{Outlier là gì?}
+
+Outlier là mẫu ``khác thường'' - rất khác so với phần lớn các mẫu khác. Giống như một quả táo màu xanh lá trong rổ táo đỏ.
+
+\subsection{Khoảng Tứ Phân Vị (IQR Method)}\label{khoux1ea3ng-tux1ee9-phuxe2n-vux1ecb-iqr-method}
+
+\textbf{Cách hoạt động:}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Tính tứ phân vị}: Q1 (25\%), Q3 (75\%)
+\item
+  \textbf{Tính IQR}: IQR = Q3 - Q1
+\item
+  \textbf{Xác định ngưỡng}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Ngưỡng dưới = Q1 - 1.5×IQR
+  \item
+    Ngưỡng trên = Q3 + 1.5×IQR
+  \end{itemize}
+\item
+  \textbf{Phát hiện outlier}: Giá trị ngoài ngưỡng là outlier
+\end{enumerate}
+
+\textbf{Ưu điểm:} Đơn giản, ổn định với dữ liệu lệch
+
+\subsection{Khoảng Cách Mahalanobis}\label{khoux1ea3ng-cuxe1ch-mahalanobis}
+
+\textbf{Khác với khoảng cách thông thường:}
+
+\begin{itemize}
+\tightlist
+\item
+  Khoảng cách Euclid: Đường chim bay giữa 2 điểm
+\item
+  Khoảng cách Mahalanobis: Tính đến sự tương quan giữa các biến
+\end{itemize}
+
+\textbf{Ứng dụng:}
+
+\begin{itemize}
+\tightlist
+\item
+  Phát hiện outlier trong dữ liệu nhiều chiều
+\item
+  Tính đến cấu trúc phân tán của dữ liệu
+\end{itemize}
+
+\subsection{Hotelling T² và Q Residuals}\label{hotelling-tuxb2-vuxe0-q-residuals}
+
+\textbf{Hotelling T²:}
+
+\begin{itemize}
+\tightlist
+\item
+  Đo lường mức độ ``cực đoan'' của mẫu trong không gian PC
+\item
+  Giống như hỏi: ``Mẫu này có nằm xa trung tâm không?''
+\end{itemize}
+
+\textbf{Q Residuals (SPE):}
+
+\begin{itemize}
+\tightlist
+\item
+  Đo lường phần thông tin không được giải thích bởi PCA
+\item
+  Giống như hỏi: ``Có điều gì đặc biệt mà PCA không nắm bắt được không?''
+\end{itemize}
+
+\textbf{Kết hợp T² và Q:}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{T² cao, Q thấp}: Mẫu bình thường nhưng ``cực đoan'' (ví dụ: nồng độ rất cao)
+\item
+  \textbf{T² thấp, Q cao}: Mẫu có pattern khác thường
+\item
+  \textbf{T² cao, Q cao}: Outlier thực sự - rất khác biệt!
+\end{itemize}
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.85\linewidth]{Coffee_NIR_BTL_Report_files/figure-latex/outlier-illustration-1} 
+
+}
+
+\caption{Minh họa Outlier Detection}\label{fig:outlier-illustration}
+\end{figure}
+
+\section{Phân Tích Tương Quan}\label{phuxe2n-tuxedch-tux1b0ux1a1ng-quan}
+
+\textbf{Tương quan là gì?}
+
+Tương quan đo lường mối quan hệ tuyến tính giữa hai biến:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{r = +1}: Tương quan dương hoàn hảo (khi A tăng, B tăng)
+\item
+  \textbf{r = 0}: Không có tương quan
+\item
+  \textbf{r = -1}: Tương quan âm hoàn hảo (khi A tăng, B giảm)
+\end{itemize}
+
+\textbf{Hệ số Pearson:}
+
+\begin{itemize}
+\tightlist
+\item
+  Đo lường sức mạnh và hướng của mối quan hệ tuyến tính
+\item
+  Giá trị từ -1 đến +1
+\end{itemize}
+
+\textbf{Heatmap tương quan:}
+
+\begin{itemize}
+\tightlist
+\item
+  Biểu đồ màu sắc cho thấy tương quan giữa nhiều cặp biến
+\item
+  Màu nóng (đỏ): Tương quan dương mạnh
+\item
+  Màu lạnh (xanh): Tương quan âm mạnh
+\item
+  Màu trung tính (trắng): Không tương quan
+\end{itemize}
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.85\linewidth]{Coffee_NIR_BTL_Report_files/figure-latex/correlation-illustration-1} 
+
+}
+
+\caption{Minh họa Correlation}\label{fig:correlation-illustration}
+\end{figure}
+
+\section{Mô Hình Dự Đoán}\label{muxf4-huxecnh-dux1ef1-ux111ouxe1n}
+
+\subsection{PLS (Partial Least Squares)}\label{pls-partial-least-squares}
+
+\textbf{PLS là gì?}
+
+PLS giống như PCA nhưng ``thông minh'' hơn - nó tìm các thành phần không chỉ giải thích dữ liệu X (NIR) mà còn dự đoán tốt Y (chỉ tiêu hóa lý).
+
+\textbf{Cách hoạt động:}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Tìm hướng tối ưu}: Tìm hướng trong X có tương quan mạnh với Y
+\item
+  \textbf{Tạo thành phần}: Tạo thành phần PLS từ hướng này
+\item
+  \textbf{Lặp lại}: Tìm thêm các thành phần khác
+\item
+  \textbf{Xây dựng mô hình}: Dùng các thành phần để dự đoán Y
+\end{enumerate}
+
+\textbf{Ưu điểm:}
+
+\begin{itemize}
+\tightlist
+\item
+  Xử lý tốt dữ liệu có nhiều biến tương quan (như NIR)
+\item
+  Không bị overfitting như hồi quy thông thường
+\item
+  Cho kết quả dự đoán tốt với ít thành phần
+\end{itemize}
+
+\subsection{PCR (Principal Component Regression)}\label{pcr-principal-component-regression}
+
+\textbf{PCR là gì?}
+
+PCR là sự kết hợp của PCA và hồi quy:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Bước 1}: Dùng PCA để giảm chiều X
+\item
+  \textbf{Bước 2}: Dùng các PC để dự đoán Y bằng hồi quy
+\end{enumerate}
+
+\textbf{Khác biệt với PLS:}
+
+\begin{itemize}
+\tightlist
+\item
+  PCR tìm PC không quan tâm đến Y
+\item
+  PLS tìm thành phần có tính đến cả X và Y
+\item
+  PLS thường cho kết quả tốt hơn với ít thành phần hơn
+\end{itemize}
+
+\subsection{Cross-Validation}\label{cross-validation}
+
+\textbf{CV là gì?}
+
+Cross-validation giúp đánh giá mô hình một cách khách quan:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Chia dữ liệu}: Ví dụ 10 phần
+\item
+  \textbf{Huấn luyện}: Dùng 9 phần để xây dựng mô hình
+\item
+  \textbf{Kiểm tra}: Dùng 1 phần còn lại để kiểm tra
+\item
+  \textbf{Lặp lại}: Thực hiện 10 lần, mỗi lần dùng phần khác nhau để kiểm tra
+\item
+  \textbf{Tính trung bình}: Lấy trung bình kết quả
+\end{enumerate}
+
+\textbf{Chỉ số đánh giá:}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{RMSECV} (Root Mean Square Error of CV): Sai số trung bình (càng nhỏ càng tốt)
+\item
+  \textbf{R²}: Tỷ lệ phương sai được giải thích (càng gần 1 càng tốt)
+\end{itemize}
+
+\subsection{VIP (Variable Importance in Projection)}\label{vip-variable-importance-in-projection}
+
+\textbf{VIP là gì?}
+
+VIP cho biết bước sóng nào quan trọng nhất trong việc dự đoán:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{VIP \textgreater{} 1}: Bước sóng quan trọng
+\item
+  \textbf{VIP \textless{} 1}: Bước sóng ít quan trọng
+\item
+  \textbf{VIP \textgreater\textgreater{} 1}: Bước sóng rất quan trọng
+\end{itemize}
+
+\textbf{Ứng dụng:}
+
+\begin{itemize}
+\tightlist
+\item
+  Giúp hiểu được vùng phổ nào chứa thông tin về chỉ tiêu hóa lý
+\item
+  Có thể giảm số bước sóng cần đo để tiết kiệm chi phí
+\end{itemize}
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.85\linewidth]{Coffee_NIR_BTL_Report_files/figure-latex/prediction-illustration-1} 
+
+}
+
+\caption{Minh họa Prediction Models}\label{fig:prediction-illustration}
+\end{figure}
+
+\section{Tóm Tắt}\label{tuxf3m-tux1eaft}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2727}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3939}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Thuật toán
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Mục đích
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Khi nào dùng
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{PCA} & Giảm chiều, trực quan hóa & Có quá nhiều biến, cần vẽ biểu đồ \\
+\textbf{Clustering} & Phân nhóm mẫu & Tìm nhóm mẫu tương tự nhau \\
+\textbf{Outlier Detection} & Tìm mẫu bất thường & Kiểm tra chất lượng dữ liệu \\
+\textbf{Correlation} & Tìm mối quan hệ & Hiểu mối liên hệ giữa các biến \\
+\textbf{PLS/PCR} & Dự đoán & Xây dựng mô hình dự đoán từ NIR \\
+\textbf{VIP} & Chọn biến quan trọng & Hiểu bước sóng nào quan trọng \\
+\end{longtable}
+
+\textbf{Lưu ý quan trọng:}
+
+\begin{itemize}
+\tightlist
+\item
+  Không có thuật toán nào là ``tốt nhất'' cho mọi trường hợp
+\item
+  Nên thử nhiều phương pháp và so sánh kết quả
+\item
+  Luôn kiểm tra giả định của thuật toán trước khi áp dụng
+\item
+  Kết quả cần được giải thích trong bối cảnh thực tế
+\end{itemize}
+
+\chapter{Phân tích Sự khác biệt: PCA và Clustering}\label{phuxe2n-tuxedch-sux1ef1-khuxe1c-biux1ec7t-pca-vuxe0-clustering}
+
+Trong phần này, chúng ta sẽ sử dụng hai phương pháp chính để phân tích sự khác biệt trong dữ liệu Coffee NIR:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{PCA (Principal Component Analysis)}: Phân tích thành phần chính để giảm chiều dữ liệu và trực quan hóa sự khác biệt
+\item
+  \textbf{Clustering}: Phân nhóm các mẫu dựa trên đặc điểm tương đồng
+\end{enumerate}
+
+\section{Chuẩn bị dữ liệu}\label{chuux1ea9n-bux1ecb-dux1eef-liux1ec7u}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Load thư viện}
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\FunctionTok{library}\NormalTok{(factoextra)}
+\FunctionTok{library}\NormalTok{(FactoMineR)}
+\FunctionTok{library}\NormalTok{(cluster)}
+\FunctionTok{library}\NormalTok{(dendextend)}
+\FunctionTok{library}\NormalTok{(knitr)}
+\FunctionTok{library}\NormalTok{(kableExtra)}
+\FunctionTok{library}\NormalTok{(gridExtra)}
+\FunctionTok{library}\NormalTok{(RColorBrewer)}
+
+\CommentTok{\# Data and variable groups already loaded in index.Rmd global{-}setup}
+\CommentTok{\# Verify data is available}
+\ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{exists}\NormalTok{(}\StringTok{"coffee\_data"}\NormalTok{)) \{}
+  \FunctionTok{stop}\NormalTok{(}\StringTok{"Data not loaded. Please render from index.Rmd"}\NormalTok{)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Phân tích PCA (Principal Component Analysis)}\label{phuxe2n-tuxedch-pca-principal-component-analysis}
+
+PCA giúp chúng ta:
+
+\begin{itemize}
+\tightlist
+\item
+  Giảm chiều dữ liệu từ 1050+ biến xuống còn vài thành phần chính
+\item
+  Trực quan hóa cấu trúc dữ liệu trong không gian 2D/3D
+\item
+  Phát hiện pattern và nhóm mẫu tương đồng
+\item
+  Xác định biến quan trọng nhất
+\end{itemize}
+
+\subsection{PCA trên dữ liệu NIR}\label{pca-truxean-dux1eef-liux1ec7u-nir}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Chuẩn bị dữ liệu NIR (loại bỏ missing values)}
+\NormalTok{data\_nir }\OtherTok{\textless{}{-}}\NormalTok{ coffee\_data[, nir\_vars]}
+\NormalTok{data\_nir\_complete }\OtherTok{\textless{}{-}}\NormalTok{ data\_nir[}\FunctionTok{complete.cases}\NormalTok{(data\_nir), ]}
+
+\CommentTok{\# Lưu thông tin Localisation tương ứng}
+\NormalTok{location\_info }\OtherTok{\textless{}{-}}\NormalTok{ coffee\_data}\SpecialCharTok{$}\NormalTok{Localisation[}\FunctionTok{complete.cases}\NormalTok{(data\_nir)]}
+
+\CommentTok{\# Thực hiện PCA}
+\NormalTok{pca\_nir }\OtherTok{\textless{}{-}} \FunctionTok{PCA}\NormalTok{(data\_nir\_complete, }\AttributeTok{scale.unit =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{graph =} \ConstantTok{FALSE}\NormalTok{)}
+
+\CommentTok{\# Thống kê eigenvalues}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Phương sai giải thích bởi các thành phần chính:}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Phương sai giải thích bởi các thành phần chính:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\FunctionTok{head}\NormalTok{(pca\_nir}\SpecialCharTok{$}\NormalTok{eig, }\DecValTok{10}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##         eigenvalue percentage of variance cumulative percentage of variance
+## comp 1  718.687910             68.4464676                          68.44647
+## comp 2   95.303022              9.0764783                          77.52295
+## comp 3   43.199980              4.1142838                          81.63723
+## comp 4   10.673923              1.0165641                          82.65379
+## comp 5    5.050246              0.4809758                          83.13477
+## comp 6    3.450624              0.3286309                          83.46340
+## comp 7    3.179301              0.3027905                          83.76619
+## comp 8    3.125460              0.2976628                          84.06385
+## comp 9    3.002882              0.2859887                          84.34984
+## comp 10   2.993202              0.2850669                          84.63491
+\end{verbatim}
+
+\subsection{Biểu đồ Scree Plot}\label{biux1ec3u-ux111ux1ed3-scree-plot}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Scree plot {-} hiển thị phương sai được giải thích}
+\FunctionTok{fviz\_eig}\NormalTok{(pca\_nir, }\AttributeTok{addlabels =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{ylim =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{50}\NormalTok{), }\AttributeTok{ncp =} \DecValTok{10}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"Scree Plot {-} Phương sai giải thích bởi các PC"}\NormalTok{,}
+    \AttributeTok{x =} \StringTok{"Principal Components"}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"Phương sai giải thích (\%)"}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.85\linewidth]{Coffee_NIR_BTL_Report_files/figure-latex/pca-scree-1} \end{center}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Tính phương sai tích lũy}
+\NormalTok{cumvar }\OtherTok{\textless{}{-}} \FunctionTok{cumsum}\NormalTok{(pca\_nir}\SpecialCharTok{$}\NormalTok{eig[, }\DecValTok{2}\NormalTok{])}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{Phương sai tích lũy của 5 PC đầu tiên:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(cumvar[}\DecValTok{5}\NormalTok{], }\DecValTok{2}\NormalTok{), }\StringTok{"\%}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Phương sai tích lũy của 5 PC đầu tiên: 83.13 %
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Phương sai tích lũy của 10 PC đầu tiên:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(cumvar[}\DecValTok{10}\NormalTok{], }\DecValTok{2}\NormalTok{), }\StringTok{"\%}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Phương sai tích lũy của 10 PC đầu tiên: 84.63 %
+\end{verbatim}
+
+\subsection{Score Plot - Phân tích sự khác biệt theo Localisation}\label{score-plot---phuxe2n-tuxedch-sux1ef1-khuxe1c-biux1ec7t-theo-localisation}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Score plot theo Localisation}
+\FunctionTok{fviz\_pca\_ind}\NormalTok{(pca\_nir,}
+             \AttributeTok{geom.ind =} \StringTok{"point"}\NormalTok{,}
+             \AttributeTok{col.ind =} \FunctionTok{factor}\NormalTok{(location\_info),}
+             \AttributeTok{palette =} \StringTok{"jco"}\NormalTok{,}
+             \AttributeTok{addEllipses =} \ConstantTok{TRUE}\NormalTok{,}
+             \AttributeTok{ellipse.level =} \FloatTok{0.95}\NormalTok{,}
+             \AttributeTok{legend.title =} \StringTok{"Location"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"PCA Score Plot {-} Phân tích theo Vị trí địa lý"}\NormalTok{,}
+    \AttributeTok{x =} \FunctionTok{paste0}\NormalTok{(}\StringTok{"PC1 ("}\NormalTok{, }\FunctionTok{round}\NormalTok{(pca\_nir}\SpecialCharTok{$}\NormalTok{eig[}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{], }\DecValTok{2}\NormalTok{), }\StringTok{"\%)"}\NormalTok{),}
+    \AttributeTok{y =} \FunctionTok{paste0}\NormalTok{(}\StringTok{"PC2 ("}\NormalTok{, }\FunctionTok{round}\NormalTok{(pca\_nir}\SpecialCharTok{$}\NormalTok{eig[}\DecValTok{2}\NormalTok{, }\DecValTok{2}\NormalTok{], }\DecValTok{2}\NormalTok{), }\StringTok{"\%)"}\NormalTok{)}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.85\linewidth]{Coffee_NIR_BTL_Report_files/figure-latex/pca-score-location-1} \end{center}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Tạo data frame với 3 PC đầu tiên}
+\NormalTok{scores\_df }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+  \AttributeTok{PC1 =}\NormalTok{ pca\_nir}\SpecialCharTok{$}\NormalTok{ind}\SpecialCharTok{$}\NormalTok{coord[, }\DecValTok{1}\NormalTok{],}
+  \AttributeTok{PC2 =}\NormalTok{ pca\_nir}\SpecialCharTok{$}\NormalTok{ind}\SpecialCharTok{$}\NormalTok{coord[, }\DecValTok{2}\NormalTok{],}
+  \AttributeTok{PC3 =}\NormalTok{ pca\_nir}\SpecialCharTok{$}\NormalTok{ind}\SpecialCharTok{$}\NormalTok{coord[, }\DecValTok{3}\NormalTok{],}
+  \AttributeTok{Location =} \FunctionTok{factor}\NormalTok{(location\_info)}
+\NormalTok{)}
+
+\CommentTok{\# Plot PC1 vs PC3}
+\NormalTok{p1 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(scores\_df, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ PC1, }\AttributeTok{y =}\NormalTok{ PC3, }\AttributeTok{color =}\NormalTok{ Location)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{size =} \DecValTok{2}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.7}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{stat\_ellipse}\NormalTok{(}\AttributeTok{level =} \FloatTok{0.95}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{x =} \FunctionTok{paste0}\NormalTok{(}\StringTok{"PC1 ("}\NormalTok{, }\FunctionTok{round}\NormalTok{(pca\_nir}\SpecialCharTok{$}\NormalTok{eig[}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{], }\DecValTok{2}\NormalTok{), }\StringTok{"\%)"}\NormalTok{),}
+    \AttributeTok{y =} \FunctionTok{paste0}\NormalTok{(}\StringTok{"PC3 ("}\NormalTok{, }\FunctionTok{round}\NormalTok{(pca\_nir}\SpecialCharTok{$}\NormalTok{eig[}\DecValTok{3}\NormalTok{, }\DecValTok{2}\NormalTok{], }\DecValTok{2}\NormalTok{), }\StringTok{"\%)"}\NormalTok{)}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{scale\_color\_brewer}\NormalTok{(}\AttributeTok{palette =} \StringTok{"Set1"}\NormalTok{)}
+
+\CommentTok{\# Plot PC2 vs PC3}
+\NormalTok{p2 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(scores\_df, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ PC2, }\AttributeTok{y =}\NormalTok{ PC3, }\AttributeTok{color =}\NormalTok{ Location)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{size =} \DecValTok{2}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.7}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{stat\_ellipse}\NormalTok{(}\AttributeTok{level =} \FloatTok{0.95}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{x =} \FunctionTok{paste0}\NormalTok{(}\StringTok{"PC2 ("}\NormalTok{, }\FunctionTok{round}\NormalTok{(pca\_nir}\SpecialCharTok{$}\NormalTok{eig[}\DecValTok{2}\NormalTok{, }\DecValTok{2}\NormalTok{], }\DecValTok{2}\NormalTok{), }\StringTok{"\%)"}\NormalTok{),}
+    \AttributeTok{y =} \FunctionTok{paste0}\NormalTok{(}\StringTok{"PC3 ("}\NormalTok{, }\FunctionTok{round}\NormalTok{(pca\_nir}\SpecialCharTok{$}\NormalTok{eig[}\DecValTok{3}\NormalTok{, }\DecValTok{2}\NormalTok{], }\DecValTok{2}\NormalTok{), }\StringTok{"\%)"}\NormalTok{)}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{scale\_color\_brewer}\NormalTok{(}\AttributeTok{palette =} \StringTok{"Set1"}\NormalTok{)}
+
+\CommentTok{\# Kết hợp 2 plots}
+\FunctionTok{grid.arrange}\NormalTok{(p1, p2, }\AttributeTok{ncol =} \DecValTok{2}\NormalTok{,}
+             \AttributeTok{top =} \StringTok{"PCA Score Plots {-} Các góc nhìn khác nhau"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.85\linewidth]{Coffee_NIR_BTL_Report_files/figure-latex/pca-score-multiplot-1} \end{center}
+
+\subsection{Phân tích Contribution - Biến quan trọng}\label{phuxe2n-tuxedch-contribution---biux1ebfn-quan-trux1ecdng}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Top 20 biến đóng góp nhất cho PC1}
+\FunctionTok{fviz\_contrib}\NormalTok{(pca\_nir, }\AttributeTok{choice =} \StringTok{"var"}\NormalTok{, }\AttributeTok{axes =} \DecValTok{1}\NormalTok{, }\AttributeTok{top =} \DecValTok{20}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Top 20 biến NIR đóng góp cho PC1"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.85\linewidth]{Coffee_NIR_BTL_Report_files/figure-latex/pca-contribution-1} \end{center}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Top 20 biến đóng góp nhất cho PC2}
+\FunctionTok{fviz\_contrib}\NormalTok{(pca\_nir, }\AttributeTok{choice =} \StringTok{"var"}\NormalTok{, }\AttributeTok{axes =} \DecValTok{2}\NormalTok{, }\AttributeTok{top =} \DecValTok{20}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Top 20 biến NIR đóng góp cho PC2"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.85\linewidth]{Coffee_NIR_BTL_Report_files/figure-latex/pca-contribution-2} \end{center}
+
+\subsection{PCA trên dữ liệu Hóa lý}\label{pca-truxean-dux1eef-liux1ec7u-huxf3a-luxfd}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# PCA cho biến hóa lý}
+\NormalTok{data\_chem }\OtherTok{\textless{}{-}}\NormalTok{ coffee\_data[, chemical\_vars]}
+\NormalTok{data\_chem\_complete }\OtherTok{\textless{}{-}}\NormalTok{ data\_chem[}\FunctionTok{complete.cases}\NormalTok{(data\_chem), ]}
+\NormalTok{location\_chem }\OtherTok{\textless{}{-}}\NormalTok{ coffee\_data}\SpecialCharTok{$}\NormalTok{Localisation[}\FunctionTok{complete.cases}\NormalTok{(data\_chem)]}
+
+\NormalTok{pca\_chem }\OtherTok{\textless{}{-}} \FunctionTok{PCA}\NormalTok{(data\_chem\_complete, }\AttributeTok{scale.unit =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{graph =} \ConstantTok{FALSE}\NormalTok{)}
+
+\CommentTok{\# Score plot cho individuals}
+\FunctionTok{fviz\_pca\_ind}\NormalTok{(pca\_chem,}
+             \AttributeTok{geom.ind =} \StringTok{"point"}\NormalTok{,}
+             \AttributeTok{col.ind =} \FunctionTok{factor}\NormalTok{(location\_chem),}
+             \AttributeTok{palette =} \StringTok{"jco"}\NormalTok{,}
+             \AttributeTok{addEllipses =} \ConstantTok{TRUE}\NormalTok{,}
+             \AttributeTok{ellipse.level =} \FloatTok{0.95}\NormalTok{,}
+             \AttributeTok{legend.title =} \StringTok{"Location"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"PCA Score Plot {-} Biến Hóa lý theo Location"}\NormalTok{,}
+    \AttributeTok{x =} \FunctionTok{paste0}\NormalTok{(}\StringTok{"PC1 ("}\NormalTok{, }\FunctionTok{round}\NormalTok{(pca\_chem}\SpecialCharTok{$}\NormalTok{eig[}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{], }\DecValTok{2}\NormalTok{), }\StringTok{"\%)"}\NormalTok{),}
+    \AttributeTok{y =} \FunctionTok{paste0}\NormalTok{(}\StringTok{"PC2 ("}\NormalTok{, }\FunctionTok{round}\NormalTok{(pca\_chem}\SpecialCharTok{$}\NormalTok{eig[}\DecValTok{2}\NormalTok{, }\DecValTok{2}\NormalTok{], }\DecValTok{2}\NormalTok{), }\StringTok{"\%)"}\NormalTok{)}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.85\linewidth]{Coffee_NIR_BTL_Report_files/figure-latex/pca-chemical-1} \end{center}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Variable plot {-} contribution}
+\FunctionTok{fviz\_pca\_var}\NormalTok{(pca\_chem,}
+             \AttributeTok{col.var =} \StringTok{"contrib"}\NormalTok{,}
+             \AttributeTok{gradient.cols =} \FunctionTok{c}\NormalTok{(}\StringTok{"\#00AFBB"}\NormalTok{, }\StringTok{"\#E7B800"}\NormalTok{, }\StringTok{"\#FC4E07"}\NormalTok{),}
+             \AttributeTok{repel =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"PCA Variable Plot {-} Đóng góp của các biến Hóa lý"}\NormalTok{,}
+    \AttributeTok{x =} \FunctionTok{paste0}\NormalTok{(}\StringTok{"PC1 ("}\NormalTok{, }\FunctionTok{round}\NormalTok{(pca\_chem}\SpecialCharTok{$}\NormalTok{eig[}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{], }\DecValTok{2}\NormalTok{), }\StringTok{"\%)"}\NormalTok{),}
+    \AttributeTok{y =} \FunctionTok{paste0}\NormalTok{(}\StringTok{"PC2 ("}\NormalTok{, }\FunctionTok{round}\NormalTok{(pca\_chem}\SpecialCharTok{$}\NormalTok{eig[}\DecValTok{2}\NormalTok{, }\DecValTok{2}\NormalTok{], }\DecValTok{2}\NormalTok{), }\StringTok{"\%)"}\NormalTok{)}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.85\linewidth]{Coffee_NIR_BTL_Report_files/figure-latex/pca-chemical-2} \end{center}
+
+\subsection{Phân tích sự khác biệt giữa các Location}\label{phuxe2n-tuxedch-sux1ef1-khuxe1c-biux1ec7t-giux1eefa-cuxe1c-location}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Tính trung bình score PC1 và PC2 theo Location}
+\NormalTok{scores\_summary }\OtherTok{\textless{}{-}}\NormalTok{ scores\_df }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(Location) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}
+    \AttributeTok{Mean\_PC1 =} \FunctionTok{mean}\NormalTok{(PC1),}
+    \AttributeTok{SD\_PC1 =} \FunctionTok{sd}\NormalTok{(PC1),}
+    \AttributeTok{Mean\_PC2 =} \FunctionTok{mean}\NormalTok{(PC2),}
+    \AttributeTok{SD\_PC2 =} \FunctionTok{sd}\NormalTok{(PC2),}
+    \AttributeTok{N =} \FunctionTok{n}\NormalTok{(),}
+    \AttributeTok{.groups =} \StringTok{"drop"}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(Mean\_PC1))}
+
+\NormalTok{scores\_summary }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kable}\NormalTok{(}\AttributeTok{caption =} \StringTok{"Thống kê PC scores theo Location"}\NormalTok{, }\AttributeTok{digits =} \DecValTok{3}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{bootstrap\_options =} \FunctionTok{c}\NormalTok{(}\StringTok{"striped"}\NormalTok{, }\StringTok{"hover"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+\centering
+\caption{\label{tab:pca-location-analysis}Thống kê PC scores theo Location}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+Location & Mean\_PC1 & SD\_PC1 & Mean\_PC2 & SD\_PC2 & N\\
+\hline
+3 & 11.894 & 17.285 & 0.452 & 10.549 & 26\\
+\hline
+6 & 11.086 & 24.739 & -2.443 & 8.969 & 84\\
+\hline
+1 & 0.099 & 21.986 & 4.582 & 9.255 & 50\\
+\hline
+2 & -0.147 & 18.538 & -1.069 & 9.407 & 26\\
+\hline
+7 & -4.860 & 24.800 & 6.674 & 7.739 & 19\\
+\hline
+4 & -31.322 & 23.536 & 1.510 & 8.559 & 13\\
+\hline
+5 & -33.730 & 23.891 & -7.012 & 8.463 & 22\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# ANOVA test để kiểm tra sự khác biệt có ý nghĩa thống kê}
+\NormalTok{anova\_pc1 }\OtherTok{\textless{}{-}} \FunctionTok{aov}\NormalTok{(PC1 }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Location, }\AttributeTok{data =}\NormalTok{ scores\_df)}
+\NormalTok{anova\_pc2 }\OtherTok{\textless{}{-}} \FunctionTok{aov}\NormalTok{(PC2 }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Location, }\AttributeTok{data =}\NormalTok{ scores\_df)}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{**ANOVA Test {-} PC1:**}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## **ANOVA Test - PC1:**
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\FunctionTok{summary}\NormalTok{(anova\_pc1))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##              Df Sum Sq Mean Sq F value   Pr(>F)    
+## Location      6  52235    8706   16.87 3.72e-16 ***
+## Residuals   233 120250     516                     
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{**ANOVA Test {-} PC2:**}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## **ANOVA Test - PC2:**
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\FunctionTok{summary}\NormalTok{(anova\_pc2))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##              Df Sum Sq Mean Sq F value   Pr(>F)    
+## Location      6   3544   590.6    7.12 5.57e-07 ***
+## Residuals   233  19329    83.0                     
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Nếu có ý nghĩa thống kê, thực hiện post{-}hoc test}
+\ControlFlowTok{if}\NormalTok{(}\FunctionTok{summary}\NormalTok{(anova\_pc1)[[}\DecValTok{1}\NormalTok{]][}\DecValTok{1}\NormalTok{, }\StringTok{"Pr(\textgreater{}F)"}\NormalTok{] }\SpecialCharTok{\textless{}} \FloatTok{0.05}\NormalTok{) \{}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{Có sự khác biệt có ý nghĩa giữa các Location trên PC1}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\NormalTok{  posthoc\_pc1 }\OtherTok{\textless{}{-}} \FunctionTok{TukeyHSD}\NormalTok{(anova\_pc1)}
+  \FunctionTok{print}\NormalTok{(posthoc\_pc1)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Có sự khác biệt có ý nghĩa giữa các Location trên PC1
+##   Tukey multiple comparisons of means
+##     95% family-wise confidence level
+## 
+## Fit: aov(formula = PC1 ~ Location, data = scores_df)
+## 
+## $Location
+##            diff        lwr        upr     p adj
+## 2-1  -0.2465609 -16.583959  16.090837 1.0000000
+## 3-1  11.7949729  -4.542425  28.132371 0.3286872
+## 4-1 -31.4207670 -52.456680 -10.384854 0.0002743
+## 5-1 -33.8294640 -51.116386 -16.542542 0.0000004
+## 6-1  10.9867039  -1.082414  23.055821 0.1009360
+## 7-1  -4.9592364 -23.169260  13.250787 0.9837887
+## 3-2  12.0415337  -6.698747  30.781814 0.4750300
+## 4-2 -31.1742062 -54.126268  -8.222144 0.0014004
+## 5-2 -33.5829031 -53.156488 -14.009319 0.0000143
+## 6-2  11.2332648  -3.930875  26.397405 0.2977444
+## 7-2  -4.7126756 -25.106118  15.680767 0.9932039
+## 4-3 -43.2157399 -66.167802 -20.263678 0.0000012
+## 5-3 -45.6244368 -65.198021 -26.050852 0.0000000
+## 6-3  -0.8082690 -15.972409  14.355871 0.9999986
+## 7-3 -16.7542093 -37.147652   3.639233 0.1854544
+## 5-4  -2.4086969 -26.046046  21.228652 0.9999361
+## 6-4  42.4074709  22.269194  62.545748 0.0000000
+## 7-4  26.4615306   2.140931  50.782130 0.0231588
+## 6-5  44.8161679  28.633515  60.998820 0.0000000
+## 7-5  28.8702275   7.708479  50.031976 0.0013062
+## 7-6 -15.9459403 -33.111182   1.219302 0.0878359
+\end{verbatim}
+
+\section{Phân tích Clustering}\label{phuxe2n-tuxedch-clustering}
+
+Phân nhóm (clustering) giúp chúng ta:
+
+\begin{itemize}
+\tightlist
+\item
+  Tự động phân loại mẫu thành các nhóm tương đồng
+\item
+  So sánh với phân loại theo Location
+\item
+  Phát hiện nhóm mẫu bất thường
+\end{itemize}
+
+\subsection{Hierarchical Clustering}\label{hierarchical-clustering}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Lấy mẫu để clustering (sử dụng PC scores thay vì toàn bộ NIR)}
+\CommentTok{\# Sử dụng các PC đầu tiên (tối đa 10 hoặc số PC có sẵn)}
+\NormalTok{n\_pcs }\OtherTok{\textless{}{-}} \FunctionTok{min}\NormalTok{(}\DecValTok{10}\NormalTok{, }\FunctionTok{ncol}\NormalTok{(pca\_nir}\SpecialCharTok{$}\NormalTok{ind}\SpecialCharTok{$}\NormalTok{coord))}
+\NormalTok{pca\_scores }\OtherTok{\textless{}{-}}\NormalTok{ pca\_nir}\SpecialCharTok{$}\NormalTok{ind}\SpecialCharTok{$}\NormalTok{coord[, }\DecValTok{1}\SpecialCharTok{:}\NormalTok{n\_pcs]}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Sử dụng"}\NormalTok{, n\_pcs, }\StringTok{"PC đầu tiên cho clustering}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Sử dụng 5 PC đầu tiên cho clustering
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Tính khoảng cách Euclidean}
+\NormalTok{dist\_matrix }\OtherTok{\textless{}{-}} \FunctionTok{dist}\NormalTok{(pca\_scores, }\AttributeTok{method =} \StringTok{"euclidean"}\NormalTok{)}
+
+\CommentTok{\# Hierarchical clustering với method Ward}
+\NormalTok{hc\_ward }\OtherTok{\textless{}{-}} \FunctionTok{hclust}\NormalTok{(dist\_matrix, }\AttributeTok{method =} \StringTok{"ward.D2"}\NormalTok{)}
+
+\CommentTok{\# Dendrogram}
+\FunctionTok{fviz\_dend}\NormalTok{(hc\_ward, }\AttributeTok{k =} \FunctionTok{length}\NormalTok{(}\FunctionTok{unique}\NormalTok{(location\_info)),}
+          \AttributeTok{cex =} \FloatTok{0.5}\NormalTok{,}
+          \AttributeTok{k\_colors =} \StringTok{"jco"}\NormalTok{,}
+          \AttributeTok{color\_labels\_by\_k =} \ConstantTok{TRUE}\NormalTok{,}
+          \AttributeTok{rect =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Dendrogram {-} Hierarchical Clustering (Ward\textquotesingle{}s method)"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.85\linewidth]{Coffee_NIR_BTL_Report_files/figure-latex/hclust-nir-1} \end{center}
+
+\subsection{Xác định số cluster tối ưu}\label{xuxe1c-ux111ux1ecbnh-sux1ed1-cluster-tux1ed1i-ux1b0u}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Elbow method}
+\FunctionTok{fviz\_nbclust}\NormalTok{(pca\_scores, kmeans, }\AttributeTok{method =} \StringTok{"wss"}\NormalTok{, }\AttributeTok{k.max =} \DecValTok{10}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Elbow Method {-} Xác định số cluster tối ưu"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_vline}\NormalTok{(}\AttributeTok{xintercept =} \DecValTok{3}\NormalTok{, }\AttributeTok{linetype =} \DecValTok{2}\NormalTok{, }\AttributeTok{color =} \StringTok{"red"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.85\linewidth]{Coffee_NIR_BTL_Report_files/figure-latex/optimal-clusters-1} \end{center}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Silhouette method}
+\FunctionTok{fviz\_nbclust}\NormalTok{(pca\_scores, kmeans, }\AttributeTok{method =} \StringTok{"silhouette"}\NormalTok{, }\AttributeTok{k.max =} \DecValTok{10}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Silhouette Method {-} Xác định số cluster tối ưu"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.85\linewidth]{Coffee_NIR_BTL_Report_files/figure-latex/optimal-clusters-2} \end{center}
+
+\subsection{K-means Clustering}\label{k-means-clustering-1}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Thực hiện k{-}means với số cluster tối ưu}
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)}
+\NormalTok{k }\OtherTok{\textless{}{-}} \FunctionTok{length}\NormalTok{(}\FunctionTok{unique}\NormalTok{(location\_info))  }\CommentTok{\# Sử dụng số location làm baseline}
+\NormalTok{kmeans\_result }\OtherTok{\textless{}{-}} \FunctionTok{kmeans}\NormalTok{(pca\_scores, }\AttributeTok{centers =}\NormalTok{ k, }\AttributeTok{nstart =} \DecValTok{25}\NormalTok{)}
+
+\CommentTok{\# Visualize clusters trên PCA plot}
+\FunctionTok{fviz\_cluster}\NormalTok{(kmeans\_result, }\AttributeTok{data =}\NormalTok{ pca\_scores,}
+             \AttributeTok{geom =} \StringTok{"point"}\NormalTok{,}
+             \AttributeTok{ellipse.type =} \StringTok{"convex"}\NormalTok{,}
+             \AttributeTok{palette =} \StringTok{"jco"}\NormalTok{,}
+             \AttributeTok{ggtheme =} \FunctionTok{theme\_minimal}\NormalTok{()) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \FunctionTok{paste0}\NormalTok{(}\StringTok{"K{-}means Clustering (k = "}\NormalTok{, k, }\StringTok{") trên PCA Space"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.85\linewidth]{Coffee_NIR_BTL_Report_files/figure-latex/kmeans-clustering-1} \end{center}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Thêm cluster assignment vào data frame}
+\NormalTok{scores\_df}\SpecialCharTok{$}\NormalTok{Cluster }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(kmeans\_result}\SpecialCharTok{$}\NormalTok{cluster)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{So sánh Clustering vs Location thực tế}\label{so-suxe1nh-clustering-vs-location-thux1ef1c-tux1ebf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Bảng confusion matrix}
+\NormalTok{confusion\_table }\OtherTok{\textless{}{-}} \FunctionTok{table}\NormalTok{(}
+  \AttributeTok{Actual\_Location =}\NormalTok{ location\_info,}
+  \AttributeTok{Predicted\_Cluster =}\NormalTok{ kmeans\_result}\SpecialCharTok{$}\NormalTok{cluster}
+\NormalTok{)}
+
+\NormalTok{confusion\_table }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kable}\NormalTok{(}\AttributeTok{caption =} \StringTok{"So sánh Cluster vs Location thực tế"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{bootstrap\_options =} \FunctionTok{c}\NormalTok{(}\StringTok{"striped"}\NormalTok{, }\StringTok{"hover"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+\centering
+\caption{\label{tab:compare-cluster-location}So sánh Cluster vs Location thực tế}
+\centering
+\begin{tabular}[t]{r|r|r|r|r|r|r}
+\hline
+1 & 2 & 3 & 4 & 5 & 6 & 7\\
+\hline
+3 & 0 & 9 & 15 & 10 & 4 & 9\\
+\hline
+1 & 0 & 4 & 5 & 7 & 1 & 8\\
+\hline
+4 & 0 & 7 & 4 & 4 & 0 & 7\\
+\hline
+0 & 2 & 1 & 1 & 3 & 6 & 0\\
+\hline
+0 & 4 & 1 & 0 & 7 & 9 & 1\\
+\hline
+12 & 1 & 25 & 6 & 11 & 3 & 26\\
+\hline
+1 & 1 & 3 & 6 & 6 & 1 & 1\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Tính Adjusted Rand Index để đánh giá độ tương đồng}
+\FunctionTok{library}\NormalTok{(mclust)}
+\NormalTok{ari }\OtherTok{\textless{}{-}} \FunctionTok{adjustedRandIndex}\NormalTok{(location\_info, kmeans\_result}\SpecialCharTok{$}\NormalTok{cluster)}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{Adjusted Rand Index:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(ari, }\DecValTok{3}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Adjusted Rand Index: 0.056
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Giải thích: ARI = 1 nghĩa là hoàn toàn giống nhau, ARI = 0 nghĩa là ngẫu nhiên}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Giải thích: ARI = 1 nghĩa là hoàn toàn giống nhau, ARI = 0 nghĩa là ngẫu nhiên
+\end{verbatim}
+
+\subsection{Visualize cả Location và Cluster}\label{visualize-cux1ea3-location-vuxe0-cluster}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Plot 1: Theo Location}
+\NormalTok{p1 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(scores\_df, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ PC1, }\AttributeTok{y =}\NormalTok{ PC2, }\AttributeTok{color =}\NormalTok{ Location)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{size =} \DecValTok{2}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.7}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{stat\_ellipse}\NormalTok{(}\AttributeTok{level =} \FloatTok{0.95}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"PCA {-} Phân nhóm theo Location thực tế"}\NormalTok{,}
+    \AttributeTok{x =} \FunctionTok{paste0}\NormalTok{(}\StringTok{"PC1 ("}\NormalTok{, }\FunctionTok{round}\NormalTok{(pca\_nir}\SpecialCharTok{$}\NormalTok{eig[}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{], }\DecValTok{2}\NormalTok{), }\StringTok{"\%)"}\NormalTok{),}
+    \AttributeTok{y =} \FunctionTok{paste0}\NormalTok{(}\StringTok{"PC2 ("}\NormalTok{, }\FunctionTok{round}\NormalTok{(pca\_nir}\SpecialCharTok{$}\NormalTok{eig[}\DecValTok{2}\NormalTok{, }\DecValTok{2}\NormalTok{], }\DecValTok{2}\NormalTok{), }\StringTok{"\%)"}\NormalTok{)}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{scale\_color\_brewer}\NormalTok{(}\AttributeTok{palette =} \StringTok{"Set1"}\NormalTok{)}
+
+\CommentTok{\# Plot 2: Theo Cluster}
+\NormalTok{p2 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(scores\_df, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ PC1, }\AttributeTok{y =}\NormalTok{ PC2, }\AttributeTok{color =}\NormalTok{ Cluster)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{size =} \DecValTok{2}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.7}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{stat\_ellipse}\NormalTok{(}\AttributeTok{level =} \FloatTok{0.95}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"PCA {-} Phân nhóm theo K{-}means Clustering"}\NormalTok{,}
+    \AttributeTok{x =} \FunctionTok{paste0}\NormalTok{(}\StringTok{"PC1 ("}\NormalTok{, }\FunctionTok{round}\NormalTok{(pca\_nir}\SpecialCharTok{$}\NormalTok{eig[}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{], }\DecValTok{2}\NormalTok{), }\StringTok{"\%)"}\NormalTok{),}
+    \AttributeTok{y =} \FunctionTok{paste0}\NormalTok{(}\StringTok{"PC2 ("}\NormalTok{, }\FunctionTok{round}\NormalTok{(pca\_nir}\SpecialCharTok{$}\NormalTok{eig[}\DecValTok{2}\NormalTok{, }\DecValTok{2}\NormalTok{], }\DecValTok{2}\NormalTok{), }\StringTok{"\%)"}\NormalTok{)}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{scale\_color\_brewer}\NormalTok{(}\AttributeTok{palette =} \StringTok{"Set2"}\NormalTok{)}
+
+\CommentTok{\# Hiển thị cả 2 plot}
+\FunctionTok{grid.arrange}\NormalTok{(p1, p2, }\AttributeTok{ncol =} \DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.85\linewidth]{Coffee_NIR_BTL_Report_files/figure-latex/dual-plot-1} \end{center}
+
+\section{Phân tích đặc điểm của từng Cluster/Location}\label{phuxe2n-tuxedch-ux111ux1eb7c-ux111iux1ec3m-cux1ee7a-tux1eebng-clusterlocation}
+
+\subsection{Đặc điểm hóa lý theo Location}\label{ux111ux1eb7c-ux111iux1ec3m-huxf3a-luxfd-theo-location}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Thêm location vào data hóa lý}
+\NormalTok{chem\_analysis }\OtherTok{\textless{}{-}}\NormalTok{ data\_chem\_complete}
+\NormalTok{chem\_analysis}\SpecialCharTok{$}\NormalTok{Location }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(location\_chem)}
+
+\CommentTok{\# Tính trung bình các biến hóa lý theo Location}
+\NormalTok{chem\_summary }\OtherTok{\textless{}{-}}\NormalTok{ chem\_analysis }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(Location) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}
+    \FunctionTok{across}\NormalTok{(}\FunctionTok{all\_of}\NormalTok{(chemical\_vars), }\FunctionTok{list}\NormalTok{(}\AttributeTok{mean =}\NormalTok{ mean, }\AttributeTok{sd =}\NormalTok{ sd), }\AttributeTok{.names =} \StringTok{"\{col\}\_\{fn\}"}\NormalTok{),}
+    \AttributeTok{N =} \FunctionTok{n}\NormalTok{(),}
+    \AttributeTok{.groups =} \StringTok{"drop"}
+\NormalTok{  )}
+
+\NormalTok{chem\_summary }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kable}\NormalTok{(}\AttributeTok{caption =} \StringTok{"Đặc điểm hóa lý trung bình theo Location"}\NormalTok{, }\AttributeTok{digits =} \DecValTok{2}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{bootstrap\_options =} \FunctionTok{c}\NormalTok{(}\StringTok{"striped"}\NormalTok{, }\StringTok{"hover"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{scroll\_box}\NormalTok{(}\AttributeTok{width =} \StringTok{"100\%"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+\centering
+\caption{\label{tab:chemical-by-location}Đặc điểm hóa lý trung bình theo Location}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r|r|r|r|r|r|r}
+\hline
+Location & CGA\_mean & CGA\_sd & Cafeine\_mean & Cafeine\_sd & Fat\_mean & Fat\_sd & Trigonelline\_mean & Trigonelline\_sd & DM\_mean & DM\_sd & N\\
+\hline
+1 & 64075267 & 26819837 & 9619666 & 3322355 & 121745996 & 34754478 & 7326226 & 2261121.3 & 855286154 & 195313325 & 50\\
+\hline
+2 & 76621108 & 14207204 & 9560762 & 3724276 & 103018755 & 46954739 & 8129722 & 363957.1 & 808896057 & 264698554 & 26\\
+\hline
+3 & 66213676 & 29062234 & 11100141 & 2205882 & 112977375 & 32624853 & 6887609 & 2315299.6 & 896893648 & 4082911 & 26\\
+\hline
+4 & 77792970 & 1795151 & 11437886 & 3129052 & 120113598 & 36600895 & 6822261 & 2686877.3 & 850091730 & 227871732 & 13\\
+\hline
+5 & 68528075 & 24856480 & 12011720 & 2768357 & 97300879 & 24574207 & 7099577 & 1605498.0 & 790614441 & 284885706 & 22\\
+\hline
+6 & 76466262 & 15668357 & 9364410 & 2833508 & 112765540 & 44071232 & 7132965 & 2510965.8 & 802572189 & 266693856 & 84\\
+\hline
+7 & 76326436 & 16905637 & 11172587 & 2823360 & 142634202 & 35123776 & 8598161 & 2019179.2 & 905018355 & 6358823 & 19\\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Boxplot so sánh biến hóa lý}\label{boxplot-so-suxe1nh-biux1ebfn-huxf3a-luxfd}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Reshape data để vẽ}
+\NormalTok{chem\_long }\OtherTok{\textless{}{-}}\NormalTok{ chem\_analysis }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{pivot\_longer}\NormalTok{(}\AttributeTok{cols =} \FunctionTok{all\_of}\NormalTok{(chemical\_vars),}
+               \AttributeTok{names\_to =} \StringTok{"Variable"}\NormalTok{,}
+               \AttributeTok{values\_to =} \StringTok{"Value"}\NormalTok{)}
+
+\CommentTok{\# Boxplot cho từng biến hóa lý theo Location}
+\FunctionTok{ggplot}\NormalTok{(chem\_long, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Location, }\AttributeTok{y =}\NormalTok{ Value, }\AttributeTok{fill =}\NormalTok{ Location)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{(}\AttributeTok{alpha =} \FloatTok{0.7}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{facet\_wrap}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{Variable, }\AttributeTok{scales =} \StringTok{"free\_y"}\NormalTok{, }\AttributeTok{ncol =} \DecValTok{3}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"Phân bố các biến hóa lý theo Location"}\NormalTok{,}
+    \AttributeTok{x =} \StringTok{"Location"}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"Giá trị"}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position =} \StringTok{"bottom"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_brewer}\NormalTok{(}\AttributeTok{palette =} \StringTok{"Set1"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.85\linewidth]{Coffee_NIR_BTL_Report_files/figure-latex/chemical-boxplot-1} \end{center}
+
+\subsection{Heatmap phổ NIR trung bình}\label{heatmap-phux1ed5-nir-trung-buxecnh}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Tính phổ NIR trung bình cho mỗi location}
+\NormalTok{nir\_mean\_by\_location }\OtherTok{\textless{}{-}}\NormalTok{ data\_nir\_complete }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Location =}\NormalTok{ location\_info) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(Location) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}\FunctionTok{across}\NormalTok{(}\FunctionTok{everything}\NormalTok{(), mean), }\AttributeTok{.groups =} \StringTok{"drop"}\NormalTok{)}
+
+\CommentTok{\# Chuyển sang dạng long format}
+\NormalTok{nir\_mean\_long }\OtherTok{\textless{}{-}}\NormalTok{ nir\_mean\_by\_location }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{pivot\_longer}\NormalTok{(}\AttributeTok{cols =} \SpecialCharTok{{-}}\NormalTok{Location, }\AttributeTok{names\_to =} \StringTok{"Wavelength"}\NormalTok{, }\AttributeTok{values\_to =} \StringTok{"Absorbance"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Wavelength =} \FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{str\_remove}\NormalTok{(Wavelength, }\StringTok{"S"}\NormalTok{)))}
+
+\CommentTok{\# Plot phổ trung bình}
+\FunctionTok{ggplot}\NormalTok{(nir\_mean\_long, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Wavelength, }\AttributeTok{y =}\NormalTok{ Absorbance, }\AttributeTok{color =} \FunctionTok{factor}\NormalTok{(Location))) }\SpecialCharTok{+}
+  \FunctionTok{geom\_line}\NormalTok{(}\AttributeTok{linewidth =} \DecValTok{1}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"Phổ NIR trung bình theo Location"}\NormalTok{,}
+    \AttributeTok{x =} \StringTok{"Số thứ tự điểm đo (S1{-}S1050)"}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"Cường độ hấp thụ trung bình"}\NormalTok{,}
+    \AttributeTok{color =} \StringTok{"Location"}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{scale\_color\_brewer}\NormalTok{(}\AttributeTok{palette =} \StringTok{"Set1"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.85\linewidth]{Coffee_NIR_BTL_Report_files/figure-latex/nir-heatmap-1} \end{center}
+
+\section{Kết luận về sự khác biệt}\label{kux1ebft-luux1eadn-vux1ec1-sux1ef1-khuxe1c-biux1ec7t}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"\#\#\# Tóm tắt phân tích sự khác biệt:}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## ### Tóm tắt phân tích sự khác biệt:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"**1. Phân tích PCA:**}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## **1. Phân tích PCA:**
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"{-} PC1 và PC2 giải thích"}\NormalTok{, }\FunctionTok{round}\NormalTok{(cumvar[}\DecValTok{2}\NormalTok{], }\DecValTok{2}\NormalTok{), }\StringTok{"\% phương sai tổng thể}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## - PC1 và PC2 giải thích 77.52 % phương sai tổng thể
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"{-} Có sự phân tách rõ ràng/không rõ ràng giữa các Location trên PCA plot}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## - Có sự phân tách rõ ràng/không rõ ràng giữa các Location trên PCA plot
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"{-} ANOVA test cho thấy sự khác biệt có/không có ý nghĩa thống kê}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## - ANOVA test cho thấy sự khác biệt có/không có ý nghĩa thống kê
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"**2. Phân tích Clustering:**}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## **2. Phân tích Clustering:**
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"{-} Số cluster tối ưu được đề xuất bởi Elbow/Silhouette method}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## - Số cluster tối ưu được đề xuất bởi Elbow/Silhouette method
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"{-} Adjusted Rand Index ="}\NormalTok{, }\FunctionTok{round}\NormalTok{(ari, }\DecValTok{3}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## - Adjusted Rand Index = 0.056
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{if}\NormalTok{(ari }\SpecialCharTok{\textgreater{}} \FloatTok{0.5}\NormalTok{) \{}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"{-} Kết quả clustering phù hợp tốt với phân loại Location thực tế}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\NormalTok{\} }\ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{(ari }\SpecialCharTok{\textgreater{}} \FloatTok{0.3}\NormalTok{) \{}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"{-} Kết quả clustering phù hợp trung bình với phân loại Location thực tế}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\NormalTok{\} }\ControlFlowTok{else}\NormalTok{ \{}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"{-} Kết quả clustering khác biệt đáng kể so với phân loại Location thực tế}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## - Kết quả clustering khác biệt đáng kể so với phân loại Location thực tế
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"**3. Đặc điểm phân biệt:**}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## **3. Đặc điểm phân biệt:**
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"{-} Các biến hóa lý có sự khác biệt đáng kể giữa các Location}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## - Các biến hóa lý có sự khác biệt đáng kể giữa các Location
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"{-} Phổ NIR cho thấy pattern khác nhau ở các vùng bước sóng nhất định}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## - Phổ NIR cho thấy pattern khác nhau ở các vùng bước sóng nhất định
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"{-} Có thể sử dụng PCA scores hoặc cluster để xây dựng mô hình phân loại}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## - Có thể sử dụng PCA scores hoặc cluster để xây dựng mô hình phân loại
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"**4. Khuyến nghị:**}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## **4. Khuyến nghị:**
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"{-} Nên xem xét Location như một biến quan trọng trong mô hình dự đoán}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## - Nên xem xét Location như một biến quan trọng trong mô hình dự đoán
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"{-} Có thể cần xây dựng mô hình riêng cho từng Location}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## - Có thể cần xây dựng mô hình riêng cho từng Location
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"{-} Sử dụng PCA để giảm chiều trước khi xây dựng mô hình hồi quy}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## - Sử dụng PCA để giảm chiều trước khi xây dựng mô hình hồi quy
+\end{verbatim}
+
+\chapter{Phát hiện Outliers nâng cao}\label{phuxe1t-hiux1ec7n-outliers-nuxe2ng-cao}
+
+Trong phần này, chúng ta sử dụng các phương pháp thống kê nâng cao để phát hiện outliers trong dữ liệu NIR, đặc biệt là:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Hotelling T² statistic}: Đo khoảng cách của mẫu đến trung tâm của mô hình PCA
+\item
+  \textbf{Q residuals (SPE)}: Đo phần dữ liệu không được giải thích bởi mô hình PCA
+\item
+  \textbf{Leverage và Influence}: Đánh giá ảnh hưởng của từng mẫu đến mô hình
+\end{enumerate}
+
+\section{Chuẩn bị dữ liệu}\label{chuux1ea9n-bux1ecb-dux1eef-liux1ec7u-1}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\FunctionTok{library}\NormalTok{(FactoMineR)}
+\FunctionTok{library}\NormalTok{(factoextra)}
+\FunctionTok{library}\NormalTok{(knitr)}
+\FunctionTok{library}\NormalTok{(kableExtra)}
+\FunctionTok{library}\NormalTok{(gridExtra)}
+
+\CommentTok{\# Data and variable groups already loaded in index.Rmd global{-}setup}
+\CommentTok{\# Verify data is available}
+\ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{exists}\NormalTok{(}\StringTok{"coffee\_data"}\NormalTok{)) \{}
+  \FunctionTok{stop}\NormalTok{(}\StringTok{"Data not loaded. Please render from index.Rmd"}\NormalTok{)}
+\NormalTok{\}}
+
+\CommentTok{\# Chuẩn bị dữ liệu NIR}
+\NormalTok{data\_nir }\OtherTok{\textless{}{-}}\NormalTok{ coffee\_data[, nir\_vars]}
+\NormalTok{data\_nir\_complete }\OtherTok{\textless{}{-}}\NormalTok{ data\_nir[}\FunctionTok{complete.cases}\NormalTok{(data\_nir), ]}
+\NormalTok{location\_info }\OtherTok{\textless{}{-}}\NormalTok{ coffee\_data}\SpecialCharTok{$}\NormalTok{Localisation[}\FunctionTok{complete.cases}\NormalTok{(data\_nir)]}
+
+\CommentTok{\# Thực hiện PCA}
+\NormalTok{pca\_nir }\OtherTok{\textless{}{-}} \FunctionTok{PCA}\NormalTok{(data\_nir\_complete, }\AttributeTok{scale.unit =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{graph =} \ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Hotelling T² Statistic}\label{hotelling-tuxb2-statistic}
+
+Hotelling T² đo khoảng cách Mahalanobis của mỗi mẫu đến trung tâm của không gian PCA.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Số PC sử dụng (chọn theo cumulative variance \textgreater{} 95\% hoặc elbow)}
+\NormalTok{n\_pcs }\OtherTok{\textless{}{-}} \FunctionTok{min}\NormalTok{(}\DecValTok{10}\NormalTok{, }\FunctionTok{ncol}\NormalTok{(pca\_nir}\SpecialCharTok{$}\NormalTok{ind}\SpecialCharTok{$}\NormalTok{coord))}
+\NormalTok{scores }\OtherTok{\textless{}{-}}\NormalTok{ pca\_nir}\SpecialCharTok{$}\NormalTok{ind}\SpecialCharTok{$}\NormalTok{coord[, }\DecValTok{1}\SpecialCharTok{:}\NormalTok{n\_pcs]}
+
+\CommentTok{\# Tính Hotelling T2}
+\NormalTok{eigenvalues }\OtherTok{\textless{}{-}}\NormalTok{ pca\_nir}\SpecialCharTok{$}\NormalTok{eig[}\DecValTok{1}\SpecialCharTok{:}\NormalTok{n\_pcs, }\DecValTok{1}\NormalTok{]}
+\NormalTok{t2 }\OtherTok{\textless{}{-}} \FunctionTok{rowSums}\NormalTok{(}\FunctionTok{t}\NormalTok{(}\FunctionTok{t}\NormalTok{(scores}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{) }\SpecialCharTok{/}\NormalTok{ eigenvalues))}
+
+\CommentTok{\# Ngưỡng T2 (chi{-}square distribution với alpha = 0.05)}
+\NormalTok{n }\OtherTok{\textless{}{-}} \FunctionTok{nrow}\NormalTok{(scores)}
+\NormalTok{p }\OtherTok{\textless{}{-}}\NormalTok{ n\_pcs}
+\NormalTok{t2\_limit }\OtherTok{\textless{}{-}} \FunctionTok{qchisq}\NormalTok{(}\FloatTok{0.95}\NormalTok{, }\AttributeTok{df =}\NormalTok{ p)}
+
+\CommentTok{\# Xác định outliers}
+\NormalTok{t2\_outliers }\OtherTok{\textless{}{-}} \FunctionTok{which}\NormalTok{(t2 }\SpecialCharTok{\textgreater{}}\NormalTok{ t2\_limit)}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Ngưỡng T² (95\%):"}\NormalTok{, }\FunctionTok{round}\NormalTok{(t2\_limit, }\DecValTok{2}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Ngưỡng T² (95%): 11.07
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Số mẫu vượt ngưỡng T²:"}\NormalTok{, }\FunctionTok{length}\NormalTok{(t2\_outliers), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Số mẫu vượt ngưỡng T²: 15
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Tỷ lệ outliers:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(}\FunctionTok{length}\NormalTok{(t2\_outliers) }\SpecialCharTok{/}\NormalTok{ n }\SpecialCharTok{*} \DecValTok{100}\NormalTok{, }\DecValTok{2}\NormalTok{), }\StringTok{"\%}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Tỷ lệ outliers: 6.25 %
+\end{verbatim}
+
+\subsection{Biểu đồ Hotelling T²}\label{biux1ec3u-ux111ux1ed3-hotelling-tuxb2}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Tạo data frame}
+\NormalTok{t2\_df }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+  \AttributeTok{Sample =} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{length}\NormalTok{(t2),}
+  \AttributeTok{T2 =}\NormalTok{ t2,}
+  \AttributeTok{Location =} \FunctionTok{factor}\NormalTok{(location\_info),}
+  \AttributeTok{Outlier =}\NormalTok{ t2 }\SpecialCharTok{\textgreater{}}\NormalTok{ t2\_limit}
+\NormalTok{)}
+
+\CommentTok{\# T2 chart}
+\FunctionTok{ggplot}\NormalTok{(t2\_df, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Sample, }\AttributeTok{y =}\NormalTok{ T2, }\AttributeTok{color =}\NormalTok{ Outlier)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{size =} \DecValTok{2}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.7}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_hline}\NormalTok{(}\AttributeTok{yintercept =}\NormalTok{ t2\_limit, }\AttributeTok{linetype =} \StringTok{"dashed"}\NormalTok{, }\AttributeTok{color =} \StringTok{"red"}\NormalTok{, }\AttributeTok{linewidth =} \DecValTok{1}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{annotate}\NormalTok{(}\StringTok{"text"}\NormalTok{, }\AttributeTok{x =} \FunctionTok{max}\NormalTok{(t2\_df}\SpecialCharTok{$}\NormalTok{Sample) }\SpecialCharTok{*} \FloatTok{0.9}\NormalTok{, }\AttributeTok{y =}\NormalTok{ t2\_limit }\SpecialCharTok{*} \FloatTok{1.1}\NormalTok{,}
+           \AttributeTok{label =} \FunctionTok{paste0}\NormalTok{(}\StringTok{"95\% limit = "}\NormalTok{, }\FunctionTok{round}\NormalTok{(t2\_limit, }\DecValTok{2}\NormalTok{)), }\AttributeTok{color =} \StringTok{"red"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_color\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{c}\NormalTok{(}\StringTok{"FALSE"} \OtherTok{=} \StringTok{"blue"}\NormalTok{, }\StringTok{"TRUE"} \OtherTok{=} \StringTok{"red"}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"Hotelling T² Chart {-} Phát hiện Outliers"}\NormalTok{,}
+    \AttributeTok{x =} \StringTok{"Sample Index"}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"Hotelling T² Statistic"}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position =} \StringTok{"top"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.85\linewidth]{Coffee_NIR_BTL_Report_files/figure-latex/t2-plot-1} \end{center}
+
+\section{Q Residuals (SPE - Squared Prediction Error)}\label{q-residuals-spe---squared-prediction-error}
+
+Q residuals đo phần biến động không được giải thích bởi các PC đã chọn.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Tính Q residuals (SPE)}
+\CommentTok{\# Reconstruction của dữ liệu từ PCA}
+\NormalTok{data\_reconstructed }\OtherTok{\textless{}{-}}\NormalTok{ scores }\SpecialCharTok{\%*\%} \FunctionTok{t}\NormalTok{(pca\_nir}\SpecialCharTok{$}\NormalTok{svd}\SpecialCharTok{$}\NormalTok{V[, }\DecValTok{1}\SpecialCharTok{:}\NormalTok{n\_pcs])}
+\NormalTok{data\_centered }\OtherTok{\textless{}{-}} \FunctionTok{scale}\NormalTok{(data\_nir\_complete, }\AttributeTok{center =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{scale =} \ConstantTok{TRUE}\NormalTok{)}
+
+\CommentTok{\# Q statistic = sum of squared residuals}
+\NormalTok{q\_stat }\OtherTok{\textless{}{-}} \FunctionTok{rowSums}\NormalTok{((data\_centered }\SpecialCharTok{{-}}\NormalTok{ data\_reconstructed)}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{)}
+
+\CommentTok{\# Ngưỡng Q (approximate chi{-}square)}
+\CommentTok{\# Sử dụng Jackson{-}Mudholkar approximation}
+\NormalTok{theta1 }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{(pca\_nir}\SpecialCharTok{$}\NormalTok{eig[(n\_pcs}\SpecialCharTok{+}\DecValTok{1}\NormalTok{)}\SpecialCharTok{:}\FunctionTok{nrow}\NormalTok{(pca\_nir}\SpecialCharTok{$}\NormalTok{eig), }\DecValTok{1}\NormalTok{])}
+\NormalTok{theta2 }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{(pca\_nir}\SpecialCharTok{$}\NormalTok{eig[(n\_pcs}\SpecialCharTok{+}\DecValTok{1}\NormalTok{)}\SpecialCharTok{:}\FunctionTok{nrow}\NormalTok{(pca\_nir}\SpecialCharTok{$}\NormalTok{eig), }\DecValTok{1}\NormalTok{]}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{)}
+\NormalTok{theta3 }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{(pca\_nir}\SpecialCharTok{$}\NormalTok{eig[(n\_pcs}\SpecialCharTok{+}\DecValTok{1}\NormalTok{)}\SpecialCharTok{:}\FunctionTok{nrow}\NormalTok{(pca\_nir}\SpecialCharTok{$}\NormalTok{eig), }\DecValTok{1}\NormalTok{]}\SpecialCharTok{\^{}}\DecValTok{3}\NormalTok{)}
+
+\NormalTok{h0 }\OtherTok{\textless{}{-}} \DecValTok{1} \SpecialCharTok{{-}}\NormalTok{ (}\DecValTok{2} \SpecialCharTok{*}\NormalTok{ theta1 }\SpecialCharTok{*}\NormalTok{ theta3) }\SpecialCharTok{/}\NormalTok{ (}\DecValTok{3} \SpecialCharTok{*}\NormalTok{ theta2}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{)}
+\NormalTok{ca }\OtherTok{\textless{}{-}} \FunctionTok{qnorm}\NormalTok{(}\FloatTok{0.95}\NormalTok{)}
+\NormalTok{q\_limit }\OtherTok{\textless{}{-}}\NormalTok{ theta1 }\SpecialCharTok{*}\NormalTok{ (}\DecValTok{1} \SpecialCharTok{+}\NormalTok{ ca }\SpecialCharTok{*} \FunctionTok{sqrt}\NormalTok{(}\DecValTok{2} \SpecialCharTok{*}\NormalTok{ theta2 }\SpecialCharTok{*}\NormalTok{ h0}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{) }\SpecialCharTok{/}\NormalTok{ theta1 }\SpecialCharTok{+}
+\NormalTok{                      theta2 }\SpecialCharTok{*}\NormalTok{ h0 }\SpecialCharTok{*}\NormalTok{ (h0 }\SpecialCharTok{{-}} \DecValTok{1}\NormalTok{) }\SpecialCharTok{/}\NormalTok{ theta1}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{)}\SpecialCharTok{\^{}}\NormalTok{(}\DecValTok{1}\SpecialCharTok{/}\NormalTok{h0)}
+
+\CommentTok{\# Xác định outliers}
+\NormalTok{q\_outliers }\OtherTok{\textless{}{-}} \FunctionTok{which}\NormalTok{(q\_stat }\SpecialCharTok{\textgreater{}}\NormalTok{ q\_limit)}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Ngưỡng Q (95\%):"}\NormalTok{, }\FunctionTok{round}\NormalTok{(q\_limit, }\DecValTok{2}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Ngưỡng Q (95%): 219.98
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Số mẫu vượt ngưỡng Q:"}\NormalTok{, }\FunctionTok{length}\NormalTok{(q\_outliers), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Số mẫu vượt ngưỡng Q: 32
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Tỷ lệ outliers:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(}\FunctionTok{length}\NormalTok{(q\_outliers) }\SpecialCharTok{/}\NormalTok{ n }\SpecialCharTok{*} \DecValTok{100}\NormalTok{, }\DecValTok{2}\NormalTok{), }\StringTok{"\%}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Tỷ lệ outliers: 13.33 %
+\end{verbatim}
+
+\subsection{Biểu đồ Q Residuals}\label{biux1ec3u-ux111ux1ed3-q-residuals}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Tạo data frame}
+\NormalTok{q\_df }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+  \AttributeTok{Sample =} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{length}\NormalTok{(q\_stat),}
+  \AttributeTok{Q =}\NormalTok{ q\_stat,}
+  \AttributeTok{Location =} \FunctionTok{factor}\NormalTok{(location\_info),}
+  \AttributeTok{Outlier =}\NormalTok{ q\_stat }\SpecialCharTok{\textgreater{}}\NormalTok{ q\_limit}
+\NormalTok{)}
+
+\CommentTok{\# Q chart}
+\FunctionTok{ggplot}\NormalTok{(q\_df, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Sample, }\AttributeTok{y =}\NormalTok{ Q, }\AttributeTok{color =}\NormalTok{ Outlier)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{size =} \DecValTok{2}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.7}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_hline}\NormalTok{(}\AttributeTok{yintercept =}\NormalTok{ q\_limit, }\AttributeTok{linetype =} \StringTok{"dashed"}\NormalTok{, }\AttributeTok{color =} \StringTok{"red"}\NormalTok{, }\AttributeTok{linewidth =} \DecValTok{1}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{annotate}\NormalTok{(}\StringTok{"text"}\NormalTok{, }\AttributeTok{x =} \FunctionTok{max}\NormalTok{(q\_df}\SpecialCharTok{$}\NormalTok{Sample) }\SpecialCharTok{*} \FloatTok{0.9}\NormalTok{, }\AttributeTok{y =}\NormalTok{ q\_limit }\SpecialCharTok{*} \FloatTok{1.1}\NormalTok{,}
+           \AttributeTok{label =} \FunctionTok{paste0}\NormalTok{(}\StringTok{"95\% limit = "}\NormalTok{, }\FunctionTok{round}\NormalTok{(q\_limit, }\DecValTok{2}\NormalTok{)), }\AttributeTok{color =} \StringTok{"red"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_color\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{c}\NormalTok{(}\StringTok{"FALSE"} \OtherTok{=} \StringTok{"blue"}\NormalTok{, }\StringTok{"TRUE"} \OtherTok{=} \StringTok{"red"}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"Q Residuals Chart {-} Phát hiện Outliers"}\NormalTok{,}
+    \AttributeTok{x =} \StringTok{"Sample Index"}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"Q Statistic (SPE)"}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position =} \StringTok{"top"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.85\linewidth]{Coffee_NIR_BTL_Report_files/figure-latex/q-plot-1} \end{center}
+
+\section{Combined T² vs Q Plot}\label{combined-tuxb2-vs-q-plot}
+
+Biểu đồ kết hợp T² và Q giúp phân loại outliers:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{High T², Low Q}: Mẫu cực trị nhưng vẫn theo mô hình
+\item
+  \textbf{Low T², High Q}: Mẫu gần trung tâm nhưng không theo mô hình
+\item
+  \textbf{High T², High Q}: Mẫu outlier mạnh
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Kết hợp T2 và Q}
+\NormalTok{combined\_df }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+  \AttributeTok{Sample =} \DecValTok{1}\SpecialCharTok{:}\NormalTok{n,}
+  \AttributeTok{T2 =}\NormalTok{ t2,}
+  \AttributeTok{Q =}\NormalTok{ q\_stat,}
+  \AttributeTok{Location =} \FunctionTok{factor}\NormalTok{(location\_info),}
+  \AttributeTok{T2\_outlier =}\NormalTok{ t2 }\SpecialCharTok{\textgreater{}}\NormalTok{ t2\_limit,}
+  \AttributeTok{Q\_outlier =}\NormalTok{ q\_stat }\SpecialCharTok{\textgreater{}}\NormalTok{ q\_limit}
+\NormalTok{)}
+
+\CommentTok{\# Phân loại outliers}
+\NormalTok{combined\_df}\SpecialCharTok{$}\NormalTok{Outlier\_Type }\OtherTok{\textless{}{-}} \StringTok{"Normal"}
+\NormalTok{combined\_df}\SpecialCharTok{$}\NormalTok{Outlier\_Type[combined\_df}\SpecialCharTok{$}\NormalTok{T2\_outlier }\SpecialCharTok{\&} \SpecialCharTok{!}\NormalTok{combined\_df}\SpecialCharTok{$}\NormalTok{Q\_outlier] }\OtherTok{\textless{}{-}} \StringTok{"High T² only"}
+\NormalTok{combined\_df}\SpecialCharTok{$}\NormalTok{Outlier\_Type[}\SpecialCharTok{!}\NormalTok{combined\_df}\SpecialCharTok{$}\NormalTok{T2\_outlier }\SpecialCharTok{\&}\NormalTok{ combined\_df}\SpecialCharTok{$}\NormalTok{Q\_outlier] }\OtherTok{\textless{}{-}} \StringTok{"High Q only"}
+\NormalTok{combined\_df}\SpecialCharTok{$}\NormalTok{Outlier\_Type[combined\_df}\SpecialCharTok{$}\NormalTok{T2\_outlier }\SpecialCharTok{\&}\NormalTok{ combined\_df}\SpecialCharTok{$}\NormalTok{Q\_outlier] }\OtherTok{\textless{}{-}} \StringTok{"Both High"}
+
+\CommentTok{\# T2 vs Q scatter plot}
+\FunctionTok{ggplot}\NormalTok{(combined\_df, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ T2, }\AttributeTok{y =}\NormalTok{ Q, }\AttributeTok{color =}\NormalTok{ Outlier\_Type)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{size =} \FloatTok{2.5}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.7}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_vline}\NormalTok{(}\AttributeTok{xintercept =}\NormalTok{ t2\_limit, }\AttributeTok{linetype =} \StringTok{"dashed"}\NormalTok{, }\AttributeTok{color =} \StringTok{"red"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_hline}\NormalTok{(}\AttributeTok{yintercept =}\NormalTok{ q\_limit, }\AttributeTok{linetype =} \StringTok{"dashed"}\NormalTok{, }\AttributeTok{color =} \StringTok{"red"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_color\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{c}\NormalTok{(}
+    \StringTok{"Normal"} \OtherTok{=} \StringTok{"blue"}\NormalTok{,}
+    \StringTok{"High T² only"} \OtherTok{=} \StringTok{"orange"}\NormalTok{,}
+    \StringTok{"High Q only"} \OtherTok{=} \StringTok{"purple"}\NormalTok{,}
+    \StringTok{"Both High"} \OtherTok{=} \StringTok{"red"}
+\NormalTok{  )) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"T² vs Q Plot {-} Phân loại Outliers"}\NormalTok{,}
+    \AttributeTok{x =} \StringTok{"Hotelling T²"}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"Q Residuals (SPE)"}\NormalTok{,}
+    \AttributeTok{color =} \StringTok{"Outlier Type"}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position =} \StringTok{"right"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.85\linewidth]{Coffee_NIR_BTL_Report_files/figure-latex/t2-q-combined-1} \end{center}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Thống kê outliers}
+\NormalTok{outlier\_summary }\OtherTok{\textless{}{-}}\NormalTok{ combined\_df }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{  dplyr}\SpecialCharTok{::}\FunctionTok{count}\NormalTok{(Outlier\_Type) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Percentage =} \FunctionTok{round}\NormalTok{(n }\SpecialCharTok{/} \FunctionTok{nrow}\NormalTok{(combined\_df) }\SpecialCharTok{*} \DecValTok{100}\NormalTok{, }\DecValTok{2}\NormalTok{))}
+
+\NormalTok{outlier\_summary }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kable}\NormalTok{(}\AttributeTok{caption =} \StringTok{"Phân loại Outliers theo T² và Q"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{bootstrap\_options =} \FunctionTok{c}\NormalTok{(}\StringTok{"striped"}\NormalTok{, }\StringTok{"hover"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+\centering
+\caption{\label{tab:t2-q-combined}Phân loại Outliers theo T² và Q}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+Outlier\_Type & n & Percentage\\
+\hline
+Both High & 3 & 1.25\\
+\hline
+High Q only & 29 & 12.08\\
+\hline
+High T² only & 12 & 5.00\\
+\hline
+Normal & 196 & 81.67\\
+\hline
+\end{tabular}
+\end{table}
+
+\section{Phân tích Outliers theo Location}\label{phuxe2n-tuxedch-outliers-theo-location}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Đếm outliers theo Location}
+\NormalTok{outlier\_location }\OtherTok{\textless{}{-}}\NormalTok{ combined\_df }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Is\_Outlier =}\NormalTok{ T2\_outlier }\SpecialCharTok{|}\NormalTok{ Q\_outlier) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(Location) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}
+    \AttributeTok{Total\_Samples =} \FunctionTok{n}\NormalTok{(),}
+    \AttributeTok{N\_Outliers =} \FunctionTok{sum}\NormalTok{(Is\_Outlier),}
+    \AttributeTok{Pct\_Outliers =} \FunctionTok{round}\NormalTok{(N\_Outliers }\SpecialCharTok{/}\NormalTok{ Total\_Samples }\SpecialCharTok{*} \DecValTok{100}\NormalTok{, }\DecValTok{2}\NormalTok{),}
+    \AttributeTok{Mean\_T2 =} \FunctionTok{round}\NormalTok{(}\FunctionTok{mean}\NormalTok{(T2), }\DecValTok{2}\NormalTok{),}
+    \AttributeTok{Mean\_Q =} \FunctionTok{round}\NormalTok{(}\FunctionTok{mean}\NormalTok{(Q), }\DecValTok{2}\NormalTok{),}
+    \AttributeTok{.groups =} \StringTok{"drop"}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(Pct\_Outliers))}
+
+\NormalTok{outlier\_location }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kable}\NormalTok{(}\AttributeTok{caption =} \StringTok{"Thống kê Outliers theo Location"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{bootstrap\_options =} \FunctionTok{c}\NormalTok{(}\StringTok{"striped"}\NormalTok{, }\StringTok{"hover"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+\centering
+\caption{\label{tab:outliers-by-location}Thống kê Outliers theo Location}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+Location & Total\_Samples & N\_Outliers & Pct\_Outliers & Mean\_T2 & Mean\_Q\\
+\hline
+7 & 19 & 7 & 36.84 & 9.21 & 170.08\\
+\hline
+3 & 26 & 8 & 30.77 & 4.39 & 185.24\\
+\hline
+1 & 50 & 9 & 18.00 & 5.09 & 172.87\\
+\hline
+6 & 84 & 14 & 16.67 & 4.25 & 186.46\\
+\hline
+2 & 26 & 4 & 15.38 & 3.51 & 179.93\\
+\hline
+5 & 22 & 2 & 9.09 & 6.49 & 152.98\\
+\hline
+4 & 13 & 0 & 0.00 & 5.03 & 148.20\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Boxplot T2 theo Location}
+\FunctionTok{ggplot}\NormalTok{(combined\_df, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Location, }\AttributeTok{y =}\NormalTok{ T2, }\AttributeTok{fill =}\NormalTok{ Location)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{(}\AttributeTok{alpha =} \FloatTok{0.7}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_hline}\NormalTok{(}\AttributeTok{yintercept =}\NormalTok{ t2\_limit, }\AttributeTok{linetype =} \StringTok{"dashed"}\NormalTok{, }\AttributeTok{color =} \StringTok{"red"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"Phân bố T² theo Location"}\NormalTok{,}
+    \AttributeTok{x =} \StringTok{"Location"}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"Hotelling T²"}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position =} \StringTok{"none"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.85\linewidth]{Coffee_NIR_BTL_Report_files/figure-latex/outliers-by-location-1} \end{center}
+
+\section{Influence Plot}\label{influence-plot}
+
+Influence plot kết hợp leverage (khoảng cách từ trung tâm) và residuals.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Leverage: diagonal của hat matrix trong không gian PC}
+\NormalTok{leverage }\OtherTok{\textless{}{-}} \FunctionTok{diag}\NormalTok{(scores }\SpecialCharTok{\%*\%} \FunctionTok{solve}\NormalTok{(}\FunctionTok{t}\NormalTok{(scores) }\SpecialCharTok{\%*\%}\NormalTok{ scores) }\SpecialCharTok{\%*\%} \FunctionTok{t}\NormalTok{(scores))}
+
+\CommentTok{\# Chuẩn hóa leverage}
+\NormalTok{leverage\_norm }\OtherTok{\textless{}{-}}\NormalTok{ leverage }\SpecialCharTok{/} \FunctionTok{mean}\NormalTok{(leverage)}
+
+\CommentTok{\# Influence = leverage × residuals}
+\NormalTok{influence\_df }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+  \AttributeTok{Sample =} \DecValTok{1}\SpecialCharTok{:}\NormalTok{n,}
+  \AttributeTok{Leverage =}\NormalTok{ leverage\_norm,}
+  \AttributeTok{Q =}\NormalTok{ q\_stat,}
+  \AttributeTok{Location =} \FunctionTok{factor}\NormalTok{(location\_info),}
+  \AttributeTok{High\_Influence =}\NormalTok{ leverage\_norm }\SpecialCharTok{\textgreater{}} \DecValTok{2} \SpecialCharTok{\&}\NormalTok{ q\_stat }\SpecialCharTok{\textgreater{}}\NormalTok{ q\_limit}
+\NormalTok{)}
+
+\CommentTok{\# Influence plot}
+\FunctionTok{ggplot}\NormalTok{(influence\_df, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Leverage, }\AttributeTok{y =}\NormalTok{ Q, }\AttributeTok{color =}\NormalTok{ High\_Influence)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{size =} \FloatTok{2.5}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.7}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_vline}\NormalTok{(}\AttributeTok{xintercept =} \DecValTok{2}\NormalTok{, }\AttributeTok{linetype =} \StringTok{"dashed"}\NormalTok{, }\AttributeTok{color =} \StringTok{"red"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_hline}\NormalTok{(}\AttributeTok{yintercept =}\NormalTok{ q\_limit, }\AttributeTok{linetype =} \StringTok{"dashed"}\NormalTok{, }\AttributeTok{color =} \StringTok{"red"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_color\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{c}\NormalTok{(}\StringTok{"FALSE"} \OtherTok{=} \StringTok{"blue"}\NormalTok{, }\StringTok{"TRUE"} \OtherTok{=} \StringTok{"red"}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"Influence Plot {-} Leverage vs Q Residuals"}\NormalTok{,}
+    \AttributeTok{x =} \StringTok{"Normalized Leverage"}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"Q Residuals"}\NormalTok{,}
+    \AttributeTok{color =} \StringTok{"High Influence"}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position =} \StringTok{"top"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.85\linewidth]{Coffee_NIR_BTL_Report_files/figure-latex/influence-plot-1} \end{center}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{high\_influence }\OtherTok{\textless{}{-}} \FunctionTok{which}\NormalTok{(influence\_df}\SpecialCharTok{$}\NormalTok{High\_Influence)}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Số mẫu có influence cao:"}\NormalTok{, }\FunctionTok{length}\NormalTok{(high\_influence), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Số mẫu có influence cao: 3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{if}\NormalTok{(}\FunctionTok{length}\NormalTok{(high\_influence) }\SpecialCharTok{\textgreater{}} \DecValTok{0}\NormalTok{) \{}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"Các mẫu có influence cao:"}\NormalTok{, }\FunctionTok{paste}\NormalTok{(}\FunctionTok{head}\NormalTok{(high\_influence, }\DecValTok{10}\NormalTok{), }\AttributeTok{collapse =} \StringTok{", "}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Các mẫu có influence cao: 66, 155, 207
+\end{verbatim}
+
+\section{Danh sách Outliers chi tiết}\label{danh-suxe1ch-outliers-chi-tiux1ebft}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Liệt kê tất cả outliers}
+\NormalTok{all\_outliers }\OtherTok{\textless{}{-}}\NormalTok{ combined\_df }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(T2\_outlier }\SpecialCharTok{|}\NormalTok{ Q\_outlier) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(T2 }\SpecialCharTok{+}\NormalTok{ Q)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(Sample, Location, T2, Q, Outlier\_Type)}
+
+\ControlFlowTok{if}\NormalTok{(}\FunctionTok{nrow}\NormalTok{(all\_outliers) }\SpecialCharTok{\textgreater{}} \DecValTok{0}\NormalTok{) \{}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"Tìm thấy"}\NormalTok{, }\FunctionTok{nrow}\NormalTok{(all\_outliers), }\StringTok{"outliers:}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+  \FunctionTok{head}\NormalTok{(all\_outliers, }\DecValTok{20}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{kable}\NormalTok{(}\AttributeTok{caption =} \StringTok{"Top 20 Outliers (sắp xếp theo T² + Q)"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{bootstrap\_options =} \FunctionTok{c}\NormalTok{(}\StringTok{"striped"}\NormalTok{, }\StringTok{"hover"}\NormalTok{))}
+\NormalTok{\} }\ControlFlowTok{else}\NormalTok{ \{}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"Không tìm thấy outliers nào.}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Tìm thấy 44 outliers:
+\end{verbatim}
+
+\begin{table}
+\centering
+\caption{\label{tab:outlier-list}Top 20 Outliers (sắp xếp theo T² + Q)}
+\centering
+\begin{tabular}[t]{l|r|l|r|r|l}
+\hline
+  & Sample & Location & T2 & Q & Outlier\_Type\\
+\hline
+V127 & 126 & 3 & 2.753825 & 359.2182 & High Q only\\
+\hline
+V208 & 207 & 3 & 13.889167 & 301.1639 & Both High\\
+\hline
+V156 & 155 & 7 & 12.350460 & 295.1462 & Both High\\
+\hline
+V137 & 136 & 6 & 2.498920 & 281.8304 & High Q only\\
+\hline
+V172 & 171 & 5 & 6.674063 & 277.4150 & High Q only\\
+\hline
+V51 & 50 & 3 & 4.567273 & 271.5660 & High Q only\\
+\hline
+V62 & 61 & 6 & 3.234206 & 272.4102 & High Q only\\
+\hline
+V228 & 227 & 6 & 5.306836 & 263.9010 & High Q only\\
+\hline
+V169 & 168 & 1 & 5.022219 & 261.5611 & High Q only\\
+\hline
+V13 & 12 & 6 & 5.896187 & 257.3362 & High Q only\\
+\hline
+V111 & 110 & 1 & 5.458945 & 257.1632 & High Q only\\
+\hline
+V195 & 194 & 3 & 3.221745 & 251.1642 & High Q only\\
+\hline
+V118 & 117 & 1 & 6.429499 & 246.0678 & High Q only\\
+\hline
+V94 & 93 & 2 & 1.869872 & 249.5053 & High Q only\\
+\hline
+V132 & 131 & 6 & 8.281691 & 238.2543 & High Q only\\
+\hline
+V71 & 70 & 1 & 2.952866 & 242.6182 & High Q only\\
+\hline
+V231 & 230 & 1 & 7.294970 & 237.6560 & High Q only\\
+\hline
+V80 & 79 & 2 & 2.511432 & 242.0534 & High Q only\\
+\hline
+V157 & 156 & 3 & 7.578982 & 233.8829 & High Q only\\
+\hline
+V90 & 89 & 6 & 3.718666 & 236.6165 & High Q only\\
+\hline
+\end{tabular}
+\end{table}
+
+\section{So sánh phổ NIR của Outliers}\label{so-suxe1nh-phux1ed5-nir-cux1ee7a-outliers}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Lấy top 5 outliers mạnh nhất}
+\ControlFlowTok{if}\NormalTok{(}\FunctionTok{nrow}\NormalTok{(all\_outliers) }\SpecialCharTok{\textgreater{}} \DecValTok{0}\NormalTok{) \{}
+\NormalTok{  top\_outliers }\OtherTok{\textless{}{-}} \FunctionTok{head}\NormalTok{(all\_outliers}\SpecialCharTok{$}\NormalTok{Sample, }\DecValTok{5}\NormalTok{)}
+
+  \CommentTok{\# Lấy mẫu bình thường để so sánh}
+\NormalTok{  normal\_samples }\OtherTok{\textless{}{-}}\NormalTok{ combined\_df }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\NormalTok{T2\_outlier }\SpecialCharTok{\&} \SpecialCharTok{!}\NormalTok{Q\_outlier) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{sample\_n}\NormalTok{(}\FunctionTok{min}\NormalTok{(}\DecValTok{5}\NormalTok{, }\FunctionTok{sum}\NormalTok{(}\SpecialCharTok{!}\NormalTok{combined\_df}\SpecialCharTok{$}\NormalTok{T2\_outlier }\SpecialCharTok{\&} \SpecialCharTok{!}\NormalTok{combined\_df}\SpecialCharTok{$}\NormalTok{Q\_outlier))) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{pull}\NormalTok{(Sample)}
+
+  \CommentTok{\# Chuẩn bị data}
+\NormalTok{  selected\_spectra }\OtherTok{\textless{}{-}}\NormalTok{ data\_nir\_complete[}\FunctionTok{c}\NormalTok{(top\_outliers, normal\_samples), ]}
+
+  \CommentTok{\# Thêm ID và Type TRƯỚC khi pivot}
+\NormalTok{  sample\_metadata }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+    \AttributeTok{Sample\_ID =} \FunctionTok{paste0}\NormalTok{(}\StringTok{"Sample\_"}\NormalTok{, }\DecValTok{1}\SpecialCharTok{:}\FunctionTok{nrow}\NormalTok{(selected\_spectra)),}
+    \AttributeTok{Type =} \FunctionTok{c}\NormalTok{(}\FunctionTok{rep}\NormalTok{(}\StringTok{"Outlier"}\NormalTok{, }\FunctionTok{length}\NormalTok{(top\_outliers)),}
+             \FunctionTok{rep}\NormalTok{(}\StringTok{"Normal"}\NormalTok{, }\FunctionTok{length}\NormalTok{(normal\_samples)))}
+\NormalTok{  )}
+
+  \CommentTok{\# Chuyển sang long format}
+\NormalTok{  spectra\_comparison }\OtherTok{\textless{}{-}}\NormalTok{ selected\_spectra }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Sample\_ID =}\NormalTok{ sample\_metadata}\SpecialCharTok{$}\NormalTok{Sample\_ID,}
+           \AttributeTok{Type =}\NormalTok{ sample\_metadata}\SpecialCharTok{$}\NormalTok{Type) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{pivot\_longer}\NormalTok{(}\AttributeTok{cols =} \FunctionTok{matches}\NormalTok{(}\StringTok{"\^{}S[0{-}9]+$"}\NormalTok{),}
+                 \AttributeTok{names\_to =} \StringTok{"Wavelength"}\NormalTok{,}
+                 \AttributeTok{values\_to =} \StringTok{"Absorbance"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Wavelength =} \FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{str\_remove}\NormalTok{(Wavelength, }\StringTok{"S"}\NormalTok{)))}
+
+  \CommentTok{\# Plot}
+  \FunctionTok{ggplot}\NormalTok{(spectra\_comparison, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Wavelength, }\AttributeTok{y =}\NormalTok{ Absorbance,}
+                                   \AttributeTok{group =}\NormalTok{ Sample\_ID, }\AttributeTok{color =}\NormalTok{ Type)) }\SpecialCharTok{+}
+    \FunctionTok{geom\_line}\NormalTok{(}\AttributeTok{alpha =} \FloatTok{0.7}\NormalTok{, }\AttributeTok{linewidth =} \FloatTok{0.8}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{scale\_color\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{c}\NormalTok{(}\StringTok{"Outlier"} \OtherTok{=} \StringTok{"red"}\NormalTok{, }\StringTok{"Normal"} \OtherTok{=} \StringTok{"blue"}\NormalTok{)) }\SpecialCharTok{+}
+    \FunctionTok{labs}\NormalTok{(}
+      \AttributeTok{title =} \StringTok{"So sánh phổ NIR: Outliers vs Normal samples"}\NormalTok{,}
+      \AttributeTok{x =} \StringTok{"Wavelength index (S1{-}S1050)"}\NormalTok{,}
+      \AttributeTok{y =} \StringTok{"Absorbance"}\NormalTok{,}
+      \AttributeTok{color =} \StringTok{"Sample Type"}
+\NormalTok{    ) }\SpecialCharTok{+}
+    \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+    \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position =} \StringTok{"top"}\NormalTok{)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.85\linewidth]{Coffee_NIR_BTL_Report_files/figure-latex/outlier-spectra-1} \end{center}
+
+\section{Quyết định xử lý Outliers}\label{quyux1ebft-ux111ux1ecbnh-xux1eed-luxfd-outliers}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"\#\#\# Khuyến nghị xử lý Outliers:}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## ### Khuyến nghị xử lý Outliers:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{total\_outliers }\OtherTok{\textless{}{-}} \FunctionTok{nrow}\NormalTok{(all\_outliers)}
+\NormalTok{outlier\_pct }\OtherTok{\textless{}{-}}\NormalTok{ total\_outliers }\SpecialCharTok{/}\NormalTok{ n }\SpecialCharTok{*} \DecValTok{100}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"1. **Tổng số outliers phát hiện:**"}\NormalTok{, total\_outliers,}
+    \StringTok{"("}\NormalTok{, }\FunctionTok{round}\NormalTok{(outlier\_pct, }\DecValTok{2}\NormalTok{), }\StringTok{"\%)}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 1. **Tổng số outliers phát hiện:** 44 ( 18.33 %)
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{if}\NormalTok{(outlier\_pct }\SpecialCharTok{\textless{}} \DecValTok{1}\NormalTok{) \{}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"2. **Mức độ:** Rất thấp {-} ít ảnh hưởng đến mô hình}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"3. **Khuyến nghị:** Có thể giữ lại, chỉ cần lưu ý khi xây dựng mô hình}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\NormalTok{\} }\ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{(outlier\_pct }\SpecialCharTok{\textless{}} \DecValTok{5}\NormalTok{) \{}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"2. **Mức độ:** Trung bình {-} cần xem xét kỹ}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"3. **Khuyến nghị:**}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"   {-} Kiểm tra lại dữ liệu gốc của các outliers}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"   {-} Xem xét loại bỏ các outliers có cả T² và Q cao}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"   {-} So sánh mô hình với và không có outliers}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\NormalTok{\} }\ControlFlowTok{else}\NormalTok{ \{}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"2. **Mức độ:** Cao {-} cần xử lý nghiêm túc}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"3. **Khuyến nghị:**}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"   {-} Kiểm tra kỹ quy trình đo NIR và chuẩn bị mẫu}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"   {-} Xem xét xây dựng mô hình robust (PLS{-}robust)}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"   {-} Có thể cần thu thập thêm dữ liệu}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 2. **Mức độ:** Cao - cần xử lý nghiêm túc
+## 3. **Khuyến nghị:**
+##    - Kiểm tra kỹ quy trình đo NIR và chuẩn bị mẫu
+##    - Xem xét xây dựng mô hình robust (PLS-robust)
+##    - Có thể cần thu thập thêm dữ liệu
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"4. **Phân loại outliers:**}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 4. **Phân loại outliers:**
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{if}\NormalTok{(}\FunctionTok{nrow}\NormalTok{(all\_outliers) }\SpecialCharTok{\textgreater{}} \DecValTok{0}\NormalTok{) \{}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"   {-} High T² only:"}\NormalTok{, }\FunctionTok{sum}\NormalTok{(all\_outliers}\SpecialCharTok{$}\NormalTok{Outlier\_Type }\SpecialCharTok{==} \StringTok{"High T² only"}\NormalTok{),}
+      \StringTok{"{-} Mẫu cực trị nhưng đúng pattern}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"   {-} High Q only:"}\NormalTok{, }\FunctionTok{sum}\NormalTok{(all\_outliers}\SpecialCharTok{$}\NormalTok{Outlier\_Type }\SpecialCharTok{==} \StringTok{"High Q only"}\NormalTok{),}
+      \StringTok{"{-} Mẫu không theo mô hình (có thể lỗi đo)}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"   {-} Both High:"}\NormalTok{, }\FunctionTok{sum}\NormalTok{(all\_outliers}\SpecialCharTok{$}\NormalTok{Outlier\_Type }\SpecialCharTok{==} \StringTok{"Both High"}\NormalTok{),}
+      \StringTok{"{-} Outliers mạnh (ưu tiên xem xét loại bỏ)}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    - High T² only: 12 - Mẫu cực trị nhưng đúng pattern
+##    - High Q only: 29 - Mẫu không theo mô hình (có thể lỗi đo)
+##    - Both High: 3 - Outliers mạnh (ưu tiên xem xét loại bỏ)
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"5. **Bước tiếp theo:**}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 5. **Bước tiếp theo:**
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"   {-} Xem xét phân tích thêm các mẫu outliers có influence cao}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    - Xem xét phân tích thêm các mẫu outliers có influence cao
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"   {-} Kiểm tra xem outliers có tập trung ở Location nào không}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    - Kiểm tra xem outliers có tập trung ở Location nào không
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"   {-} Thử xây dựng mô hình PLS với và không có outliers để so sánh hiệu suất}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    - Thử xây dựng mô hình PLS với và không có outliers để so sánh hiệu suất
+\end{verbatim}
+
+\section{Kết luận}\label{kux1ebft-luux1eadn}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"\#\#\# Tóm tắt phát hiện Outliers:}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## ### Tóm tắt phát hiện Outliers:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"{-} **Phương pháp sử dụng:**}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## - **Phương pháp sử dụng:**
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  + Hotelling T² statistic (khoảng cách trong không gian PC)}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   + Hotelling T² statistic (khoảng cách trong không gian PC)
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  + Q residuals/SPE (phần không giải thích được)}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   + Q residuals/SPE (phần không giải thích được)
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  + Influence analysis (leverage × residuals)}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   + Influence analysis (leverage × residuals)
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"{-} **Kết quả:**}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## - **Kết quả:**
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  + Tổng số mẫu:"}\NormalTok{, n, }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   + Tổng số mẫu: 240
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  + Số PC sử dụng:"}\NormalTok{, n\_pcs, }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   + Số PC sử dụng: 5
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  + Outliers theo T²:"}\NormalTok{, }\FunctionTok{length}\NormalTok{(t2\_outliers), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   + Outliers theo T²: 15
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  + Outliers theo Q:"}\NormalTok{, }\FunctionTok{length}\NormalTok{(q\_outliers), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   + Outliers theo Q: 32
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  + Tổng outliers (T² hoặc Q):"}\NormalTok{, total\_outliers, }\StringTok{"}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   + Tổng outliers (T² hoặc Q): 44
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"{-} **Ý nghĩa:**}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## - **Ý nghĩa:**
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  + Outliers có thể do lỗi đo, contamination, hoặc mẫu thực sự khác biệt}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   + Outliers có thể do lỗi đo, contamination, hoặc mẫu thực sự khác biệt
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  + Cần kiểm tra kỹ trước khi quyết định loại bỏ}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   + Cần kiểm tra kỹ trước khi quyết định loại bỏ
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  + Xem xét ảnh hưởng của outliers đến mô hình dự đoán}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   + Xem xét ảnh hưởng của outliers đến mô hình dự đoán
+\end{verbatim}
+
+\chapter{Phân tích Tương quan và Heatmap}\label{phuxe2n-tuxedch-tux1b0ux1a1ng-quan-vuxe0-heatmap}
+
+Phân tích tương quan giúp chúng ta hiểu mối quan hệ giữa các biến trong dữ liệu:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Tương quan giữa các biến hóa lý}: Xác định biến nào có quan hệ chặt chẽ
+\item
+  \textbf{Tương quan giữa NIR và biến hóa lý}: Tìm vùng wavelength quan trọng
+\item
+  \textbf{Tương quan trong không gian PCA}: Phân tích trên principal components
+\end{enumerate}
+
+\section{Chuẩn bị dữ liệu}\label{chuux1ea9n-bux1ecb-dux1eef-liux1ec7u-2}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\FunctionTok{library}\NormalTok{(corrplot)}
+\FunctionTok{library}\NormalTok{(pheatmap)}
+\FunctionTok{library}\NormalTok{(RColorBrewer)}
+\FunctionTok{library}\NormalTok{(knitr)}
+\FunctionTok{library}\NormalTok{(kableExtra)}
+\FunctionTok{library}\NormalTok{(reshape2)}
+
+\CommentTok{\# Data and variable groups already loaded in index.Rmd global{-}setup}
+\CommentTok{\# Verify data is available}
+\ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{exists}\NormalTok{(}\StringTok{"coffee\_data"}\NormalTok{)) \{}
+  \FunctionTok{stop}\NormalTok{(}\StringTok{"Data not loaded. Please render from index.Rmd"}\NormalTok{)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Tương quan giữa các biến Hóa lý}\label{tux1b0ux1a1ng-quan-giux1eefa-cuxe1c-biux1ebfn-huxf3a-luxfd}
+
+\subsection{Ma trận tương quan}\label{ma-trux1eadn-tux1b0ux1a1ng-quan}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Lấy dữ liệu hóa lý hoàn chỉnh}
+\NormalTok{data\_chem }\OtherTok{\textless{}{-}}\NormalTok{ coffee\_data[, chemical\_vars]}
+\NormalTok{data\_chem\_complete }\OtherTok{\textless{}{-}}\NormalTok{ data\_chem[}\FunctionTok{complete.cases}\NormalTok{(data\_chem), ]}
+
+\CommentTok{\# Tính ma trận tương quan}
+\NormalTok{cor\_matrix }\OtherTok{\textless{}{-}} \FunctionTok{cor}\NormalTok{(data\_chem\_complete, }\AttributeTok{method =} \StringTok{"pearson"}\NormalTok{)}
+
+\CommentTok{\# Hiển thị bảng}
+\NormalTok{cor\_matrix }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{round}\NormalTok{(}\DecValTok{3}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kable}\NormalTok{(}\AttributeTok{caption =} \StringTok{"Ma trận tương quan Pearson {-} Biến Hóa lý"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{bootstrap\_options =} \FunctionTok{c}\NormalTok{(}\StringTok{"striped"}\NormalTok{, }\StringTok{"hover"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+\centering
+\caption{\label{tab:corr-chemical}Ma trận tương quan Pearson - Biến Hóa lý}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & CGA & Cafeine & Fat & Trigonelline & DM\\
+\hline
+CGA & 1.000 & 0.007 & 0.089 & 0.118 & -0.035\\
+\hline
+Cafeine & 0.007 & 1.000 & 0.006 & 0.017 & 0.089\\
+\hline
+Fat & 0.089 & 0.006 & 1.000 & 0.015 & -0.024\\
+\hline
+Trigonelline & 0.118 & 0.017 & 0.015 & 1.000 & 0.067\\
+\hline
+DM & -0.035 & 0.089 & -0.024 & 0.067 & 1.000\\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Heatmap tương quan - Biến Hóa lý}\label{heatmap-tux1b0ux1a1ng-quan---biux1ebfn-huxf3a-luxfd}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Heatmap với corrplot}
+\NormalTok{corrplot}\SpecialCharTok{::}\FunctionTok{corrplot}\NormalTok{(cor\_matrix,}
+         \AttributeTok{method =} \StringTok{"color"}\NormalTok{,}
+         \AttributeTok{type =} \StringTok{"upper"}\NormalTok{,}
+         \AttributeTok{order =} \StringTok{"hclust"}\NormalTok{,}
+         \AttributeTok{addCoef.col =} \StringTok{"black"}\NormalTok{,}
+         \AttributeTok{tl.col =} \StringTok{"black"}\NormalTok{,}
+         \AttributeTok{tl.srt =} \DecValTok{45}\NormalTok{,}
+         \AttributeTok{number.cex =} \FloatTok{0.8}\NormalTok{,}
+         \AttributeTok{col =} \FunctionTok{colorRampPalette}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"\#6D9EC1"}\NormalTok{, }\StringTok{"white"}\NormalTok{, }\StringTok{"\#E46726"}\NormalTok{))(}\DecValTok{200}\NormalTok{),}
+         \AttributeTok{title =} \StringTok{"Correlation Heatmap {-} Chemical Variables"}\NormalTok{,}
+         \AttributeTok{mar =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{0}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.85\linewidth]{Coffee_NIR_BTL_Report_files/figure-latex/heatmap-chemical-1} \end{center}
+
+\subsection{Phân tích ý nghĩa}\label{phuxe2n-tuxedch-uxfd-nghux129a}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Tìm các cặp biến có tương quan cao (|r| \textgreater{} 0.5)}
+\NormalTok{cor\_df }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(}\FunctionTok{as.table}\NormalTok{(cor\_matrix))}
+\FunctionTok{names}\NormalTok{(cor\_df) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"Var1"}\NormalTok{, }\StringTok{"Var2"}\NormalTok{, }\StringTok{"Correlation"}\NormalTok{)}
+
+\NormalTok{high\_corr }\OtherTok{\textless{}{-}}\NormalTok{ cor\_df }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(Var1 }\SpecialCharTok{!=}\NormalTok{ Var2) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(}\FunctionTok{abs}\NormalTok{(Correlation) }\SpecialCharTok{\textgreater{}} \FloatTok{0.5}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(}\FunctionTok{abs}\NormalTok{(Correlation))) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{distinct}\NormalTok{(Correlation, }\AttributeTok{.keep\_all =} \ConstantTok{TRUE}\NormalTok{)}
+
+\ControlFlowTok{if}\NormalTok{(}\FunctionTok{nrow}\NormalTok{(high\_corr) }\SpecialCharTok{\textgreater{}} \DecValTok{0}\NormalTok{) \{}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"Các cặp biến có tương quan mạnh (|r| \textgreater{} 0.5):}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\NormalTok{  high\_corr }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Correlation =} \FunctionTok{round}\NormalTok{(Correlation, }\DecValTok{3}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{kable}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{bootstrap\_options =} \FunctionTok{c}\NormalTok{(}\StringTok{"striped"}\NormalTok{, }\StringTok{"hover"}\NormalTok{))}
+\NormalTok{\} }\ControlFlowTok{else}\NormalTok{ \{}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"Không có cặp biến nào có tương quan mạnh (|r| \textgreater{} 0.5)}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Không có cặp biến nào có tương quan mạnh (|r| > 0.5)
+\end{verbatim}
+
+\section{Tương quan giữa NIR và Biến Hóa lý}\label{tux1b0ux1a1ng-quan-giux1eefa-nir-vuxe0-biux1ebfn-huxf3a-luxfd}
+
+\subsection{Tính toán tương quan}\label{tuxednh-touxe1n-tux1b0ux1a1ng-quan}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Lấy dữ liệu đầy đủ}
+\NormalTok{data\_nir }\OtherTok{\textless{}{-}}\NormalTok{ coffee\_data[, nir\_vars]}
+\NormalTok{complete\_rows }\OtherTok{\textless{}{-}} \FunctionTok{complete.cases}\NormalTok{(}\FunctionTok{cbind}\NormalTok{(data\_chem, data\_nir))}
+
+\NormalTok{data\_chem\_full }\OtherTok{\textless{}{-}}\NormalTok{ data\_chem[complete\_rows, ]}
+\NormalTok{data\_nir\_full }\OtherTok{\textless{}{-}}\NormalTok{ data\_nir[complete\_rows, ]}
+
+\CommentTok{\# Tính tương quan giữa từng biến hóa lý và tất cả NIR wavelengths}
+\NormalTok{cor\_nir\_chem }\OtherTok{\textless{}{-}} \FunctionTok{cor}\NormalTok{(data\_nir\_full, data\_chem\_full, }\AttributeTok{method =} \StringTok{"pearson"}\NormalTok{)}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Kích thước ma trận tương quan NIR{-}Chemical:"}\NormalTok{, }\FunctionTok{dim}\NormalTok{(cor\_nir\_chem), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Kích thước ma trận tương quan NIR-Chemical: 1050 5
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Số wavelengths:"}\NormalTok{, }\FunctionTok{nrow}\NormalTok{(cor\_nir\_chem), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Số wavelengths: 1050
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Số biến hóa lý:"}\NormalTok{, }\FunctionTok{ncol}\NormalTok{(cor\_nir\_chem), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Số biến hóa lý: 5
+\end{verbatim}
+
+\subsection{Heatmap tổng quan NIR-Chemical}\label{heatmap-tux1ed5ng-quan-nir-chemical}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Heatmap cho toàn bộ correlation}
+\FunctionTok{pheatmap}\NormalTok{(cor\_nir\_chem,}
+         \AttributeTok{cluster\_rows =} \ConstantTok{FALSE}\NormalTok{,}
+         \AttributeTok{cluster\_cols =} \ConstantTok{TRUE}\NormalTok{,}
+         \AttributeTok{show\_rownames =} \ConstantTok{FALSE}\NormalTok{,}
+         \AttributeTok{main =} \StringTok{"Correlation: NIR Wavelengths vs Chemical Properties"}\NormalTok{,}
+         \AttributeTok{color =} \FunctionTok{colorRampPalette}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"blue"}\NormalTok{, }\StringTok{"white"}\NormalTok{, }\StringTok{"red"}\NormalTok{))(}\DecValTok{100}\NormalTok{),}
+         \AttributeTok{breaks =} \FunctionTok{seq}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{, }\AttributeTok{length.out =} \DecValTok{101}\NormalTok{),}
+         \AttributeTok{fontsize =} \DecValTok{10}\NormalTok{,}
+         \AttributeTok{angle\_col =} \DecValTok{45}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.85\linewidth]{Coffee_NIR_BTL_Report_files/figure-latex/heatmap-nir-chemical-full-1} \end{center}
+
+\subsection{Biểu đồ Line Plot - Correlation profile}\label{biux1ec3u-ux111ux1ed3-line-plot---correlation-profile}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Chuyển sang long format để vẽ}
+\NormalTok{cor\_long }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(cor\_nir\_chem) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Wavelength =} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{nrow}\NormalTok{(cor\_nir\_chem)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{pivot\_longer}\NormalTok{(}\AttributeTok{cols =} \SpecialCharTok{{-}}\NormalTok{Wavelength, }\AttributeTok{names\_to =} \StringTok{"Chemical"}\NormalTok{, }\AttributeTok{values\_to =} \StringTok{"Correlation"}\NormalTok{)}
+
+\CommentTok{\# Line plot cho từng biến hóa lý}
+\FunctionTok{ggplot}\NormalTok{(cor\_long, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Wavelength, }\AttributeTok{y =}\NormalTok{ Correlation, }\AttributeTok{color =}\NormalTok{ Chemical)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_line}\NormalTok{(}\AttributeTok{linewidth =} \DecValTok{1}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_hline}\NormalTok{(}\AttributeTok{yintercept =} \FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\FloatTok{0.5}\NormalTok{, }\FloatTok{0.5}\NormalTok{), }\AttributeTok{linetype =} \StringTok{"dashed"}\NormalTok{, }\AttributeTok{color =} \StringTok{"gray"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{facet\_wrap}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{Chemical, }\AttributeTok{ncol =} \DecValTok{1}\NormalTok{, }\AttributeTok{scales =} \StringTok{"free\_y"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_color\_brewer}\NormalTok{(}\AttributeTok{palette =} \StringTok{"Set1"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"Correlation Profile: NIR Wavelengths vs Chemical Properties"}\NormalTok{,}
+    \AttributeTok{x =} \StringTok{"Wavelength Index (S1{-}S1050)"}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"Pearson Correlation"}\NormalTok{,}
+    \AttributeTok{color =} \StringTok{"Chemical Variable"}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position =} \StringTok{"none"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.85\linewidth]{Coffee_NIR_BTL_Report_files/figure-latex/corr-profile-1} \end{center}
+
+\subsection{Xác định wavelengths quan trọng}\label{xuxe1c-ux111ux1ecbnh-wavelengths-quan-trux1ecdng}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Tìm wavelengths có tương quan cao với mỗi biến hóa lý}
+\NormalTok{important\_wavelengths }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{()}
+
+\ControlFlowTok{for}\NormalTok{(chem\_var }\ControlFlowTok{in}\NormalTok{ chemical\_vars) \{}
+  \CommentTok{\# Lấy tương quan tuyệt đối}
+\NormalTok{  abs\_corr }\OtherTok{\textless{}{-}} \FunctionTok{abs}\NormalTok{(cor\_nir\_chem[, chem\_var])}
+
+  \CommentTok{\# Tìm top 10 wavelengths}
+\NormalTok{  top\_idx }\OtherTok{\textless{}{-}} \FunctionTok{order}\NormalTok{(abs\_corr, }\AttributeTok{decreasing =} \ConstantTok{TRUE}\NormalTok{)[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{10}\NormalTok{]}
+
+\NormalTok{  important\_wavelengths[[chem\_var]] }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+    \AttributeTok{Chemical =}\NormalTok{ chem\_var,}
+    \AttributeTok{Wavelength =}\NormalTok{ nir\_vars[top\_idx],}
+    \AttributeTok{Wavelength\_Index =}\NormalTok{ top\_idx,}
+    \AttributeTok{Correlation =}\NormalTok{ cor\_nir\_chem[top\_idx, chem\_var],}
+    \AttributeTok{Abs\_Correlation =}\NormalTok{ abs\_corr[top\_idx]}
+\NormalTok{  )}
+\NormalTok{\}}
+
+\CommentTok{\# Kết hợp tất cả}
+\NormalTok{all\_important }\OtherTok{\textless{}{-}} \FunctionTok{do.call}\NormalTok{(rbind, important\_wavelengths)}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Top 10 wavelengths có tương quan mạnh nhất với từng biến hóa lý:}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Top 10 wavelengths có tương quan mạnh nhất với từng biến hóa lý:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{for}\NormalTok{(chem\_var }\ControlFlowTok{in}\NormalTok{ chemical\_vars) \{}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{**"}\NormalTok{, chem\_var, }\StringTok{":**}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\NormalTok{  all\_important }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{filter}\NormalTok{(Chemical }\SpecialCharTok{==}\NormalTok{ chem\_var) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{select}\NormalTok{(Wavelength, Wavelength\_Index, Correlation) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Correlation =} \FunctionTok{round}\NormalTok{(Correlation, }\DecValTok{3}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{head}\NormalTok{(}\DecValTok{5}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{kable}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{bootstrap\_options =} \FunctionTok{c}\NormalTok{(}\StringTok{"striped"}\NormalTok{, }\StringTok{"hover"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{print}\NormalTok{()}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## ** CGA :**
+## \begin{table}
+## \centering
+## \begin{tabular}{l|l|r|r}
+## \hline
+##   & Wavelength & Wavelength\_Index & Correlation\\
+## \hline
+## CGA.S871 & S871 & 871 & 0.144\\
+## \hline
+## CGA.S942 & S942 & 942 & 0.142\\
+## \hline
+## CGA.S986 & S986 & 986 & 0.128\\
+## \hline
+## CGA.S1004 & S1004 & 1004 & 0.123\\
+## \hline
+## CGA.S1027 & S1027 & 1027 & -0.121\\
+## \hline
+## \end{tabular}
+## \end{table}
+## 
+## ** Cafeine :**
+## \begin{table}
+## \centering
+## \begin{tabular}{l|l|r|r}
+## \hline
+##   & Wavelength & Wavelength\_Index & Correlation\\
+## \hline
+## Cafeine.S990 & S990 & 990 & -0.158\\
+## \hline
+## Cafeine.S1008 & S1008 & 1008 & 0.156\\
+## \hline
+## Cafeine.S860 & S860 & 860 & -0.141\\
+## \hline
+## Cafeine.S948 & S948 & 948 & -0.140\\
+## \hline
+## Cafeine.S938 & S938 & 938 & -0.140\\
+## \hline
+## \end{tabular}
+## \end{table}
+## 
+## ** Fat :**
+## \begin{table}
+## \centering
+## \begin{tabular}{l|l|r|r}
+## \hline
+##   & Wavelength & Wavelength\_Index & Correlation\\
+## \hline
+## Fat.S775 & S775 & 775 & 0.238\\
+## \hline
+## Fat.S1027 & S1027 & 1027 & 0.180\\
+## \hline
+## Fat.S995 & S995 & 995 & 0.174\\
+## \hline
+## Fat.S994 & S994 & 994 & 0.172\\
+## \hline
+## Fat.S973 & S973 & 973 & 0.171\\
+## \hline
+## \end{tabular}
+## \end{table}
+## 
+## ** Trigonelline :**
+## \begin{table}
+## \centering
+## \begin{tabular}{l|l|r|r}
+## \hline
+##   & Wavelength & Wavelength\_Index & Correlation\\
+## \hline
+## Trigonelline.S1013 & S1013 & 1013 & 0.181\\
+## \hline
+## Trigonelline.S870 & S870 & 870 & 0.167\\
+## \hline
+## Trigonelline.S861 & S861 & 861 & 0.163\\
+## \hline
+## Trigonelline.S1014 & S1014 & 1014 & -0.157\\
+## \hline
+## Trigonelline.S777 & S777 & 777 & 0.152\\
+## \hline
+## \end{tabular}
+## \end{table}
+## 
+## ** DM :**
+## \begin{table}
+## \centering
+## \begin{tabular}{l|l|r|r}
+## \hline
+##   & Wavelength & Wavelength\_Index & Correlation\\
+## \hline
+## DM.S986 & S986 & 986 & 0.215\\
+## \hline
+## DM.S769 & S769 & 769 & 0.176\\
+## \hline
+## DM.S1006 & S1006 & 1006 & -0.137\\
+## \hline
+## DM.S1003 & S1003 & 1003 & 0.136\\
+## \hline
+## DM.S1008 & S1008 & 1008 & 0.135\\
+## \hline
+## \end{tabular}
+## \end{table}
+\end{verbatim}
+
+\subsection{Heatmap cho wavelengths quan trọng nhất}\label{heatmap-cho-wavelengths-quan-trux1ecdng-nhux1ea5t}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Lấy top 50 wavelengths có tương quan cao nhất (cho bất kỳ biến nào)}
+\NormalTok{max\_abs\_corr }\OtherTok{\textless{}{-}} \FunctionTok{apply}\NormalTok{(}\FunctionTok{abs}\NormalTok{(cor\_nir\_chem), }\DecValTok{1}\NormalTok{, max)}
+\NormalTok{top\_50\_idx }\OtherTok{\textless{}{-}} \FunctionTok{order}\NormalTok{(max\_abs\_corr, }\AttributeTok{decreasing =} \ConstantTok{TRUE}\NormalTok{)[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{50}\NormalTok{]}
+
+\CommentTok{\# Heatmap cho top wavelengths}
+\FunctionTok{pheatmap}\NormalTok{(cor\_nir\_chem[top\_50\_idx, ],}
+         \AttributeTok{cluster\_rows =} \ConstantTok{TRUE}\NormalTok{,}
+         \AttributeTok{cluster\_cols =} \ConstantTok{TRUE}\NormalTok{,}
+         \AttributeTok{show\_rownames =} \ConstantTok{TRUE}\NormalTok{,}
+         \AttributeTok{labels\_row =} \FunctionTok{paste0}\NormalTok{(}\StringTok{"S"}\NormalTok{, top\_50\_idx),}
+         \AttributeTok{main =} \StringTok{"Top 50 Most Correlated Wavelengths"}\NormalTok{,}
+         \AttributeTok{color =} \FunctionTok{colorRampPalette}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"blue"}\NormalTok{, }\StringTok{"white"}\NormalTok{, }\StringTok{"red"}\NormalTok{))(}\DecValTok{100}\NormalTok{),}
+         \AttributeTok{breaks =} \FunctionTok{seq}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{, }\AttributeTok{length.out =} \DecValTok{101}\NormalTok{),}
+         \AttributeTok{fontsize =} \DecValTok{8}\NormalTok{,}
+         \AttributeTok{angle\_col =} \DecValTok{45}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.85\linewidth]{Coffee_NIR_BTL_Report_files/figure-latex/heatmap-top-wavelengths-1} \end{center}
+
+\section{Tương quan trong không gian PCA}\label{tux1b0ux1a1ng-quan-trong-khuxf4ng-gian-pca}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Thực hiện PCA trên NIR}
+\FunctionTok{library}\NormalTok{(FactoMineR)}
+\NormalTok{pca\_nir }\OtherTok{\textless{}{-}} \FunctionTok{PCA}\NormalTok{(data\_nir\_full, }\AttributeTok{scale.unit =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{graph =} \ConstantTok{FALSE}\NormalTok{)}
+
+\CommentTok{\# Lấy PC scores (10 PC đầu tiên)}
+\NormalTok{n\_pcs }\OtherTok{\textless{}{-}} \FunctionTok{min}\NormalTok{(}\DecValTok{10}\NormalTok{, }\FunctionTok{ncol}\NormalTok{(pca\_nir}\SpecialCharTok{$}\NormalTok{ind}\SpecialCharTok{$}\NormalTok{coord))}
+\NormalTok{pc\_scores }\OtherTok{\textless{}{-}}\NormalTok{ pca\_nir}\SpecialCharTok{$}\NormalTok{ind}\SpecialCharTok{$}\NormalTok{coord[, }\DecValTok{1}\SpecialCharTok{:}\NormalTok{n\_pcs]}
+
+\CommentTok{\# Tính tương quan giữa PC scores và biến hóa lý}
+\NormalTok{cor\_pc\_chem }\OtherTok{\textless{}{-}} \FunctionTok{cor}\NormalTok{(pc\_scores, data\_chem\_full, }\AttributeTok{method =} \StringTok{"pearson"}\NormalTok{)}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Ma trận tương quan PC{-}Chemical:}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Ma trận tương quan PC-Chemical:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cor\_pc\_chem }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{round}\NormalTok{(}\DecValTok{3}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kable}\NormalTok{(}\AttributeTok{caption =} \StringTok{"Correlation: PC Scores vs Chemical Properties"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{bootstrap\_options =} \FunctionTok{c}\NormalTok{(}\StringTok{"striped"}\NormalTok{, }\StringTok{"hover"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+\centering
+\caption{\label{tab:pca-correlation}Correlation: PC Scores vs Chemical Properties}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & CGA & Cafeine & Fat & Trigonelline & DM\\
+\hline
+Dim.1 & 0.029 & -0.087 & 0.080 & 0.007 & -0.002\\
+\hline
+Dim.2 & 0.063 & -0.033 & 0.063 & 0.139 & 0.085\\
+\hline
+Dim.3 & -0.092 & 0.078 & -0.059 & -0.012 & -0.062\\
+\hline
+Dim.4 & -0.207 & -0.038 & 0.057 & -0.013 & 0.033\\
+\hline
+Dim.5 & 0.105 & -0.077 & 0.177 & 0.061 & 0.034\\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Heatmap PC-Chemical}\label{heatmap-pc-chemical}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Heatmap}
+\FunctionTok{pheatmap}\NormalTok{(cor\_pc\_chem,}
+         \AttributeTok{cluster\_rows =} \ConstantTok{FALSE}\NormalTok{,}
+         \AttributeTok{cluster\_cols =} \ConstantTok{TRUE}\NormalTok{,}
+         \AttributeTok{display\_numbers =} \ConstantTok{TRUE}\NormalTok{,}
+         \AttributeTok{number\_format =} \StringTok{"\%.2f"}\NormalTok{,}
+         \AttributeTok{main =} \StringTok{"Correlation: PC Scores vs Chemical Properties"}\NormalTok{,}
+         \AttributeTok{color =} \FunctionTok{colorRampPalette}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"blue"}\NormalTok{, }\StringTok{"white"}\NormalTok{, }\StringTok{"red"}\NormalTok{))(}\DecValTok{100}\NormalTok{),}
+         \AttributeTok{breaks =} \FunctionTok{seq}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{, }\AttributeTok{length.out =} \DecValTok{101}\NormalTok{),}
+         \AttributeTok{fontsize =} \DecValTok{10}\NormalTok{,}
+         \AttributeTok{angle\_col =} \DecValTok{45}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.85\linewidth]{Coffee_NIR_BTL_Report_files/figure-latex/heatmap-pc-chemical-1} \end{center}
+
+\subsection{Phân tích ý nghĩa}\label{phuxe2n-tuxedch-uxfd-nghux129a-1}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Tìm PC có tương quan mạnh nhất với mỗi biến hóa lý}
+\ControlFlowTok{for}\NormalTok{(chem\_var }\ControlFlowTok{in}\NormalTok{ chemical\_vars) \{}
+\NormalTok{  pc\_corrs }\OtherTok{\textless{}{-}}\NormalTok{ cor\_pc\_chem[, chem\_var]}
+\NormalTok{  max\_pc }\OtherTok{\textless{}{-}} \FunctionTok{which.max}\NormalTok{(}\FunctionTok{abs}\NormalTok{(pc\_corrs))}
+\NormalTok{  max\_corr }\OtherTok{\textless{}{-}}\NormalTok{ pc\_corrs[max\_pc]}
+
+  \FunctionTok{cat}\NormalTok{(}\FunctionTok{sprintf}\NormalTok{(}\StringTok{"**\%s**: Tương quan mạnh nhất với PC\%d (r = \%.3f)}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{,}
+\NormalTok{              chem\_var, max\_pc, max\_corr))}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## **CGA**: Tương quan mạnh nhất với PC4 (r = -0.207)
+## **Cafeine**: Tương quan mạnh nhất với PC1 (r = -0.087)
+## **Fat**: Tương quan mạnh nhất với PC5 (r = 0.177)
+## **Trigonelline**: Tương quan mạnh nhất với PC2 (r = 0.139)
+## **DM**: Tương quan mạnh nhất với PC2 (r = 0.085)
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{**Ý nghĩa:**}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## **Ý nghĩa:**
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"{-} PC có tương quan cao với biến hóa lý cho thấy thành phần chính đó}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## - PC có tương quan cao với biến hóa lý cho thấy thành phần chính đó
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  chứa thông tin quan trọng để dự đoán biến đó}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   chứa thông tin quan trọng để dự đoán biến đó
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"{-} Có thể sử dụng PC scores làm biến độc lập trong mô hình hồi quy}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## - Có thể sử dụng PC scores làm biến độc lập trong mô hình hồi quy
+\end{verbatim}
+
+\section{Tương quan theo Location}\label{tux1b0ux1a1ng-quan-theo-location}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Tính tương quan riêng cho từng location}
+\NormalTok{location\_info }\OtherTok{\textless{}{-}}\NormalTok{ coffee\_data}\SpecialCharTok{$}\NormalTok{Localisation[complete\_rows]}
+\NormalTok{unique\_locations }\OtherTok{\textless{}{-}} \FunctionTok{unique}\NormalTok{(location\_info)}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Phân tích tương quan theo từng Location:}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Phân tích tương quan theo từng Location:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{for}\NormalTok{(loc }\ControlFlowTok{in}\NormalTok{ unique\_locations) \{}
+\NormalTok{  loc\_idx }\OtherTok{\textless{}{-}} \FunctionTok{which}\NormalTok{(location\_info }\SpecialCharTok{==}\NormalTok{ loc)}
+
+  \ControlFlowTok{if}\NormalTok{(}\FunctionTok{length}\NormalTok{(loc\_idx) }\SpecialCharTok{\textgreater{}} \DecValTok{5}\NormalTok{) \{  }\CommentTok{\# Chỉ phân tích nếu có đủ mẫu}
+\NormalTok{    data\_chem\_loc }\OtherTok{\textless{}{-}}\NormalTok{ data\_chem\_full[loc\_idx, ]}
+\NormalTok{    cor\_loc }\OtherTok{\textless{}{-}} \FunctionTok{cor}\NormalTok{(data\_chem\_loc, }\AttributeTok{method =} \StringTok{"pearson"}\NormalTok{)}
+
+    \FunctionTok{cat}\NormalTok{(}\FunctionTok{sprintf}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{\#\#\# Location \%s (n = \%d samples):}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{, loc, }\FunctionTok{length}\NormalTok{(loc\_idx)))}
+
+    \CommentTok{\# Hiển thị ma trận}
+\NormalTok{    cor\_loc }\SpecialCharTok{\%\textgreater{}\%}
+      \FunctionTok{round}\NormalTok{(}\DecValTok{3}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+      \FunctionTok{kable}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+      \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{bootstrap\_options =} \FunctionTok{c}\NormalTok{(}\StringTok{"striped"}\NormalTok{, }\StringTok{"hover"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+      \FunctionTok{print}\NormalTok{()}
+\NormalTok{  \}}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## ### Location 1 (n = 50 samples):
+## \begin{table}
+## \centering
+## \begin{tabular}{l|r|r|r|r|r}
+## \hline
+##   & CGA & Cafeine & Fat & Trigonelline & DM\\
+## \hline
+## CGA & 1.000 & 0.029 & -0.002 & 0.340 & -0.104\\
+## \hline
+## Cafeine & 0.029 & 1.000 & 0.189 & -0.033 & 0.424\\
+## \hline
+## Fat & -0.002 & 0.189 & 1.000 & -0.064 & -0.051\\
+## \hline
+## Trigonelline & 0.340 & -0.033 & -0.064 & 1.000 & -0.072\\
+## \hline
+## DM & -0.104 & 0.424 & -0.051 & -0.072 & 1.000\\
+## \hline
+## \end{tabular}
+## \end{table}
+## 
+## ### Location 6 (n = 84 samples):
+## \begin{table}
+## \centering
+## \begin{tabular}{l|r|r|r|r|r}
+## \hline
+##   & CGA & Cafeine & Fat & Trigonelline & DM\\
+## \hline
+## CGA & 1.000 & -0.061 & 0.083 & 0.065 & -0.051\\
+## \hline
+## Cafeine & -0.061 & 1.000 & 0.089 & -0.014 & -0.013\\
+## \hline
+## Fat & 0.083 & 0.089 & 1.000 & 0.014 & -0.041\\
+## \hline
+## Trigonelline & 0.065 & -0.014 & 0.014 & 1.000 & 0.091\\
+## \hline
+## DM & -0.051 & -0.013 & -0.041 & 0.091 & 1.000\\
+## \hline
+## \end{tabular}
+## \end{table}
+## 
+## ### Location 4 (n = 13 samples):
+## \begin{table}
+## \centering
+## \begin{tabular}{l|r|r|r|r|r}
+## \hline
+##   & CGA & Cafeine & Fat & Trigonelline & DM\\
+## \hline
+## CGA & 1.000 & 0.092 & -0.228 & 0.345 & -0.347\\
+## \hline
+## Cafeine & 0.092 & 1.000 & 0.022 & -0.136 & -0.019\\
+## \hline
+## Fat & -0.228 & 0.022 & 1.000 & -0.110 & -0.080\\
+## \hline
+## Trigonelline & 0.345 & -0.136 & -0.110 & 1.000 & -0.186\\
+## \hline
+## DM & -0.347 & -0.019 & -0.080 & -0.186 & 1.000\\
+## \hline
+## \end{tabular}
+## \end{table}
+## 
+## ### Location 7 (n = 19 samples):
+## \begin{table}
+## \centering
+## \begin{tabular}{l|r|r|r|r|r}
+## \hline
+##   & CGA & Cafeine & Fat & Trigonelline & DM\\
+## \hline
+## CGA & 1.000 & 0.061 & 0.938 & -0.090 & -0.218\\
+## \hline
+## Cafeine & 0.061 & 1.000 & -0.125 & -0.055 & -0.226\\
+## \hline
+## Fat & 0.938 & -0.125 & 1.000 & 0.021 & 0.014\\
+## \hline
+## Trigonelline & -0.090 & -0.055 & 0.021 & 1.000 & 0.162\\
+## \hline
+## DM & -0.218 & -0.226 & 0.014 & 0.162 & 1.000\\
+## \hline
+## \end{tabular}
+## \end{table}
+## 
+## ### Location 2 (n = 26 samples):
+## \begin{table}
+## \centering
+## \begin{tabular}{l|r|r|r|r|r}
+## \hline
+##   & CGA & Cafeine & Fat & Trigonelline & DM\\
+## \hline
+## CGA & 1.000 & -0.157 & -0.112 & -0.072 & -0.051\\
+## \hline
+## Cafeine & -0.157 & 1.000 & -0.211 & 0.449 & -0.123\\
+## \hline
+## Fat & -0.112 & -0.211 & 1.000 & 0.218 & -0.168\\
+## \hline
+## Trigonelline & -0.072 & 0.449 & 0.218 & 1.000 & -0.001\\
+## \hline
+## DM & -0.051 & -0.123 & -0.168 & -0.001 & 1.000\\
+## \hline
+## \end{tabular}
+## \end{table}
+## 
+## ### Location 3 (n = 26 samples):
+## \begin{table}
+## \centering
+## \begin{tabular}{l|r|r|r|r|r}
+## \hline
+##   & CGA & Cafeine & Fat & Trigonelline & DM\\
+## \hline
+## CGA & 1.000 & 0.361 & 0.224 & 0.069 & 0.311\\
+## \hline
+## Cafeine & 0.361 & 1.000 & -0.223 & 0.564 & 0.277\\
+## \hline
+## Fat & 0.224 & -0.223 & 1.000 & -0.073 & 0.281\\
+## \hline
+## Trigonelline & 0.069 & 0.564 & -0.073 & 1.000 & -0.033\\
+## \hline
+## DM & 0.311 & 0.277 & 0.281 & -0.033 & 1.000\\
+## \hline
+## \end{tabular}
+## \end{table}
+## 
+## ### Location 5 (n = 22 samples):
+## \begin{table}
+## \centering
+## \begin{tabular}{l|r|r|r|r|r}
+## \hline
+##   & CGA & Cafeine & Fat & Trigonelline & DM\\
+## \hline
+## CGA & 1.000 & 0.029 & 0.049 & -0.153 & 0.217\\
+## \hline
+## Cafeine & 0.029 & 1.000 & -0.206 & -0.171 & 0.133\\
+## \hline
+## Fat & 0.049 & -0.206 & 1.000 & 0.058 & -0.050\\
+## \hline
+## Trigonelline & -0.153 & -0.171 & 0.058 & 1.000 & 0.503\\
+## \hline
+## DM & 0.217 & 0.133 & -0.050 & 0.503 & 1.000\\
+## \hline
+## \end{tabular}
+## \end{table}
+\end{verbatim}
+
+\subsection{So sánh pattern tương quan giữa các Location}\label{so-suxe1nh-pattern-tux1b0ux1a1ng-quan-giux1eefa-cuxe1c-location}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Tạo heatmap cho mỗi location}
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow =} \FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\FunctionTok{ceiling}\NormalTok{(}\FunctionTok{length}\NormalTok{(unique\_locations) }\SpecialCharTok{/} \DecValTok{2}\NormalTok{)))}
+
+\ControlFlowTok{for}\NormalTok{(loc }\ControlFlowTok{in}\NormalTok{ unique\_locations) \{}
+\NormalTok{  loc\_idx }\OtherTok{\textless{}{-}} \FunctionTok{which}\NormalTok{(location\_info }\SpecialCharTok{==}\NormalTok{ loc)}
+
+  \ControlFlowTok{if}\NormalTok{(}\FunctionTok{length}\NormalTok{(loc\_idx) }\SpecialCharTok{\textgreater{}} \DecValTok{5}\NormalTok{) \{}
+\NormalTok{    data\_chem\_loc }\OtherTok{\textless{}{-}}\NormalTok{ data\_chem\_full[loc\_idx, ]}
+\NormalTok{    cor\_loc }\OtherTok{\textless{}{-}} \FunctionTok{cor}\NormalTok{(data\_chem\_loc, }\AttributeTok{method =} \StringTok{"pearson"}\NormalTok{)}
+
+\NormalTok{    corrplot}\SpecialCharTok{::}\FunctionTok{corrplot}\NormalTok{(cor\_loc,}
+             \AttributeTok{method =} \StringTok{"color"}\NormalTok{,}
+             \AttributeTok{type =} \StringTok{"upper"}\NormalTok{,}
+             \AttributeTok{addCoef.col =} \StringTok{"black"}\NormalTok{,}
+             \AttributeTok{tl.col =} \StringTok{"black"}\NormalTok{,}
+             \AttributeTok{tl.srt =} \DecValTok{45}\NormalTok{,}
+             \AttributeTok{number.cex =} \FloatTok{0.6}\NormalTok{,}
+             \AttributeTok{col =} \FunctionTok{colorRampPalette}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"\#6D9EC1"}\NormalTok{, }\StringTok{"white"}\NormalTok{, }\StringTok{"\#E46726"}\NormalTok{))(}\DecValTok{200}\NormalTok{),}
+             \AttributeTok{title =} \FunctionTok{paste}\NormalTok{(}\StringTok{"Location"}\NormalTok{, loc, }\StringTok{"{-}"}\NormalTok{, }\FunctionTok{length}\NormalTok{(loc\_idx), }\StringTok{"samples"}\NormalTok{),}
+             \AttributeTok{mar =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{0}\NormalTok{))}
+\NormalTok{  \}}
+\NormalTok{\}}
+
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.85\linewidth]{Coffee_NIR_BTL_Report_files/figure-latex/compare-corr-locations-1} \end{center}
+
+\section{Hierarchical Clustering dựa trên Correlation}\label{hierarchical-clustering-dux1ef1a-truxean-correlation}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Clustering các biến hóa lý dựa trên correlation}
+\NormalTok{dist\_chem }\OtherTok{\textless{}{-}} \FunctionTok{as.dist}\NormalTok{(}\DecValTok{1} \SpecialCharTok{{-}} \FunctionTok{abs}\NormalTok{(cor\_matrix))}
+\NormalTok{hc\_chem }\OtherTok{\textless{}{-}} \FunctionTok{hclust}\NormalTok{(dist\_chem, }\AttributeTok{method =} \StringTok{"ward.D2"}\NormalTok{)}
+
+\CommentTok{\# Dendrogram}
+\FunctionTok{plot}\NormalTok{(hc\_chem,}
+     \AttributeTok{main =} \StringTok{"Hierarchical Clustering {-} Chemical Variables}\SpecialCharTok{\textbackslash{}n}\StringTok{(based on correlation)"}\NormalTok{,}
+     \AttributeTok{xlab =} \StringTok{"Chemical Variables"}\NormalTok{,}
+     \AttributeTok{ylab =} \StringTok{"Distance (1 {-} |correlation|)"}\NormalTok{,}
+     \AttributeTok{sub =} \StringTok{""}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.85\linewidth]{Coffee_NIR_BTL_Report_files/figure-latex/hclust-corr-1} \end{center}
+
+\section{Tổng hợp và Kết luận}\label{tux1ed5ng-hux1ee3p-vuxe0-kux1ebft-luux1eadn}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"\#\#\# Tóm tắt phân tích tương quan:}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## ### Tóm tắt phân tích tương quan:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"**1. Tương quan giữa biến hóa lý:**}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## **1. Tương quan giữa biến hóa lý:**
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Tìm tương quan cao nhất}
+\NormalTok{max\_corr\_idx }\OtherTok{\textless{}{-}} \FunctionTok{which}\NormalTok{(}\FunctionTok{abs}\NormalTok{(cor\_matrix) }\SpecialCharTok{==} \FunctionTok{max}\NormalTok{(}\FunctionTok{abs}\NormalTok{(cor\_matrix[}\FunctionTok{upper.tri}\NormalTok{(cor\_matrix)])), }\AttributeTok{arr.ind =} \ConstantTok{TRUE}\NormalTok{)[}\DecValTok{1}\NormalTok{,]}
+\FunctionTok{cat}\NormalTok{(}\FunctionTok{sprintf}\NormalTok{(}\StringTok{"{-} Tương quan mạnh nhất: \%s vs \%s (r = \%.3f)}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{,}
+            \FunctionTok{rownames}\NormalTok{(cor\_matrix)[max\_corr\_idx[}\DecValTok{1}\NormalTok{]],}
+            \FunctionTok{colnames}\NormalTok{(cor\_matrix)[max\_corr\_idx[}\DecValTok{2}\NormalTok{]],}
+\NormalTok{            cor\_matrix[max\_corr\_idx[}\DecValTok{1}\NormalTok{], max\_corr\_idx[}\DecValTok{2}\NormalTok{]]))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## - Tương quan mạnh nhất: Trigonelline vs CGA (r = 0.118)
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{**2. NIR wavelengths quan trọng:**}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## **2. NIR wavelengths quan trọng:**
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{for}\NormalTok{(chem\_var }\ControlFlowTok{in}\NormalTok{ chemical\_vars) \{}
+\NormalTok{  top\_wave }\OtherTok{\textless{}{-}}\NormalTok{ all\_important }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{filter}\NormalTok{(Chemical }\SpecialCharTok{==}\NormalTok{ chem\_var) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{slice\_max}\NormalTok{(Abs\_Correlation, }\AttributeTok{n =} \DecValTok{1}\NormalTok{)}
+
+  \FunctionTok{cat}\NormalTok{(}\FunctionTok{sprintf}\NormalTok{(}\StringTok{"{-} \%s: Wavelength \%s (r = \%.3f)}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{,}
+\NormalTok{              chem\_var, top\_wave}\SpecialCharTok{$}\NormalTok{Wavelength, top\_wave}\SpecialCharTok{$}\NormalTok{Correlation))}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## - CGA: Wavelength S871 (r = 0.144)
+## - Cafeine: Wavelength S990 (r = -0.158)
+## - Fat: Wavelength S775 (r = 0.238)
+## - Trigonelline: Wavelength S1013 (r = 0.181)
+## - DM: Wavelength S986 (r = 0.215)
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{**3. PC scores hiệu quả:**}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## **3. PC scores hiệu quả:**
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{for}\NormalTok{(chem\_var }\ControlFlowTok{in}\NormalTok{ chemical\_vars) \{}
+\NormalTok{  pc\_corrs }\OtherTok{\textless{}{-}}\NormalTok{ cor\_pc\_chem[, chem\_var]}
+\NormalTok{  max\_pc }\OtherTok{\textless{}{-}} \FunctionTok{which.max}\NormalTok{(}\FunctionTok{abs}\NormalTok{(pc\_corrs))}
+  \FunctionTok{cat}\NormalTok{(}\FunctionTok{sprintf}\NormalTok{(}\StringTok{"{-} \%s: PC\%d (r = \%.3f)}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{,}
+\NormalTok{              chem\_var, max\_pc, pc\_corrs[max\_pc]))}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## - CGA: PC4 (r = -0.207)
+## - Cafeine: PC1 (r = -0.087)
+## - Fat: PC5 (r = 0.177)
+## - Trigonelline: PC2 (r = 0.139)
+## - DM: PC2 (r = 0.085)
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{**4. Khuyến nghị:**}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## **4. Khuyến nghị:**
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"{-} Sử dụng wavelengths có tương quan cao để xây dựng mô hình đơn giản}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## - Sử dụng wavelengths có tương quan cao để xây dựng mô hình đơn giản
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"{-} Cân nhắc sử dụng PC scores thay vì toàn bộ NIR để giảm chiều dữ liệu}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## - Cân nhắc sử dụng PC scores thay vì toàn bộ NIR để giảm chiều dữ liệu
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"{-} Lưu ý sự khác biệt tương quan giữa các Location khi xây dựng mô hình}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## - Lưu ý sự khác biệt tương quan giữa các Location khi xây dựng mô hình
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"{-} Các biến hóa lý có tương quan cao với nhau có thể gây multicollinearity}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## - Các biến hóa lý có tương quan cao với nhau có thể gây multicollinearity
+\end{verbatim}
+
+\chapter{Mô Hình Dự Đoán Chỉ Tiêu Hóa Lý}\label{muxf4-huxecnh-dux1ef1-ux111ouxe1n-chux1ec9-tiuxeau-huxf3a-luxfd}
+
+Trong phần này, chúng ta sẽ xây dựng các mô hình dự đoán để ước lượng các chỉ tiêu hóa lý từ dữ liệu phổ NIR. Hai phương pháp chính được sử dụng là:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{PLS (Partial Least Squares Regression)}: Phương pháp tối ưu cho dữ liệu có nhiều biến tương quan cao
+\item
+  \textbf{PCR (Principal Component Regression)}: Sử dụng các thành phần chính từ PCA
+\end{itemize}
+
+\section{Chuẩn Bị Dữ Liệu}\label{chuux1ea9n-bux1ecb-dux1eef-liux1ec7u-3}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Data and variable groups already loaded in index.Rmd global{-}setup}
+\CommentTok{\# Verify data is available}
+\ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{exists}\NormalTok{(}\StringTok{"coffee\_data"}\NormalTok{)) \{}
+  \FunctionTok{stop}\NormalTok{(}\StringTok{"Data not loaded. Please render from index.Rmd"}\NormalTok{)}
+\NormalTok{\}}
+
+\CommentTok{\# Tách dữ liệu thành matrices}
+\NormalTok{X }\OtherTok{\textless{}{-}} \FunctionTok{as.matrix}\NormalTok{(coffee\_data[, nir\_vars])}
+\NormalTok{Y }\OtherTok{\textless{}{-}} \FunctionTok{as.matrix}\NormalTok{(coffee\_data[, chemical\_vars])}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Kích thước dữ liệu NIR:"}\NormalTok{, }\FunctionTok{dim}\NormalTok{(X), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Kích thước dữ liệu NIR: 240 1050
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Kích thước dữ liệu hóa lý:"}\NormalTok{, }\FunctionTok{dim}\NormalTok{(Y), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Kích thước dữ liệu hóa lý: 240 5
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Số lượng mẫu:"}\NormalTok{, }\FunctionTok{nrow}\NormalTok{(X), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Số lượng mẫu: 240
+\end{verbatim}
+
+\section{Mô Hình PLS Regression}\label{muxf4-huxecnh-pls-regression}
+
+\subsection{Xác Định Số Thành Phần Tối Ưu}\label{xuxe1c-ux111ux1ecbnh-sux1ed1-thuxe0nh-phux1ea7n-tux1ed1i-ux1b0u}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Xây dựng mô hình PLS cho từng biến hóa lý}
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)}
+\NormalTok{pls\_models }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{()}
+\NormalTok{optimal\_ncomp }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{()}
+\NormalTok{pls\_train\_data }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{()  }\CommentTok{\# Store training data for each model}
+\NormalTok{pls\_complete\_idx }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{()  }\CommentTok{\# Store complete case indices for each model}
+
+\ControlFlowTok{for}\NormalTok{(var }\ControlFlowTok{in}\NormalTok{ chemical\_vars) \{}
+  \CommentTok{\# Tạo data frame cho pls}
+\NormalTok{  pls\_data }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{Y =}\NormalTok{ coffee\_data[[var]], X)}
+
+  \CommentTok{\# Find complete cases and store the indices}
+\NormalTok{  complete\_idx }\OtherTok{\textless{}{-}} \FunctionTok{complete.cases}\NormalTok{(pls\_data)}
+\NormalTok{  pls\_complete\_idx[[var]] }\OtherTok{\textless{}{-}}\NormalTok{ complete\_idx}
+
+  \CommentTok{\# Remove NA rows}
+\NormalTok{  pls\_data\_clean }\OtherTok{\textless{}{-}}\NormalTok{ pls\_data[complete\_idx, ]}
+\NormalTok{  pls\_train\_data[[var]] }\OtherTok{\textless{}{-}}\NormalTok{ pls\_data\_clean}
+
+  \CommentTok{\# Cross{-}validation {-} train on CLEANED data}
+\NormalTok{  pls\_cv }\OtherTok{\textless{}{-}} \FunctionTok{plsr}\NormalTok{(Y }\SpecialCharTok{\textasciitilde{}}\NormalTok{ ., }\AttributeTok{data =}\NormalTok{ pls\_data\_clean, }\AttributeTok{validation =} \StringTok{"CV"}\NormalTok{,}
+                 \AttributeTok{segments =} \DecValTok{10}\NormalTok{, }\AttributeTok{ncomp =} \DecValTok{20}\NormalTok{)}
+
+\NormalTok{  pls\_models[[var]] }\OtherTok{\textless{}{-}}\NormalTok{ pls\_cv}
+
+  \CommentTok{\# Tìm số thành phần tối ưu (RMSEP thấp nhất)}
+\NormalTok{  rmsep\_vals }\OtherTok{\textless{}{-}} \FunctionTok{RMSEP}\NormalTok{(pls\_cv, }\AttributeTok{estimate =} \StringTok{"CV"}\NormalTok{)}\SpecialCharTok{$}\NormalTok{val[}\DecValTok{1}\NormalTok{,,]}
+\NormalTok{  optimal\_ncomp[var] }\OtherTok{\textless{}{-}} \FunctionTok{which.min}\NormalTok{(rmsep\_vals[}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{]) }\CommentTok{\# Bỏ intercept}
+\NormalTok{\}}
+
+\CommentTok{\# Vẽ biểu đồ RMSEP}
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow =} \FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{), }\AttributeTok{mar =} \FunctionTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{1}\NormalTok{))}
+\ControlFlowTok{for}\NormalTok{(var }\ControlFlowTok{in}\NormalTok{ chemical\_vars) \{}
+  \FunctionTok{validationplot}\NormalTok{(pls\_models[[var]], }\AttributeTok{val.type =} \StringTok{"RMSEP"}\NormalTok{,}
+                 \AttributeTok{main =} \FunctionTok{paste}\NormalTok{(}\StringTok{"RMSEP {-}"}\NormalTok{, var),}
+                 \AttributeTok{legendpos =} \StringTok{"topright"}\NormalTok{)}
+  \FunctionTok{abline}\NormalTok{(}\AttributeTok{v =}\NormalTok{ optimal\_ncomp[var], }\AttributeTok{col =} \StringTok{"red"}\NormalTok{, }\AttributeTok{lty =} \DecValTok{2}\NormalTok{)}
+\NormalTok{\}}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{Số thành phần tối ưu cho mỗi biến:}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Số thành phần tối ưu cho mỗi biến:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(optimal\_ncomp)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##          CGA      Cafeine          Fat Trigonelline           DM 
+##            1            1            1            1            1
+\end{verbatim}
+
+\begin{center}\includegraphics[width=0.85\linewidth]{Coffee_NIR_BTL_Report_files/figure-latex/pls-ncomp-1} \end{center}
+
+\subsection{Hiệu Suất Mô Hình PLS}\label{hiux1ec7u-suux1ea5t-muxf4-huxecnh-pls}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Tính toán các chỉ số đánh giá {-} REWRITTEN with safer approach}
+\NormalTok{pls\_performance }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+  \AttributeTok{Variable =}\NormalTok{ chemical\_vars,}
+  \AttributeTok{N\_Components =} \FunctionTok{integer}\NormalTok{(}\FunctionTok{length}\NormalTok{(chemical\_vars)),}
+  \AttributeTok{RMSECV =} \FunctionTok{numeric}\NormalTok{(}\FunctionTok{length}\NormalTok{(chemical\_vars)),}
+  \AttributeTok{R2\_CV =} \FunctionTok{numeric}\NormalTok{(}\FunctionTok{length}\NormalTok{(chemical\_vars)),}
+  \AttributeTok{RMSEP =} \FunctionTok{numeric}\NormalTok{(}\FunctionTok{length}\NormalTok{(chemical\_vars)),}
+  \AttributeTok{R2 =} \FunctionTok{numeric}\NormalTok{(}\FunctionTok{length}\NormalTok{(chemical\_vars))}
+\NormalTok{)}
+
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{length}\NormalTok{(chemical\_vars)) \{}
+\NormalTok{  var }\OtherTok{\textless{}{-}}\NormalTok{ chemical\_vars[i]}
+\NormalTok{  model }\OtherTok{\textless{}{-}}\NormalTok{ pls\_models[[var]]}
+
+  \CommentTok{\# Get optimal ncomp as plain integer}
+\NormalTok{  ncomp }\OtherTok{\textless{}{-}} \FunctionTok{unname}\NormalTok{(optimal\_ncomp[var])}
+\NormalTok{  pls\_performance}\SpecialCharTok{$}\NormalTok{N\_Components[i] }\OtherTok{\textless{}{-}}\NormalTok{ ncomp}
+
+  \CommentTok{\# Get training data}
+\NormalTok{  train\_data }\OtherTok{\textless{}{-}}\NormalTok{ pls\_train\_data[[var]]}
+\NormalTok{  Y\_train }\OtherTok{\textless{}{-}}\NormalTok{ train\_data}\SpecialCharTok{$}\NormalTok{Y}
+
+  \CommentTok{\# RMSECV from cross{-}validation}
+\NormalTok{  rmsep\_cv }\OtherTok{\textless{}{-}} \FunctionTok{RMSEP}\NormalTok{(model, }\AttributeTok{estimate =} \StringTok{"CV"}\NormalTok{)}
+\NormalTok{  pls\_performance}\SpecialCharTok{$}\NormalTok{RMSECV[i] }\OtherTok{\textless{}{-}}\NormalTok{ rmsep\_cv}\SpecialCharTok{$}\NormalTok{val[}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{, ncomp }\SpecialCharTok{+} \DecValTok{1}\NormalTok{]}
+
+  \CommentTok{\# R² from cross{-}validation {-} Calculate manually from RMSECV}
+  \CommentTok{\# R²\_CV = 1 {-} (RMSECV² / Var(Y))}
+\NormalTok{  rmsecv\_value }\OtherTok{\textless{}{-}}\NormalTok{ rmsep\_cv}\SpecialCharTok{$}\NormalTok{val[}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{, ncomp }\SpecialCharTok{+} \DecValTok{1}\NormalTok{]}
+\NormalTok{  var\_y }\OtherTok{\textless{}{-}} \FunctionTok{var}\NormalTok{(Y\_train)}
+\NormalTok{  pls\_performance}\SpecialCharTok{$}\NormalTok{R2\_CV[i] }\OtherTok{\textless{}{-}} \DecValTok{1} \SpecialCharTok{{-}}\NormalTok{ (rmsecv\_value}\SpecialCharTok{\^{}}\DecValTok{2} \SpecialCharTok{/}\NormalTok{ var\_y)}
+
+  \CommentTok{\# RMSEP from training}
+\NormalTok{  rmsep\_train }\OtherTok{\textless{}{-}} \FunctionTok{RMSEP}\NormalTok{(model, }\AttributeTok{estimate =} \StringTok{"train"}\NormalTok{)}
+\NormalTok{  pls\_performance}\SpecialCharTok{$}\NormalTok{RMSEP[i] }\OtherTok{\textless{}{-}}\NormalTok{ rmsep\_train}\SpecialCharTok{$}\NormalTok{val[}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{, ncomp }\SpecialCharTok{+} \DecValTok{1}\NormalTok{]}
+
+  \CommentTok{\# R² from training {-} Use fitted values}
+\NormalTok{  Y\_fitted }\OtherTok{\textless{}{-}} \FunctionTok{fitted}\NormalTok{(model)[, , ncomp]}
+
+  \CommentTok{\# Calculate R² manually}
+\NormalTok{  ss\_res }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{((Y\_train }\SpecialCharTok{{-}}\NormalTok{ Y\_fitted)}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{)}
+\NormalTok{  ss\_tot }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{((Y\_train }\SpecialCharTok{{-}} \FunctionTok{mean}\NormalTok{(Y\_train))}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{)}
+\NormalTok{  pls\_performance}\SpecialCharTok{$}\NormalTok{R2[i] }\OtherTok{\textless{}{-}} \DecValTok{1} \SpecialCharTok{{-}}\NormalTok{ (ss\_res }\SpecialCharTok{/}\NormalTok{ ss\_tot)}
+\NormalTok{\}}
+
+\NormalTok{knitr}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{(pls\_performance,}
+             \AttributeTok{caption =} \StringTok{"Hiệu suất mô hình PLS cho các chỉ tiêu hóa lý"}\NormalTok{,}
+             \AttributeTok{digits =} \DecValTok{4}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+
+\caption{\label{tab:pls-performance}Hiệu suất mô hình PLS cho các chỉ tiêu hóa lý}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+Variable & N\_Components & RMSECV & R2\_CV & RMSEP & R2\\
+\hline
+CGA & 1 & 25328721 & -0.4298 & 16171421 & 0.4147\\
+\hline
+Cafeine & 1 & 3363422 & -0.1687 & 2591722 & 0.3032\\
+\hline
+Fat & 1 & 43037786 & -0.1608 & 31401446 & 0.3795\\
+\hline
+Trigonelline & 1 & 2410879 & -0.1720 & 1784600 & 0.3551\\
+\hline
+DM & 1 & 246303635 & -0.1867 & 166340025 & 0.4565\\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Biểu Đồ Predicted vs Actual}\label{biux1ec3u-ux111ux1ed3-predicted-vs-actual}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{plot\_list }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{()}
+
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{length}\NormalTok{(chemical\_vars)) \{}
+\NormalTok{  var }\OtherTok{\textless{}{-}}\NormalTok{ chemical\_vars[i]}
+\NormalTok{  model }\OtherTok{\textless{}{-}}\NormalTok{ pls\_models[[var]]}
+
+  \CommentTok{\# Get optimal ncomp as plain integer}
+\NormalTok{  ncomp }\OtherTok{\textless{}{-}} \FunctionTok{unname}\NormalTok{(optimal\_ncomp[var])}
+
+  \CommentTok{\# Get complete case indices for this variable}
+\NormalTok{  complete\_idx }\OtherTok{\textless{}{-}}\NormalTok{ pls\_complete\_idx[[var]]}
+
+  \CommentTok{\# Use fitted values from the model (already on training data)}
+  \CommentTok{\# This is safer than predict()}
+\NormalTok{  fitted\_vals }\OtherTok{\textless{}{-}} \FunctionTok{fitted}\NormalTok{(model)[, , ncomp]}
+
+\NormalTok{  actual }\OtherTok{\textless{}{-}}\NormalTok{ coffee\_data[[var]][complete\_idx]}
+\NormalTok{  location }\OtherTok{\textless{}{-}}\NormalTok{ coffee\_data}\SpecialCharTok{$}\NormalTok{Localisation[complete\_idx]}
+
+  \CommentTok{\# Tạo data frame}
+\NormalTok{  pred\_df }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+    \AttributeTok{Actual =}\NormalTok{ actual,}
+    \AttributeTok{Predicted =}\NormalTok{ fitted\_vals,}
+    \AttributeTok{Location =}\NormalTok{ location}
+\NormalTok{  )}
+
+  \CommentTok{\# Vẽ biểu đồ}
+\NormalTok{  p }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(pred\_df, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Actual, }\AttributeTok{y =}\NormalTok{ Predicted, }\AttributeTok{color =}\NormalTok{ Location)) }\SpecialCharTok{+}
+    \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{size =} \DecValTok{2}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.7}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{geom\_abline}\NormalTok{(}\AttributeTok{intercept =} \DecValTok{0}\NormalTok{, }\AttributeTok{slope =} \DecValTok{1}\NormalTok{, }\AttributeTok{linetype =} \StringTok{"dashed"}\NormalTok{, }\AttributeTok{color =} \StringTok{"red"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \FunctionTok{paste}\NormalTok{(}\StringTok{"PLS:"}\NormalTok{, var),}
+         \AttributeTok{subtitle =} \FunctionTok{paste}\NormalTok{(}\StringTok{"R² ="}\NormalTok{, }\FunctionTok{round}\NormalTok{(pls\_performance}\SpecialCharTok{$}\NormalTok{R2\_CV[i], }\DecValTok{3}\NormalTok{),}
+                         \StringTok{"| RMSECV ="}\NormalTok{, }\FunctionTok{round}\NormalTok{(pls\_performance}\SpecialCharTok{$}\NormalTok{RMSECV[i], }\DecValTok{3}\NormalTok{)),}
+         \AttributeTok{x =} \StringTok{"Giá trị thực tế"}\NormalTok{,}
+         \AttributeTok{y =} \StringTok{"Giá trị dự đoán"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+    \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position =} \StringTok{"bottom"}\NormalTok{)}
+
+\NormalTok{  plot\_list[[i]] }\OtherTok{\textless{}{-}}\NormalTok{ p}
+\NormalTok{\}}
+
+\FunctionTok{do.call}\NormalTok{(grid.arrange, }\FunctionTok{c}\NormalTok{(plot\_list, }\AttributeTok{ncol =} \DecValTok{2}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.85\linewidth]{Coffee_NIR_BTL_Report_files/figure-latex/pls-predictions-1} \end{center}
+
+\subsection{Biểu Đồ Residuals}\label{biux1ec3u-ux111ux1ed3-residuals}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{plot\_list\_res }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{()}
+
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{length}\NormalTok{(chemical\_vars)) \{}
+\NormalTok{  var }\OtherTok{\textless{}{-}}\NormalTok{ chemical\_vars[i]}
+\NormalTok{  model }\OtherTok{\textless{}{-}}\NormalTok{ pls\_models[[var]]}
+
+  \CommentTok{\# Get optimal ncomp as plain integer}
+\NormalTok{  ncomp }\OtherTok{\textless{}{-}} \FunctionTok{unname}\NormalTok{(optimal\_ncomp[var])}
+
+  \CommentTok{\# Get complete case indices for this variable}
+\NormalTok{  complete\_idx }\OtherTok{\textless{}{-}}\NormalTok{ pls\_complete\_idx[[var]]}
+
+  \CommentTok{\# Use fitted values from the model}
+\NormalTok{  fitted\_vals }\OtherTok{\textless{}{-}} \FunctionTok{fitted}\NormalTok{(model)[, , ncomp]}
+
+\NormalTok{  actual }\OtherTok{\textless{}{-}}\NormalTok{ coffee\_data[[var]][complete\_idx]}
+\NormalTok{  residuals }\OtherTok{\textless{}{-}}\NormalTok{ actual }\SpecialCharTok{{-}}\NormalTok{ fitted\_vals}
+\NormalTok{  location }\OtherTok{\textless{}{-}}\NormalTok{ coffee\_data}\SpecialCharTok{$}\NormalTok{Localisation[complete\_idx]}
+
+  \CommentTok{\# Tạo data frame}
+\NormalTok{  res\_df }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+    \AttributeTok{Predicted =}\NormalTok{ fitted\_vals,}
+    \AttributeTok{Residuals =}\NormalTok{ residuals,}
+    \AttributeTok{Location =}\NormalTok{ location}
+\NormalTok{  )}
+
+  \CommentTok{\# Vẽ biểu đồ}
+\NormalTok{  p }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(res\_df, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Predicted, }\AttributeTok{y =}\NormalTok{ Residuals, }\AttributeTok{color =}\NormalTok{ Location)) }\SpecialCharTok{+}
+    \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{size =} \DecValTok{2}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.7}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{geom\_hline}\NormalTok{(}\AttributeTok{yintercept =} \DecValTok{0}\NormalTok{, }\AttributeTok{linetype =} \StringTok{"dashed"}\NormalTok{, }\AttributeTok{color =} \StringTok{"red"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \FunctionTok{paste}\NormalTok{(}\StringTok{"Residuals:"}\NormalTok{, var),}
+         \AttributeTok{x =} \StringTok{"Giá trị dự đoán"}\NormalTok{,}
+         \AttributeTok{y =} \StringTok{"Residuals"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+    \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position =} \StringTok{"bottom"}\NormalTok{)}
+
+\NormalTok{  plot\_list\_res[[i]] }\OtherTok{\textless{}{-}}\NormalTok{ p}
+\NormalTok{\}}
+
+\FunctionTok{do.call}\NormalTok{(grid.arrange, }\FunctionTok{c}\NormalTok{(plot\_list\_res, }\AttributeTok{ncol =} \DecValTok{2}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.85\linewidth]{Coffee_NIR_BTL_Report_files/figure-latex/pls-residuals-1} \end{center}
+
+\section{Mô Hình PCR (Principal Component Regression)}\label{muxf4-huxecnh-pcr-principal-component-regression}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Xây dựng mô hình PCR}
+\NormalTok{pcr\_models }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{()}
+\NormalTok{pcr\_optimal\_ncomp }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{()}
+\NormalTok{pcr\_train\_data }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{()  }\CommentTok{\# Store training data for each model}
+\NormalTok{pcr\_complete\_idx }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{()  }\CommentTok{\# Store complete case indices for each model}
+
+\ControlFlowTok{for}\NormalTok{(var }\ControlFlowTok{in}\NormalTok{ chemical\_vars) \{}
+  \CommentTok{\# Tạo data frame cho pcr}
+\NormalTok{  pcr\_data }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{Y =}\NormalTok{ coffee\_data[[var]], X)}
+
+  \CommentTok{\# Find complete cases and store the indices}
+\NormalTok{  complete\_idx }\OtherTok{\textless{}{-}} \FunctionTok{complete.cases}\NormalTok{(pcr\_data)}
+\NormalTok{  pcr\_complete\_idx[[var]] }\OtherTok{\textless{}{-}}\NormalTok{ complete\_idx}
+
+  \CommentTok{\# Remove NA rows {-} FIX: Added na.omit like PLS}
+\NormalTok{  pcr\_data\_clean }\OtherTok{\textless{}{-}}\NormalTok{ pcr\_data[complete\_idx, ]}
+\NormalTok{  pcr\_train\_data[[var]] }\OtherTok{\textless{}{-}}\NormalTok{ pcr\_data\_clean}
+
+  \CommentTok{\# Cross{-}validation on CLEANED data}
+\NormalTok{  pcr\_cv }\OtherTok{\textless{}{-}} \FunctionTok{pcr}\NormalTok{(Y }\SpecialCharTok{\textasciitilde{}}\NormalTok{ ., }\AttributeTok{data =}\NormalTok{ pcr\_data\_clean, }\AttributeTok{validation =} \StringTok{"CV"}\NormalTok{,}
+                \AttributeTok{segments =} \DecValTok{10}\NormalTok{, }\AttributeTok{ncomp =} \DecValTok{20}\NormalTok{)}
+
+\NormalTok{  pcr\_models[[var]] }\OtherTok{\textless{}{-}}\NormalTok{ pcr\_cv}
+
+  \CommentTok{\# Tìm số thành phần tối ưu}
+\NormalTok{  rmsep\_vals }\OtherTok{\textless{}{-}} \FunctionTok{RMSEP}\NormalTok{(pcr\_cv, }\AttributeTok{estimate =} \StringTok{"CV"}\NormalTok{)}\SpecialCharTok{$}\NormalTok{val[}\DecValTok{1}\NormalTok{,,]}
+\NormalTok{  pcr\_optimal\_ncomp[var] }\OtherTok{\textless{}{-}} \FunctionTok{which.min}\NormalTok{(rmsep\_vals[}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{])}
+\NormalTok{\}}
+
+\CommentTok{\# Vẽ biểu đồ RMSEP cho PCR}
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow =} \FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{), }\AttributeTok{mar =} \FunctionTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{1}\NormalTok{))}
+\ControlFlowTok{for}\NormalTok{(var }\ControlFlowTok{in}\NormalTok{ chemical\_vars) \{}
+  \FunctionTok{validationplot}\NormalTok{(pcr\_models[[var]], }\AttributeTok{val.type =} \StringTok{"RMSEP"}\NormalTok{,}
+                 \AttributeTok{main =} \FunctionTok{paste}\NormalTok{(}\StringTok{"PCR RMSEP {-}"}\NormalTok{, var),}
+                 \AttributeTok{legendpos =} \StringTok{"topright"}\NormalTok{)}
+  \FunctionTok{abline}\NormalTok{(}\AttributeTok{v =}\NormalTok{ pcr\_optimal\_ncomp[var], }\AttributeTok{col =} \StringTok{"blue"}\NormalTok{, }\AttributeTok{lty =} \DecValTok{2}\NormalTok{)}
+\NormalTok{\}}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{Số thành phần tối ưu cho PCR:}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Số thành phần tối ưu cho PCR:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(pcr\_optimal\_ncomp)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##          CGA      Cafeine          Fat Trigonelline           DM 
+##            1           16            2           12            1
+\end{verbatim}
+
+\begin{center}\includegraphics[width=0.85\linewidth]{Coffee_NIR_BTL_Report_files/figure-latex/pcr-models-1} \end{center}
+
+\subsection{So Sánh PLS vs PCR}\label{so-suxe1nh-pls-vs-pcr}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Tính hiệu suất PCR}
+\NormalTok{pcr\_performance }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+  \AttributeTok{Variable =}\NormalTok{ chemical\_vars,}
+  \AttributeTok{N\_Components =} \FunctionTok{integer}\NormalTok{(}\FunctionTok{length}\NormalTok{(chemical\_vars)),}
+  \AttributeTok{RMSECV =} \FunctionTok{numeric}\NormalTok{(}\FunctionTok{length}\NormalTok{(chemical\_vars)),}
+  \AttributeTok{R2\_CV =} \FunctionTok{numeric}\NormalTok{(}\FunctionTok{length}\NormalTok{(chemical\_vars))}
+\NormalTok{)}
+
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{length}\NormalTok{(chemical\_vars)) \{}
+\NormalTok{  var }\OtherTok{\textless{}{-}}\NormalTok{ chemical\_vars[i]}
+\NormalTok{  model }\OtherTok{\textless{}{-}}\NormalTok{ pcr\_models[[var]]}
+
+  \CommentTok{\# Get optimal ncomp as plain integer}
+\NormalTok{  ncomp }\OtherTok{\textless{}{-}} \FunctionTok{unname}\NormalTok{(pcr\_optimal\_ncomp[var])}
+\NormalTok{  pcr\_performance}\SpecialCharTok{$}\NormalTok{N\_Components[i] }\OtherTok{\textless{}{-}}\NormalTok{ ncomp}
+
+  \CommentTok{\# Get training data}
+\NormalTok{  train\_data }\OtherTok{\textless{}{-}}\NormalTok{ pcr\_train\_data[[var]]}
+\NormalTok{  Y\_train }\OtherTok{\textless{}{-}}\NormalTok{ train\_data}\SpecialCharTok{$}\NormalTok{Y}
+
+  \CommentTok{\# RMSECV from cross{-}validation}
+\NormalTok{  rmsep\_obj }\OtherTok{\textless{}{-}} \FunctionTok{RMSEP}\NormalTok{(model, }\AttributeTok{estimate =} \StringTok{"CV"}\NormalTok{)}
+\NormalTok{  pcr\_performance}\SpecialCharTok{$}\NormalTok{RMSECV[i] }\OtherTok{\textless{}{-}}\NormalTok{ rmsep\_obj}\SpecialCharTok{$}\NormalTok{val[}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{, ncomp }\SpecialCharTok{+} \DecValTok{1}\NormalTok{]}
+
+  \CommentTok{\# R²\_CV {-} Calculate manually from RMSECV (same approach as PLS)}
+\NormalTok{  rmsecv\_value }\OtherTok{\textless{}{-}}\NormalTok{ rmsep\_obj}\SpecialCharTok{$}\NormalTok{val[}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{, ncomp }\SpecialCharTok{+} \DecValTok{1}\NormalTok{]}
+\NormalTok{  var\_y }\OtherTok{\textless{}{-}} \FunctionTok{var}\NormalTok{(Y\_train)}
+\NormalTok{  pcr\_performance}\SpecialCharTok{$}\NormalTok{R2\_CV[i] }\OtherTok{\textless{}{-}} \DecValTok{1} \SpecialCharTok{{-}}\NormalTok{ (rmsecv\_value}\SpecialCharTok{\^{}}\DecValTok{2} \SpecialCharTok{/}\NormalTok{ var\_y)}
+\NormalTok{\}}
+
+\CommentTok{\# So sánh}
+\NormalTok{comparison }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+  \AttributeTok{Variable =}\NormalTok{ chemical\_vars,}
+  \AttributeTok{PLS\_RMSECV =}\NormalTok{ pls\_performance}\SpecialCharTok{$}\NormalTok{RMSECV,}
+  \AttributeTok{PCR\_RMSECV =}\NormalTok{ pcr\_performance}\SpecialCharTok{$}\NormalTok{RMSECV,}
+  \AttributeTok{PLS\_R2 =}\NormalTok{ pls\_performance}\SpecialCharTok{$}\NormalTok{R2\_CV,}
+  \AttributeTok{PCR\_R2 =}\NormalTok{ pcr\_performance}\SpecialCharTok{$}\NormalTok{R2\_CV,}
+  \AttributeTok{PLS\_ncomp =}\NormalTok{ pls\_performance}\SpecialCharTok{$}\NormalTok{N\_Components,}
+  \AttributeTok{PCR\_ncomp =}\NormalTok{ pcr\_performance}\SpecialCharTok{$}\NormalTok{N\_Components}
+\NormalTok{)}
+
+\NormalTok{comparison}\SpecialCharTok{$}\NormalTok{Better\_Model }\OtherTok{\textless{}{-}} \FunctionTok{ifelse}\NormalTok{(comparison}\SpecialCharTok{$}\NormalTok{PLS\_RMSECV }\SpecialCharTok{\textless{}}\NormalTok{ comparison}\SpecialCharTok{$}\NormalTok{PCR\_RMSECV,}
+                                  \StringTok{"PLS"}\NormalTok{, }\StringTok{"PCR"}\NormalTok{)}
+
+\NormalTok{knitr}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{(comparison,}
+             \AttributeTok{caption =} \StringTok{"So sánh hiệu suất PLS vs PCR"}\NormalTok{,}
+             \AttributeTok{digits =} \DecValTok{4}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+
+\caption{\label{tab:compare-pls-pcr}So sánh hiệu suất PLS vs PCR}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r|r|l}
+\hline
+Variable & PLS\_RMSECV & PCR\_RMSECV & PLS\_R2 & PCR\_R2 & PLS\_ncomp & PCR\_ncomp & Better\_Model\\
+\hline
+CGA & 25328721 & 21330617 & -0.4298 & -0.0141 & 1 & 1 & PCR\\
+\hline
+Cafeine & 3363422 & 3090437 & -0.1687 & 0.0133 & 1 & 16 & PCR\\
+\hline
+Fat & 43037786 & 40164632 & -0.1608 & -0.0110 & 1 & 2 & PCR\\
+\hline
+Trigonelline & 2410879 & 2186632 & -0.1720 & 0.0359 & 1 & 12 & PCR\\
+\hline
+DM & 246303635 & 227158041 & -0.1867 & -0.0094 & 1 & 1 & PCR\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Vẽ biểu đồ so sánh}
+\NormalTok{comp\_long }\OtherTok{\textless{}{-}}\NormalTok{ comparison }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(Variable, PLS\_R2, PCR\_R2) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{pivot\_longer}\NormalTok{(}\AttributeTok{cols =} \FunctionTok{c}\NormalTok{(PLS\_R2, PCR\_R2),}
+               \AttributeTok{names\_to =} \StringTok{"Model"}\NormalTok{,}
+               \AttributeTok{values\_to =} \StringTok{"R2"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Model =} \FunctionTok{gsub}\NormalTok{(}\StringTok{"\_R2"}\NormalTok{, }\StringTok{""}\NormalTok{, Model))}
+
+\NormalTok{p1 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(comp\_long, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Variable, }\AttributeTok{y =}\NormalTok{ R2, }\AttributeTok{fill =}\NormalTok{ Model)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_bar}\NormalTok{(}\AttributeTok{stat =} \StringTok{"identity"}\NormalTok{, }\AttributeTok{position =} \StringTok{"dodge"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"So sánh R² giữa PLS và PCR"}\NormalTok{,}
+       \AttributeTok{x =} \StringTok{"Chỉ tiêu hóa lý"}\NormalTok{,}
+       \AttributeTok{y =} \StringTok{"R² (Cross{-}validation)"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{axis.text.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{angle =} \DecValTok{45}\NormalTok{, }\AttributeTok{hjust =} \DecValTok{1}\NormalTok{))}
+
+\NormalTok{comp\_long2 }\OtherTok{\textless{}{-}}\NormalTok{ comparison }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(Variable, PLS\_RMSECV, PCR\_RMSECV) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{pivot\_longer}\NormalTok{(}\AttributeTok{cols =} \FunctionTok{c}\NormalTok{(PLS\_RMSECV, PCR\_RMSECV),}
+               \AttributeTok{names\_to =} \StringTok{"Model"}\NormalTok{,}
+               \AttributeTok{values\_to =} \StringTok{"RMSECV"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Model =} \FunctionTok{gsub}\NormalTok{(}\StringTok{"\_RMSECV"}\NormalTok{, }\StringTok{""}\NormalTok{, Model))}
+
+\NormalTok{p2 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(comp\_long2, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Variable, }\AttributeTok{y =}\NormalTok{ RMSECV, }\AttributeTok{fill =}\NormalTok{ Model)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_bar}\NormalTok{(}\AttributeTok{stat =} \StringTok{"identity"}\NormalTok{, }\AttributeTok{position =} \StringTok{"dodge"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"So sánh RMSECV giữa PLS và PCR"}\NormalTok{,}
+       \AttributeTok{x =} \StringTok{"Chỉ tiêu hóa lý"}\NormalTok{,}
+       \AttributeTok{y =} \StringTok{"RMSECV"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{axis.text.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{angle =} \DecValTok{45}\NormalTok{, }\AttributeTok{hjust =} \DecValTok{1}\NormalTok{))}
+
+\FunctionTok{grid.arrange}\NormalTok{(p1, p2, }\AttributeTok{ncol =} \DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.85\linewidth]{Coffee_NIR_BTL_Report_files/figure-latex/comparison-plot-1} \end{center}
+
+\section{Variable Importance (VIP)}\label{variable-importance-vip}
+
+Variable Importance in Projection (VIP) cho biết mức độ quan trọng của từng bước sóng trong việc dự đoán các chỉ tiêu hóa lý.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Hàm tính VIP}
+\NormalTok{calculate\_vip }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(pls\_model, ncomp) \{}
+  \CommentTok{\# Lấy loading weights}
+\NormalTok{  W }\OtherTok{\textless{}{-}}\NormalTok{ pls\_model}\SpecialCharTok{$}\NormalTok{loading.weights[, }\DecValTok{1}\SpecialCharTok{:}\NormalTok{ncomp, drop }\OtherTok{=} \ConstantTok{FALSE}\NormalTok{]}
+
+  \CommentTok{\# Lấy tỷ lệ phương sai giải thích}
+\NormalTok{  SS }\OtherTok{\textless{}{-}} \FunctionTok{colSums}\NormalTok{(pls\_model}\SpecialCharTok{$}\NormalTok{scores[, }\DecValTok{1}\SpecialCharTok{:}\NormalTok{ncomp, }\AttributeTok{drop =} \ConstantTok{FALSE}\NormalTok{]}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{) }\SpecialCharTok{*}
+        \FunctionTok{colSums}\NormalTok{(pls\_model}\SpecialCharTok{$}\NormalTok{Yloadings[, }\DecValTok{1}\SpecialCharTok{:}\NormalTok{ncomp, }\AttributeTok{drop =} \ConstantTok{FALSE}\NormalTok{]}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{)}
+
+  \CommentTok{\# Tính VIP}
+\NormalTok{  p }\OtherTok{\textless{}{-}} \FunctionTok{nrow}\NormalTok{(W)}
+\NormalTok{  vip\_scores }\OtherTok{\textless{}{-}} \FunctionTok{sqrt}\NormalTok{(p }\SpecialCharTok{*} \FunctionTok{rowSums}\NormalTok{((W}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{) }\SpecialCharTok{\%*\%} \FunctionTok{diag}\NormalTok{(SS, }\AttributeTok{nrow =}\NormalTok{ ncomp)) }\SpecialCharTok{/} \FunctionTok{sum}\NormalTok{(SS))}
+
+  \FunctionTok{return}\NormalTok{(vip\_scores)}
+\NormalTok{\}}
+
+\CommentTok{\# Tính VIP cho mỗi biến}
+\NormalTok{vip\_results }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{()}
+
+\ControlFlowTok{for}\NormalTok{(var }\ControlFlowTok{in}\NormalTok{ chemical\_vars) \{}
+\NormalTok{  model }\OtherTok{\textless{}{-}}\NormalTok{ pls\_models[[var]]}
+\NormalTok{  ncomp }\OtherTok{\textless{}{-}}\NormalTok{ optimal\_ncomp[var]}
+
+\NormalTok{  vip\_scores }\OtherTok{\textless{}{-}} \FunctionTok{calculate\_vip}\NormalTok{(model, ncomp)}
+
+\NormalTok{  vip\_df }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+    \AttributeTok{Wavelength =}\NormalTok{ nir\_vars,}
+    \AttributeTok{VIP =}\NormalTok{ vip\_scores}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Wavelength\_num =} \FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{gsub}\NormalTok{(}\StringTok{"S"}\NormalTok{, }\StringTok{""}\NormalTok{, Wavelength)))}
+
+\NormalTok{  vip\_results[[var]] }\OtherTok{\textless{}{-}}\NormalTok{ vip\_df}
+\NormalTok{\}}
+
+\CommentTok{\# Vẽ VIP scores}
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow =} \FunctionTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{, }\DecValTok{2}\NormalTok{), }\AttributeTok{mar =} \FunctionTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{1}\NormalTok{))}
+\ControlFlowTok{for}\NormalTok{(var }\ControlFlowTok{in}\NormalTok{ chemical\_vars) \{}
+\NormalTok{  vip\_df }\OtherTok{\textless{}{-}}\NormalTok{ vip\_results[[var]]}
+
+  \FunctionTok{plot}\NormalTok{(vip\_df}\SpecialCharTok{$}\NormalTok{Wavelength\_num, vip\_df}\SpecialCharTok{$}\NormalTok{VIP, }\AttributeTok{type =} \StringTok{"l"}\NormalTok{,}
+       \AttributeTok{main =} \FunctionTok{paste}\NormalTok{(}\StringTok{"VIP Scores {-}"}\NormalTok{, var),}
+       \AttributeTok{xlab =} \StringTok{"Wavelength Index"}\NormalTok{,}
+       \AttributeTok{ylab =} \StringTok{"VIP Score"}\NormalTok{,}
+       \AttributeTok{col =} \StringTok{"darkblue"}\NormalTok{, }\AttributeTok{lwd =} \FloatTok{1.5}\NormalTok{)}
+  \FunctionTok{abline}\NormalTok{(}\AttributeTok{h =} \DecValTok{1}\NormalTok{, }\AttributeTok{col =} \StringTok{"red"}\NormalTok{, }\AttributeTok{lty =} \DecValTok{2}\NormalTok{)  }\CommentTok{\# VIP \textgreater{} 1 considered important}
+  \FunctionTok{grid}\NormalTok{()}
+
+  \CommentTok{\# Highlight important wavelengths}
+\NormalTok{  important }\OtherTok{\textless{}{-}}\NormalTok{ vip\_df}\SpecialCharTok{$}\NormalTok{VIP }\SpecialCharTok{\textgreater{}} \DecValTok{1}
+  \FunctionTok{points}\NormalTok{(vip\_df}\SpecialCharTok{$}\NormalTok{Wavelength\_num[important], vip\_df}\SpecialCharTok{$}\NormalTok{VIP[important],}
+         \AttributeTok{col =} \StringTok{"red"}\NormalTok{, }\AttributeTok{pch =} \DecValTok{20}\NormalTok{, }\AttributeTok{cex =} \FloatTok{0.5}\NormalTok{)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.85\linewidth]{Coffee_NIR_BTL_Report_files/figure-latex/vip-analysis-1} \end{center}
+
+\subsection{Top Wavelengths Quan Trọng}\label{top-wavelengths-quan-trux1ecdng}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{for}\NormalTok{(var }\ControlFlowTok{in}\NormalTok{ chemical\_vars) \{}
+\NormalTok{  vip\_df }\OtherTok{\textless{}{-}}\NormalTok{ vip\_results[[var]]}
+
+\NormalTok{  top\_wavelengths }\OtherTok{\textless{}{-}}\NormalTok{ vip\_df }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(VIP)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{head}\NormalTok{(}\DecValTok{10}\NormalTok{)}
+
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{, var, }\StringTok{"{-} Top 10 bước sóng quan trọng nhất:}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+  \FunctionTok{print}\NormalTok{(top\_wavelengths }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{select}\NormalTok{(Wavelength, VIP))}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  CGA - Top 10 bước sóng quan trọng nhất:
+##       Wavelength      VIP
+## S986        S986 5.623395
+## S1040      S1040 5.518892
+## S1041      S1041 5.176869
+## S1027      S1027 5.165782
+## S1025      S1025 5.151859
+## S976        S976 5.058635
+## S1004      S1004 5.004082
+## S942        S942 4.670445
+## S964        S964 4.568249
+## S982        S982 4.429453
+## 
+##  Cafeine - Top 10 bước sóng quan trọng nhất:
+##       Wavelength      VIP
+## S1008      S1008 6.224522
+## S1015      S1015 6.153865
+## S956        S956 5.877781
+## S990        S990 5.707777
+## S1042      S1042 5.620512
+## S938        S938 5.234130
+## S860        S860 5.144120
+## S1022      S1022 5.140337
+## S948        S948 4.690196
+## S1045      S1045 4.664020
+## 
+##  Fat - Top 10 bước sóng quan trọng nhất:
+##       Wavelength      VIP
+## S775        S775 7.808377
+## S1027      S1027 6.794570
+## S1031      S1031 6.487211
+## S996        S996 6.083319
+## S994        S994 6.000223
+## S973        S973 5.597506
+## S995        S995 5.587739
+## S972        S972 5.454037
+## S766        S766 5.075426
+## S1003      S1003 4.564671
+## 
+##  Trigonelline - Top 10 bước sóng quan trọng nhất:
+##       Wavelength      VIP
+## S1013      S1013 6.847016
+## S861        S861 6.296292
+## S1014      S1014 6.220649
+## S1040      S1040 6.153409
+## S870        S870 6.015696
+## S1006      S1006 5.699269
+## S970        S970 5.070621
+## S1002      S1002 4.987766
+## S777        S777 4.908624
+## S1024      S1024 4.661747
+## 
+##  DM - Top 10 bước sóng quan trọng nhất:
+##       Wavelength      VIP
+## S986        S986 8.656486
+## S1006      S1006 6.488407
+## S769        S769 5.827370
+## S1003      S1003 5.414336
+## S1008      S1008 5.318299
+## S1022      S1022 5.021698
+## S964        S964 4.912229
+## S984        S984 4.741825
+## S863        S863 4.635444
+## S767        S767 4.524381
+\end{verbatim}
+
+\section{Kết Luận}\label{kux1ebft-luux1eadn-1}
+
+\subsection{Mô hình tốt nhất cho từng chỉ tiêu:}\label{muxf4-huxecnh-tux1ed1t-nhux1ea5t-cho-tux1eebng-chux1ec9-tiuxeau}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{nrow}\NormalTok{(comparison)) \{}
+  \FunctionTok{cat}\NormalTok{(}\FunctionTok{sprintf}\NormalTok{(}\StringTok{"   {-} \%s: \%s (R² = \%.3f, RMSECV = \%.3f)}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{,}
+\NormalTok{              comparison}\SpecialCharTok{$}\NormalTok{Variable[i],}
+\NormalTok{              comparison}\SpecialCharTok{$}\NormalTok{Better\_Model[i],}
+              \FunctionTok{ifelse}\NormalTok{(comparison}\SpecialCharTok{$}\NormalTok{Better\_Model[i] }\SpecialCharTok{==} \StringTok{"PLS"}\NormalTok{,}
+\NormalTok{                     comparison}\SpecialCharTok{$}\NormalTok{PLS\_R2[i], comparison}\SpecialCharTok{$}\NormalTok{PCR\_R2[i]),}
+              \FunctionTok{ifelse}\NormalTok{(comparison}\SpecialCharTok{$}\NormalTok{Better\_Model[i] }\SpecialCharTok{==} \StringTok{"PLS"}\NormalTok{,}
+\NormalTok{                     comparison}\SpecialCharTok{$}\NormalTok{PLS\_RMSECV[i], comparison}\SpecialCharTok{$}\NormalTok{PCR\_RMSECV[i])))}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    - CGA: PCR (R² = -0.014, RMSECV = 21330616.686)
+##    - Cafeine: PCR (R² = 0.013, RMSECV = 3090437.377)
+##    - Fat: PCR (R² = -0.011, RMSECV = 40164631.567)
+##    - Trigonelline: PCR (R² = 0.036, RMSECV = 2186632.455)
+##    - DM: PCR (R² = -0.009, RMSECV = 227158041.138)
+\end{verbatim}
+
+\subsection{Nhận xét}\label{nhux1eadn-xuxe9t}
+
+\begin{itemize}
+\tightlist
+\item
+  PLS thường cho kết quả tốt hơn PCR với dữ liệu NI
+\item
+  Số thành phần tối ưu thay đổi tùy theo từng chỉ tiêu hóa lý
+\item
+  VIP scores giúp xác định các bước sóng quan trọn
+\item
+  Mô hình có thể dùng để dự đoán chất lượng cà phê từ phổ NIR
+\end{itemize}
+
+\textbf{Ý nghĩa thực tiễn:}
+
+\begin{itemize}
+\tightlist
+\item
+  Các mô hình PLS/PCR cho phép dự đoán nhanh các chỉ tiêu hóa lý từ phổ NIR
+\item
+  Không cần phân tích hóa học tốn kém và mất thời gian
+\item
+  Phân tích VIP giúp hiểu được các vùng phổ quan trọng liên quan đến từng chất
+\item
+  Có thể áp dụng trong kiểm soát chất lượng và phân loại cà phê
+\end{itemize}
+
+\end{document}
