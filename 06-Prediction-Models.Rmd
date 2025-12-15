@@ -73,8 +73,11 @@ for(var in chemical_vars) {
                  legendpos = "topright")
   abline(v = optimal_ncomp[var], col = "red", lty = 2)
 }
+```
 
-cat("\nSố thành phần tối ưu cho mỗi biến:\n")
+**Số thành phần tối ưu cho mỗi biến:**
+
+```{r pls-ncomp-print}
 print(optimal_ncomp)
 ```
 
@@ -263,8 +266,11 @@ for(var in chemical_vars) {
                  legendpos = "topright")
   abline(v = pcr_optimal_ncomp[var], col = "blue", lty = 2)
 }
+```
 
-cat("\nSố thành phần tối ưu cho PCR:\n")
+**Số thành phần tối ưu cho PCR:**
+
+```{r pcr-ncomp-print}
 print(pcr_optimal_ncomp)
 ```
 

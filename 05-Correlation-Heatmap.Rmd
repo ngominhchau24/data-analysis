@@ -261,34 +261,28 @@ for(chem_var in chemical_vars) {
   cat(sprintf("**%s**: Tương quan mạnh nhất với PC%d (r = %.3f)\n",
               chem_var, max_pc, max_corr))
 }
-
-cat("\n**Ý nghĩa:**\n")
-cat("- PC có tương quan cao với biến hóa lý cho thấy thành phần chính đó\n")
-cat("  chứa thông tin quan trọng để dự đoán biến đó\n")
-cat("- Có thể sử dụng PC scores làm biến độc lập trong mô hình hồi quy\n")
 ```
 
+**Ý nghĩa:**
+
+- PC có tương quan cao với biến hóa lý cho thấy thành phần chính đó chứa thông tin quan trọng để dự đoán biến đó
+- Có thể sử dụng PC scores làm biến độc lập trong mô hình hồi quy
+
 ## Tương quan theo Location
+
+Phân tích tương quan theo từng Location để so sánh pattern tương quan giữa các vị trí địa lý. Xem biểu đồ heatmap phía dưới để so sánh chi tiết.
 
 ```{r corr-by-location}
 # Tính tương quan riêng cho từng location
 location_info <- coffee_data$Localisation[complete_rows]
 unique_locations <- unique(location_info)
 
-cat("Phân tích tương quan theo từng Location:\n\n")
-cat("Xem biểu đồ heatmap phía dưới để so sánh pattern tương quan giữa các vị trí địa lý.\n\n")
-
 # Calculate correlations for each location (for plotting)
 for(loc in unique_locations) {
   loc_idx <- which(location_info == loc)
 
   if(length(loc_idx) > 5) {  # Chỉ phân tích nếu có đủ mẫu
-    data_chem_loc <- data_chem_full[loc_idx, ]
-    cor_loc <- cor(data_chem_loc, method = "pearson")
-
     cat(sprintf("- Location %s: %d mẫu\n", loc, length(loc_idx)))
-
-    # Note: Detailed tables hidden to avoid clutter - see heatmap visualization instead
   }
 }
 ```
@@ -339,18 +333,22 @@ plot(hc_chem,
 
 ## Tổng hợp và Kết luận
 
-```{r correlation-summary}
-cat("### Tóm tắt phân tích tương quan:\n\n")
+### Tóm tắt phân tích tương quan:
 
-cat("**1. Tương quan giữa biến hóa lý:**\n")
+**1. Tương quan giữa biến hóa lý:**
+
+```{r correlation-summary-1}
 # Tìm tương quan cao nhất
 max_corr_idx <- which(abs(cor_matrix) == max(abs(cor_matrix[upper.tri(cor_matrix)])), arr.ind = TRUE)[1,]
 cat(sprintf("- Tương quan mạnh nhất: %s vs %s (r = %.3f)\n",
             rownames(cor_matrix)[max_corr_idx[1]],
             colnames(cor_matrix)[max_corr_idx[2]],
             cor_matrix[max_corr_idx[1], max_corr_idx[2]]))
+```
 
-cat("\n**2. NIR wavelengths quan trọng:**\n")
+**2. NIR wavelengths quan trọng:**
+
+```{r correlation-summary-2}
 for(chem_var in chemical_vars) {
   top_wave <- all_important %>%
     filter(Chemical == chem_var) %>%
@@ -359,18 +357,22 @@ for(chem_var in chemical_vars) {
   cat(sprintf("- %s: Wavelength %s (r = %.3f)\n",
               chem_var, top_wave$Wavelength, top_wave$Correlation))
 }
+```
 
-cat("\n**3. PC scores hiệu quả:**\n")
+**3. PC scores hiệu quả:**
+
+```{r correlation-summary-3}
 for(chem_var in chemical_vars) {
   pc_corrs <- cor_pc_chem[, chem_var]
   max_pc <- which.max(abs(pc_corrs))
   cat(sprintf("- %s: PC%d (r = %.3f)\n",
               chem_var, max_pc, pc_corrs[max_pc]))
 }
-
-cat("\n**4. Khuyến nghị:**\n")
-cat("- Sử dụng wavelengths có tương quan cao để xây dựng mô hình đơn giản\n")
-cat("- Cân nhắc sử dụng PC scores thay vì toàn bộ NIR để giảm chiều dữ liệu\n")
-cat("- Lưu ý sự khác biệt tương quan giữa các Location khi xây dựng mô hình\n")
-cat("- Các biến hóa lý có tương quan cao với nhau có thể gây multicollinearity\n")
 ```
+
+**4. Khuyến nghị:**
+
+- Sử dụng wavelengths có tương quan cao để xây dựng mô hình đơn giản
+- Cân nhắc sử dụng PC scores thay vì toàn bộ NIR để giảm chiều dữ liệu
+- Lưu ý sự khác biệt tương quan giữa các Location khi xây dựng mô hình
+- Các biến hóa lý có tương quan cao với nhau có thể gây multicollinearity
