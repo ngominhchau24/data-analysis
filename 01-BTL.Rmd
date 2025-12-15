@@ -37,10 +37,10 @@ if(!exists("coffee_data")) {
 dim(coffee_data)
 
 # Kiểm tra kiểu dữ liệu đã chuyển đổi thành công
-cat("Kiểm tra kiểu dữ liệu:\n")
-cat("- CGA:", class(coffee_data$CGA), "\n")
-cat("- Localisation:", class(coffee_data$Localisation), "\n")
-cat("- S1:", class(coffee_data$S1), "\n")
+cat(sprintf("- CGA: %s\n- Localisation: %s\n- S1: %s\n",
+            class(coffee_data$CGA),
+            class(coffee_data$Localisation),
+            class(coffee_data$S1)))
 ```
 
 Bộ dữ liệu có **`r nrow(coffee_data)`** mẫu và **`r ncol(coffee_data)`** biến.
@@ -151,34 +151,43 @@ ggplot(nir_data_long, aes(x = wavelength, y = absorbance, color = factor(sample)
 # Tổng quan về missing data
 miss_summary <- miss_var_summary(coffee_data)
 
-cat("Tổng số biến có dữ liệu thiếu:", sum(miss_summary$n_miss > 0), "\n")
-cat("Tổng số quan sát thiếu:", sum(is.na(coffee_data)), "\n")
-cat("Tỷ lệ dữ liệu thiếu tổng thể:", round(mean(is.na(coffee_data)) * 100, 2), "%\n")
+cat(sprintf("Tổng số biến có dữ liệu thiếu: %d\nTổng số quan sát thiếu: %d\nTỷ lệ dữ liệu thiếu tổng thể: %.2f%%\n",
+            sum(miss_summary$n_miss > 0),
+            sum(is.na(coffee_data)),
+            round(mean(is.na(coffee_data)) * 100, 2)))
 ```
 
 ### Phân tích chi tiết Missing Data
 
-```{r missing-by-group}
+**Dữ liệu thiếu trong các biến Hóa lý:**
+
+```{r missing-chemical}
 # Missing trong các biến hóa lý
 miss_chemical <- coffee_data %>%
   select(all_of(chemical_vars)) %>%
   miss_var_summary()
 
-cat("\n**Dữ liệu thiếu trong các biến Hóa lý:**\n")
 miss_chemical %>%
   kable() %>%
   kable_styling(bootstrap_options = c("striped", "hover"))
+```
 
+**Dữ liệu thiếu trong biến Vị trí:**
+
+```{r missing-location}
 # Missing trong biến Location
 miss_location <- coffee_data %>%
   select(Localisation) %>%
   miss_var_summary()
 
-cat("\n**Dữ liệu thiếu trong biến Vị trí:**\n")
 miss_location %>%
   kable() %>%
   kable_styling(bootstrap_options = c("striped", "hover"))
+```
 
+**Dữ liệu thiếu trong các biến NIR:**
+
+```{r missing-nir}
 # Missing trong các biến NIR
 miss_nir <- coffee_data %>%
   select(all_of(nir_vars)) %>%
@@ -186,12 +195,11 @@ miss_nir <- coffee_data %>%
   filter(n_miss > 0)
 
 if(nrow(miss_nir) > 0) {
-  cat("\n**Dữ liệu thiếu trong các biến NIR:**\n")
   head(miss_nir, 20) %>%
     kable() %>%
     kable_styling(bootstrap_options = c("striped", "hover"))
 } else {
-  cat("\n**Không có dữ liệu thiếu trong các biến NIR**\n")
+  cat("Không có dữ liệu thiếu trong các biến NIR\n")
 }
 ```
 
@@ -218,20 +226,15 @@ if(sum(is.na(coffee_data[, chemical_vars])) > 0) {
 total_cells <- nrow(coffee_data) * ncol(coffee_data)
 missing_cells <- sum(is.na(coffee_data))
 missing_pct <- (missing_cells / total_cells) * 100
-
-cat("**Kết luận:**\n\n")
-cat("- Tổng số ô dữ liệu:", format(total_cells, big.mark = ","), "\n")
-cat("- Số ô thiếu dữ liệu:", format(missing_cells, big.mark = ","), "\n")
-cat("- Tỷ lệ thiếu:", round(missing_pct, 3), "%\n\n")
-
-if(missing_pct < 1) {
-  cat("Bộ dữ liệu có chất lượng tốt với tỷ lệ thiếu dữ liệu rất thấp.\n")
-} else if(missing_pct < 5) {
-  cat("Bộ dữ liệu có chất lượng khá tốt, cần xem xét xử lý missing data.\n")
-} else {
-  cat("Bộ dữ liệu có nhiều giá trị thiếu, cần xử lý cẩn thận.\n")
-}
 ```
+
+**Kết luận:**
+
+- Tổng số ô dữ liệu: `r format(total_cells, big.mark = ",")`
+- Số ô thiếu dữ liệu: `r format(missing_cells, big.mark = ",")`
+- Tỷ lệ thiếu: `r round(missing_pct, 3)`%
+
+`r if(missing_pct < 1) "Bộ dữ liệu có chất lượng tốt với tỷ lệ thiếu dữ liệu rất thấp." else if(missing_pct < 5) "Bộ dữ liệu có chất lượng khá tốt, cần xem xét xử lý missing data." else "Bộ dữ liệu có nhiều giá trị thiếu, cần xử lý cẩn thận."`
 
 ## Kiểm tra Giá trị Lạ (Outliers)
 
@@ -404,20 +407,19 @@ if(nrow(data_chem_complete) > 0) {
 
 ### Các loại Outliers
 
-```{r outlier-types}
-cat("**Trong dữ liệu này, ta quan tâm đến:**\n\n")
-cat("1. **Univariate outliers**: Giá trị bất thường trong từng biến riêng lẻ\n")
-cat("   - Phát hiện bằng IQR method, Z-score\n")
-cat("   - Ví dụ: Hàm lượng Cafeine quá cao hoặc quá thấp\n\n")
+**Trong dữ liệu này, ta quan tâm đến:**
 
-cat("2. **Multivariate outliers**: Tổ hợp giá trị bất thường giữa nhiều biến\n")
-cat("   - Phát hiện bằng Mahalanobis distance, PCA\n")
-cat("   - Ví dụ: Mẫu có tổ hợp CGA-Cafeine bất thường\n\n")
+1. **Univariate outliers**: Giá trị bất thường trong từng biến riêng lẻ
+   - Phát hiện bằng IQR method, Z-score
+   - Ví dụ: Hàm lượng Cafeine quá cao hoặc quá thấp
 
-cat("3. **Spectral outliers**: Phổ NIR bất thường\n")
-cat("   - Phát hiện bằng PCA score plots, Hotelling T2\n")
-cat("   - Quan trọng để đảm bảo chất lượng phổ\n")
-```
+2. **Multivariate outliers**: Tổ hợp giá trị bất thường giữa nhiều biến
+   - Phát hiện bằng Mahalanobis distance, PCA
+   - Ví dụ: Mẫu có tổ hợp CGA-Cafeine bất thường
+
+3. **Spectral outliers**: Phổ NIR bất thường
+   - Phát hiện bằng PCA score plots, Hotelling T2
+   - Quan trọng để đảm bảo chất lượng phổ
 
 ### Chiến lược xử lý Outliers
 
@@ -445,29 +447,32 @@ strategy_df %>%
 
 ## Kết luận
 
-```{r btl-conclusion}
-cat("### Tóm tắt chất lượng dữ liệu:\n\n")
-cat("**Cấu trúc dữ liệu:**\n")
-cat("- Số mẫu:", nrow(coffee_data), "\n")
-cat("- Số biến tổng:", ncol(coffee_data), "\n")
-cat("  + Biến hóa lý:", length(chemical_vars), "\n")
-cat("  + Biến vị trí: 1\n")
-cat("  + Biến NIR:", length(nir_vars), "\n\n")
+### Tóm tắt chất lượng dữ liệu:
 
-cat("**Chất lượng dữ liệu:**\n")
-cat("- Tỷ lệ dữ liệu thiếu:", round(missing_pct, 3), "%\n")
-cat("- Số vị trí địa lý:", nrow(location_summary), "\n\n")
+**Cấu trúc dữ liệu:**
 
-cat("**Outliers:**\n")
-cat("- Các biến hóa lý có chứa outliers (xem bảng phân tích ở trên)\n")
-cat("- Cần xem xét kỹ trước khi quyết định xử lý\n\n")
+- Số mẫu: `r nrow(coffee_data)`
+- Số biến tổng: `r ncol(coffee_data)`
+  + Biến hóa lý: `r length(chemical_vars)`
+  + Biến vị trí: 1
+  + Biến NIR: `r length(nir_vars)`
 
-cat("**Khuyến nghị:**\n")
-cat("1. Bộ dữ liệu có chất lượng tốt, ít missing data\n")
-cat("2. Cần xử lý outliers một cách cẩn thận trước khi xây dựng mô hình\n")
-cat("3. Dữ liệu NIR cần được tiền xử lý (smoothing, normalization) ở bước tiếp theo\n")
-cat("4. Xem xét phân tích theo nhóm Localisation nếu thấy sự khác biệt đáng kể\n")
-```
+**Chất lượng dữ liệu:**
+
+- Tỷ lệ dữ liệu thiếu: `r round(missing_pct, 3)`%
+- Số vị trí địa lý: `r nrow(location_summary)`
+
+**Outliers:**
+
+- Các biến hóa lý có chứa outliers (xem bảng phân tích ở trên)
+- Cần xem xét kỹ trước khi quyết định xử lý
+
+**Khuyến nghị:**
+
+1. Bộ dữ liệu có chất lượng tốt, ít missing data
+2. Cần xử lý outliers một cách cẩn thận trước khi xây dựng mô hình
+3. Dữ liệu NIR cần được tiền xử lý (smoothing, normalization) ở bước tiếp theo
+4. Xem xét phân tích theo nhóm Localisation nếu thấy sự khác biệt đáng kể
 
 ---
 

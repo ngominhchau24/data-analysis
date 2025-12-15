@@ -353,66 +353,52 @@ if(nrow(all_outliers) > 0) {
 
 ## Quyết định xử lý Outliers
 
-```{r outlier-decision}
-cat("### Khuyến nghị xử lý Outliers:\n\n")
-
+```{r outlier-decision-calc}
 total_outliers <- nrow(all_outliers)
 outlier_pct <- total_outliers / n * 100
-
-cat("1. **Tổng số outliers phát hiện:**", total_outliers,
-    "(", round(outlier_pct, 2), "%)\n\n")
-
-if(outlier_pct < 1) {
-  cat("2. **Mức độ:** Rất thấp - ít ảnh hưởng đến mô hình\n")
-  cat("3. **Khuyến nghị:** Có thể giữ lại, chỉ cần lưu ý khi xây dựng mô hình\n\n")
-} else if(outlier_pct < 5) {
-  cat("2. **Mức độ:** Trung bình - cần xem xét kỹ\n")
-  cat("3. **Khuyến nghị:**\n")
-  cat("   - Kiểm tra lại dữ liệu gốc của các outliers\n")
-  cat("   - Xem xét loại bỏ các outliers có cả T² và Q cao\n")
-  cat("   - So sánh mô hình với và không có outliers\n\n")
-} else {
-  cat("2. **Mức độ:** Cao - cần xử lý nghiêm túc\n")
-  cat("3. **Khuyến nghị:**\n")
-  cat("   - Kiểm tra kỹ quy trình đo NIR và chuẩn bị mẫu\n")
-  cat("   - Xem xét xây dựng mô hình robust (PLS-robust)\n")
-  cat("   - Có thể cần thu thập thêm dữ liệu\n\n")
-}
-
-cat("4. **Phân loại outliers:**\n")
-if(nrow(all_outliers) > 0) {
-  cat("   - High T² only:", sum(all_outliers$Outlier_Type == "High T² only"),
-      "- Mẫu cực trị nhưng đúng pattern\n")
-  cat("   - High Q only:", sum(all_outliers$Outlier_Type == "High Q only"),
-      "- Mẫu không theo mô hình (có thể lỗi đo)\n")
-  cat("   - Both High:", sum(all_outliers$Outlier_Type == "Both High"),
-      "- Outliers mạnh (ưu tiên xem xét loại bỏ)\n\n")
-}
-
-cat("5. **Bước tiếp theo:**\n")
-cat("   - Xem xét phân tích thêm các mẫu outliers có influence cao\n")
-cat("   - Kiểm tra xem outliers có tập trung ở Location nào không\n")
-cat("   - Thử xây dựng mô hình PLS với và không có outliers để so sánh hiệu suất\n")
 ```
+
+### Khuyến nghị xử lý Outliers:
+
+1. **Tổng số outliers phát hiện:** `r total_outliers` (`r round(outlier_pct, 2)`%)
+
+`r if(outlier_pct < 1) "2. **Mức độ:** Rất thấp - ít ảnh hưởng đến mô hình\n\n3. **Khuyến nghị:** Có thể giữ lại, chỉ cần lưu ý khi xây dựng mô hình" else if(outlier_pct < 5) "2. **Mức độ:** Trung bình - cần xem xét kỹ\n\n3. **Khuyến nghị:**\n   - Kiểm tra lại dữ liệu gốc của các outliers\n   - Xem xét loại bỏ các outliers có cả T² và Q cao\n   - So sánh mô hình với và không có outliers" else "2. **Mức độ:** Cao - cần xử lý nghiêm túc\n\n3. **Khuyến nghị:**\n   - Kiểm tra kỹ quy trình đo NIR và chuẩn bị mẫu\n   - Xem xét xây dựng mô hình robust (PLS-robust)\n   - Có thể cần thu thập thêm dữ liệu"`
+
+4. **Phân loại outliers:**
+
+```{r outlier-classification}
+if(nrow(all_outliers) > 0) {
+  cat(sprintf("   - High T² only: %d - Mẫu cực trị nhưng đúng pattern\n",
+              sum(all_outliers$Outlier_Type == "High T² only")))
+  cat(sprintf("   - High Q only: %d - Mẫu không theo mô hình (có thể lỗi đo)\n",
+              sum(all_outliers$Outlier_Type == "High Q only")))
+  cat(sprintf("   - Both High: %d - Outliers mạnh (ưu tiên xem xét loại bỏ)\n",
+              sum(all_outliers$Outlier_Type == "Both High")))
+}
+```
+
+5. **Bước tiếp theo:**
+   - Xem xét phân tích thêm các mẫu outliers có influence cao
+   - Kiểm tra xem outliers có tập trung ở Location nào không
+   - Thử xây dựng mô hình PLS với và không có outliers để so sánh hiệu suất
 
 ## Kết luận
 
-```{r outlier-conclusion}
-cat("### Tóm tắt phát hiện Outliers:\n\n")
-cat("- **Phương pháp sử dụng:**\n")
-cat("  + Hotelling T² statistic (khoảng cách trong không gian PC)\n")
-cat("  + Q residuals/SPE (phần không giải thích được)\n")
-cat("  + Influence analysis (leverage × residuals)\n\n")
+### Tóm tắt phát hiện Outliers:
 
-cat("- **Kết quả:**\n")
-cat("  + Tổng số mẫu:", n, "\n")
-cat("  + Số PC sử dụng:", n_pcs, "\n")
-cat("  + Outliers theo T²:", length(t2_outliers), "\n")
-cat("  + Outliers theo Q:", length(q_outliers), "\n")
-cat("  + Tổng outliers (T² hoặc Q):", total_outliers, "\n\n")
+- **Phương pháp sử dụng:**
+  + Hotelling T² statistic (khoảng cách trong không gian PC)
+  + Q residuals/SPE (phần không giải thích được)
+  + Influence analysis (leverage × residuals)
 
-cat("- **Ý nghĩa:**\n")
-cat("  + Outliers có thể do lỗi đo, contamination, hoặc mẫu thực sự khác biệt\n")
-cat("  + Cần kiểm tra kỹ trước khi quyết định loại bỏ\n")
-cat("  + Xem xét ảnh hưởng của outliers đến mô hình dự đoán\n")
-```
+- **Kết quả:**
+  + Tổng số mẫu: `r n`
+  + Số PC sử dụng: `r n_pcs`
+  + Outliers theo T²: `r length(t2_outliers)`
+  + Outliers theo Q: `r length(q_outliers)`
+  + Tổng outliers (T² hoặc Q): `r total_outliers`
+
+- **Ý nghĩa:**
+  + Outliers có thể do lỗi đo, contamination, hoặc mẫu thực sự khác biệt
+  + Cần kiểm tra kỹ trước khi quyết định loại bỏ
+  + Xem xét ảnh hưởng của outliers đến mô hình dự đoán

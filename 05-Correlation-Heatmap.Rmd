@@ -82,9 +82,12 @@ high_corr <- cor_df %>%
   filter(abs(Correlation) > 0.5) %>%
   arrange(desc(abs(Correlation))) %>%
   distinct(Correlation, .keep_all = TRUE)
+```
 
+**Các cặp biến có tương quan mạnh (|r| > 0.5):**
+
+```{r high-corr-table}
 if(nrow(high_corr) > 0) {
-  cat("Các cặp biến có tương quan mạnh (|r| > 0.5):\n\n")
   high_corr %>%
     mutate(Correlation = round(Correlation, 3)) %>%
     kable() %>%
@@ -109,9 +112,9 @@ data_nir_full <- data_nir[complete_rows, ]
 # Tính tương quan giữa từng biến hóa lý và tất cả NIR wavelengths
 cor_nir_chem <- cor(data_nir_full, data_chem_full, method = "pearson")
 
-cat("Kích thước ma trận tương quan NIR-Chemical:", dim(cor_nir_chem), "\n")
-cat("Số wavelengths:", nrow(cor_nir_chem), "\n")
-cat("Số biến hóa lý:", ncol(cor_nir_chem), "\n")
+cat(sprintf("Kích thước ma trận tương quan NIR-Chemical: %d x %d\nSố wavelengths: %d\nSố biến hóa lý: %d\n",
+            nrow(cor_nir_chem), ncol(cor_nir_chem),
+            nrow(cor_nir_chem), ncol(cor_nir_chem)))
 ```
 
 ### Heatmap tổng quan NIR-Chemical
@@ -177,8 +180,11 @@ for(chem_var in chemical_vars) {
 
 # Kết hợp tất cả
 all_important <- do.call(rbind, important_wavelengths)
+```
 
-cat("Top 10 wavelengths có tương quan mạnh nhất với từng biến hóa lý:\n\n")
+**Top 10 wavelengths có tương quan mạnh nhất với từng biến hóa lý:**
+
+```{r top-wavelengths-tables}
 for(chem_var in chemical_vars) {
   cat("\n**", chem_var, ":**\n")
   all_important %>%
@@ -225,8 +231,11 @@ pc_scores <- pca_nir$ind$coord[, 1:n_pcs]
 
 # Tính tương quan giữa PC scores và biến hóa lý
 cor_pc_chem <- cor(pc_scores, data_chem_full, method = "pearson")
+```
 
-cat("Ma trận tương quan PC-Chemical:\n")
+**Ma trận tương quan PC-Chemical:**
+
+```{r pc-chem-table}
 cor_pc_chem %>%
   round(3) %>%
   kable(caption = "Correlation: PC Scores vs Chemical Properties") %>%

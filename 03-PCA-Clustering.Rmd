@@ -59,7 +59,11 @@ location_info <- coffee_data$Localisation[complete.cases(data_nir)]
 pca_nir <- PCA(data_nir_complete, scale.unit = TRUE, graph = FALSE)
 
 # Thống kê eigenvalues
-cat("Phương sai giải thích bởi các thành phần chính:\n")
+```
+
+**Phương sai giải thích bởi các thành phần chính:**
+
+```{r pca-nir-print}
 print(head(pca_nir$eig, 10))
 ```
 
@@ -211,16 +215,24 @@ scores_summary %>%
 # ANOVA test để kiểm tra sự khác biệt có ý nghĩa thống kê
 anova_pc1 <- aov(PC1 ~ Location, data = scores_df)
 anova_pc2 <- aov(PC2 ~ Location, data = scores_df)
+```
 
-cat("\n**ANOVA Test - PC1:**\n")
+**ANOVA Test - PC1:**
+
+```{r anova-pc1-print}
 print(summary(anova_pc1))
+```
 
-cat("\n**ANOVA Test - PC2:**\n")
+**ANOVA Test - PC2:**
+
+```{r anova-pc2-print}
 print(summary(anova_pc2))
+```
 
+```{r posthoc-test}
 # Nếu có ý nghĩa thống kê, thực hiện post-hoc test
 if(summary(anova_pc1)[[1]][1, "Pr(>F)"] < 0.05) {
-  cat("\nCó sự khác biệt có ý nghĩa giữa các Location trên PC1\n")
+  cat("Có sự khác biệt có ý nghĩa giữa các Location trên PC1\n\n")
   posthoc_pc1 <- TukeyHSD(anova_pc1)
   print(posthoc_pc1)
 }
@@ -311,9 +323,10 @@ confusion_table %>%
 # Tính Adjusted Rand Index để đánh giá độ tương đồng
 library(mclust)
 ari <- adjustedRandIndex(location_info, kmeans_result$cluster)
-cat("\nAdjusted Rand Index:", round(ari, 3), "\n")
-cat("Giải thích: ARI = 1 nghĩa là hoàn toàn giống nhau, ARI = 0 nghĩa là ngẫu nhiên\n")
+cat(sprintf("Adjusted Rand Index: %.3f\n", ari))
 ```
+
+*Giải thích: ARI = 1 nghĩa là hoàn toàn giống nhau, ARI = 0 nghĩa là ngẫu nhiên*
 
 ### Visualize cả Location và Cluster
 
@@ -422,33 +435,28 @@ ggplot(nir_mean_long, aes(x = Wavelength, y = Absorbance, color = factor(Locatio
 
 ## Kết luận về sự khác biệt
 
-```{r conclusion-differences}
-cat("### Tóm tắt phân tích sự khác biệt:\n\n")
+### Tóm tắt phân tích sự khác biệt:
 
-cat("**1. Phân tích PCA:**\n")
-cat("- PC1 và PC2 giải thích", round(cumvar[2], 2), "% phương sai tổng thể\n")
-cat("- Có sự phân tách rõ ràng/không rõ ràng giữa các Location trên PCA plot\n")
-cat("- ANOVA test cho thấy sự khác biệt có/không có ý nghĩa thống kê\n\n")
+**1. Phân tích PCA:**
 
-cat("**2. Phân tích Clustering:**\n")
-cat("- Số cluster tối ưu được đề xuất bởi Elbow/Silhouette method\n")
-cat("- Adjusted Rand Index =", round(ari, 3), "\n")
-if(ari > 0.5) {
-  cat("- Kết quả clustering phù hợp tốt với phân loại Location thực tế\n")
-} else if(ari > 0.3) {
-  cat("- Kết quả clustering phù hợp trung bình với phân loại Location thực tế\n")
-} else {
-  cat("- Kết quả clustering khác biệt đáng kể so với phân loại Location thực tế\n")
-}
-cat("\n")
+- PC1 và PC2 giải thích `r round(cumvar[2], 2)`% phương sai tổng thể
+- Có sự phân tách rõ ràng/không rõ ràng giữa các Location trên PCA plot
+- ANOVA test cho thấy sự khác biệt có/không có ý nghĩa thống kê
 
-cat("**3. Đặc điểm phân biệt:**\n")
-cat("- Các biến hóa lý có sự khác biệt đáng kể giữa các Location\n")
-cat("- Phổ NIR cho thấy pattern khác nhau ở các vùng bước sóng nhất định\n")
-cat("- Có thể sử dụng PCA scores hoặc cluster để xây dựng mô hình phân loại\n\n")
+**2. Phân tích Clustering:**
 
-cat("**4. Khuyến nghị:**\n")
-cat("- Nên xem xét Location như một biến quan trọng trong mô hình dự đoán\n")
-cat("- Có thể cần xây dựng mô hình riêng cho từng Location\n")
-cat("- Sử dụng PCA để giảm chiều trước khi xây dựng mô hình hồi quy\n")
-```
+- Số cluster tối ưu được đề xuất bởi Elbow/Silhouette method
+- Adjusted Rand Index = `r round(ari, 3)`
+- `r if(ari > 0.5) "Kết quả clustering phù hợp tốt với phân loại Location thực tế" else if(ari > 0.3) "Kết quả clustering phù hợp trung bình với phân loại Location thực tế" else "Kết quả clustering khác biệt đáng kể so với phân loại Location thực tế"`
+
+**3. Đặc điểm phân biệt:**
+
+- Các biến hóa lý có sự khác biệt đáng kể giữa các Location
+- Phổ NIR cho thấy pattern khác nhau ở các vùng bước sóng nhất định
+- Có thể sử dụng PCA scores hoặc cluster để xây dựng mô hình phân loại
+
+**4. Khuyến nghị:**
+
+- Nên xem xét Location như một biến quan trọng trong mô hình dự đoán
+- Có thể cần xây dựng mô hình riêng cho từng Location
+- Sử dụng PCA để giảm chiều trước khi xây dựng mô hình hồi quy
