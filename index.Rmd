@@ -130,4 +130,16 @@ Báo cáo này trình bày toàn bộ kết quả phân tích dữ liệu Coffee
   - Tương quan trong không gian PCA
   - So sánh pattern tương quan giữa các Location
 
+- **Phần 2.4**: Mô hình Dự đoán (PLS và PCR)
+  - Xây dựng mô hình PLS (Partial Least Squares) Regression
+  - Xây dựng mô hình PCR (Principal Component Regression)
+  - So sánh hiệu suất giữa PLS và PCR
+  - Phân tích Variable Importance (VIP)
+  - Đánh giá khả năng ứng dụng thực tế
+
+**Kết quả chính:**
+- PCR cho hiệu suất tốt hơn PLS với bộ dữ liệu này
+- Cả hai mô hình đều có hiệu suất dự đoán hạn chế (R² thấp)
+- Cần cải thiện: thu thập thêm dữ liệu, xử lý outliers, thử phương pháp khác
+
 Dữ liệu sử dụng: **coffee_nirs.csv**
