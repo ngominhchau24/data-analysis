@@ -12,7 +12,7 @@ library(caret)
 library(gridExtra)
 ```
 
-## 2.4.1. Chuẩn Bị Dữ Liệu
+## Chuẩn Bị Dữ Liệu
 
 ```{r prepare-prediction-data}
 # Data and variable groups already loaded in index.Rmd global-setup
@@ -30,7 +30,7 @@ cat("Kích thước dữ liệu hóa lý:", dim(Y), "\n")
 cat("Số lượng mẫu:", nrow(X), "\n")
 ```
 
-## 2.4.2. Mô Hình PLS Regression
+## Mô Hình PLS Regression
 
 ### Xác Định Số Thành Phần Tối Ưu
 
@@ -223,7 +223,7 @@ for(i in 1:length(chemical_vars)) {
 do.call(grid.arrange, c(plot_list_res, ncol = 2))
 ```
 
-## 2.4.3. Mô Hình PCR (Principal Component Regression)
+## Mô Hình PCR (Principal Component Regression)
 
 ```{r pcr-models, fig.width=10, fig.height=6, warning=FALSE}
 # Xây dựng mô hình PCR
@@ -355,7 +355,7 @@ p2 <- ggplot(comp_long2, aes(x = Variable, y = RMSECV, fill = Model)) +
 grid.arrange(p1, p2, ncol = 2)
 ```
 
-## 2.4.4. Variable Importance (VIP)
+## Variable Importance (VIP)
 
 Variable Importance in Projection (VIP) cho biết mức độ quan trọng của từng bước sóng trong việc dự đoán các chỉ tiêu hóa lý.
 
@@ -429,12 +429,11 @@ for(var in chemical_vars) {
 }
 ```
 
-## 2.4.5. Kết Luận
+## Kết Luận
 
+### Mô hình tốt nhất cho từng chỉ tiêu:
 ```{r prediction-conclusion}
-cat("\n=== TỔNG KẾT MÔ HÌNH Dự ĐOÁN ===\n\n")
 
-cat("1. Mô hình tốt nhất cho từng chỉ tiêu:\n")
 for(i in 1:nrow(comparison)) {
   cat(sprintf("   - %s: %s (R² = %.3f, RMSECV = %.3f)\n",
               comparison$Variable[i],
@@ -444,13 +443,13 @@ for(i in 1:nrow(comparison)) {
               ifelse(comparison$Better_Model[i] == "PLS",
                      comparison$PLS_RMSECV[i], comparison$PCR_RMSECV[i])))
 }
-
-cat("\n2. Nhận xét:\n")
-cat("   - PLS thường cho kết quả tốt hơn PCR với dữ liệu NIR\n")
-cat("   - Số thành phần tối ưu thay đổi tùy theo từng chỉ tiêu hóa lý\n")
-cat("   - VIP scores giúp xác định các bước sóng quan trọng\n")
-cat("   - Mô hình có thể dùng để dự đoán chất lượng cà phê từ phổ NIR\n")
 ```
+### Nhận xét
+- PLS thường cho kết quả tốt hơn PCR với dữ liệu NI
+- Số thành phần tối ưu thay đổi tùy theo từng chỉ tiêu hóa lý
+- VIP scores giúp xác định các bước sóng quan trọn
+- Mô hình có thể dùng để dự đoán chất lượng cà phê từ phổ NIR
+
 
 **Ý nghĩa thực tiễn:**
 
