@@ -276,7 +276,9 @@ location_info <- coffee_data$Localisation[complete_rows]
 unique_locations <- unique(location_info)
 
 cat("Phân tích tương quan theo từng Location:\n\n")
+cat("Xem biểu đồ heatmap phía dưới để so sánh pattern tương quan giữa các vị trí địa lý.\n\n")
 
+# Calculate correlations for each location (for plotting)
 for(loc in unique_locations) {
   loc_idx <- which(location_info == loc)
 
@@ -284,14 +286,9 @@ for(loc in unique_locations) {
     data_chem_loc <- data_chem_full[loc_idx, ]
     cor_loc <- cor(data_chem_loc, method = "pearson")
 
-    cat(sprintf("\n### Location %s (n = %d samples):\n", loc, length(loc_idx)))
+    cat(sprintf("- Location %s: %d mẫu\n", loc, length(loc_idx)))
 
-    # Hiển thị ma trận
-    cor_loc %>%
-      round(3) %>%
-      kable() %>%
-      kable_styling(bootstrap_options = c("striped", "hover")) %>%
-      print()
+    # Note: Detailed tables hidden to avoid clutter - see heatmap visualization instead
   }
 }
 ```
